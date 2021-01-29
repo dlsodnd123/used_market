@@ -52,7 +52,7 @@
     <form class="form-inline" action="#">
       <nav class="navbar navbar-expand-sm navbar-light">
         <!-- Brand -->
-        <a class="navbar-brand" href="#">중고시장</a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
 
         <div class="search-box">
           <input type="text" placeholder="상품명, 지역명 입력">
@@ -61,7 +61,7 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#">회원가입</a>
+            <a class="nav-link" href="<%=request.getContextPath()%>/termsOfService">회원가입</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">로그인</a>

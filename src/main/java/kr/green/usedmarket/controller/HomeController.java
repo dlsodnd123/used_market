@@ -16,13 +16,28 @@ public class HomeController {
 	private MemberService memberService; 
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(ModelAndView mv) {
-		
-		MemberVo member = memberService.getMember("aaa");
-		System.out.println(member);
+	public ModelAndView homeGet(ModelAndView mv) {
 
 		mv.setViewName("/main/home");
 		return mv;
 	}
-	
+	@RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
+	public ModelAndView termsOfServiceGet(ModelAndView mv) {
+
+		mv.setViewName("/main/join/termsOfService");
+		return mv;
+	}
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public ModelAndView signupGet(ModelAndView mv) {
+
+		mv.setViewName("/main/join/signup");
+		return mv;
+	}
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public ModelAndView signupPost(ModelAndView mv, MemberVo member) {
+		System.out.println(member);
+		
+		mv.setViewName("redirect:/");
+		return mv;
+	}
 }
