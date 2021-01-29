@@ -6,4 +6,6 @@ public interface MemberService {
 
 	MemberVo getMember(String id);
 
+	void signupMember(MemberVo member);
+
 }

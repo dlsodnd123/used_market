@@ -51,7 +51,7 @@
                 <h5>아이디</h5>
                 <div>
                     <input type="text" class="form-control col-6 check" id="id" name="id">
-                    <button class="btn btn-info col-2 check">아이디 중복검사</button>
+                    <button class="btn btn-info col-2 check" id="id-check-btn" type="button">아이디 중복검사</button>
                 </div>
                 <label for="id" class="error" id="id-error"></label>
             </div>
@@ -97,6 +97,7 @@
                 <input type="email" class="form-control col-8" id="email" name="email">
                 <label for="email" class="error" id="email-error"></label>
             </div>
+            <input type="hidden" name="division" value="normal">
             <div class="form-group">
                 <button class="btn btn-success col-8">회원가입</button>
             </div>
@@ -104,8 +105,37 @@
     </div>
     <script>
         $(function(){
+        	var idCheck = false;
+        	$('#id-check-btn').click(function(){
+        		var id = $('input[name=id]').val()
+        		if(id == ''){
+        			alert('아이디를 입력해주세요');
+        			return false;
+        		}
+        		var data = {'id' : id}
+        		$.ajax({
+        	        type:'post',
+        	        data:data,
+        	        url:'<%=request.getContextPath()%>/check/id',
+        	        success : function(data){
+        	          	if(data == 'possible'){
+        	          		alert('사용가능한 아이디 입니다.');
+        	          		idCheck = true;        	      
+        	          	}else{
+        	          		alert('사용중인 아이디 입니다.');
+        	          		idCheck = false;
+        	          	}      	          			
+        	        }
+        	    })
+        	})
         	$('input[name=id]').change(function(){
-        		
+        		console.log(idCheck);
+        	})
+        	$('form').submit(function(){
+        		if(!idCheck){
+        			alert('아이디 중복검사를 해주세요');
+        			return false;
+        		}
         	})
             $('form').validate({
                 rules : {

@@ -11,10 +11,17 @@ public class MemberServiceImp implements MemberService {
 
 	@Autowired
 	MemberDao memberDao;
-	
+
 	@Override
 	public MemberVo getMember(String id) {
 		return memberDao.getMember(id);
 	}
+
+	@Override
+	public void signupMember(MemberVo member) {
+		memberDao.insertMember(member);
+		
+	}
+	
 
 }
