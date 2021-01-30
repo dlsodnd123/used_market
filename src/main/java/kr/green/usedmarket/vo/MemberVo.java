@@ -3,105 +3,104 @@ package kr.green.usedmarket.vo;
 import java.util.Date;
 
 public class MemberVo {
-	private String id;
-	private String pw;
-	private String name;
-	private String gender;
-	private String postcode;
-	private String roadAddress;
-	private String jibunAddress;
-	private String detailAddress;
-	private int phone;
-	private String email;
-	private String division;
-	private Date joinDate;
-	private String isWithdrawal;
-	private Date withdawalDate;
+	private String mb_id;
+	private String mb_pw;
+	private String mb_name;
+	private String mb_gender;
+	private String mb_postcode;
+	private String mb_roadAddress;
+	private String mb_jibunAddress;
+	private String mb_detailAddress;
+	private String mb_phone;
+	private String mb_email;
+	private String mb_division;
+	private Date mb_joinDate;
+	private String mb_isWithdrawal;
+	private Date mb_withdawalDate;
 	private String mb_calss;
-	
-	public String getId() {
-		return id;
+	public String getMb_id() {
+		return mb_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setMb_id(String mb_id) {
+		this.mb_id = mb_id;
 	}
-	public String getPw() {
-		return pw;
+	public String getMb_pw() {
+		return mb_pw;
 	}
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setMb_pw(String mb_pw) {
+		this.mb_pw = mb_pw;
 	}
-	public String getName() {
-		return name;
+	public String getMb_name() {
+		return mb_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setMb_name(String mb_name) {
+		this.mb_name = mb_name;
 	}
-	public String getGender() {
-		return gender;
+	public String getMb_gender() {
+		return mb_gender;
 	}
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setMb_gender(String mb_gender) {
+		this.mb_gender = mb_gender;
 	}
-	public String getPostcode() {
-		return postcode;
+	public String getMb_postcode() {
+		return mb_postcode;
 	}
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
+	public void setMb_postcode(String mb_postcode) {
+		this.mb_postcode = mb_postcode;
 	}
-	public String getRoadAddress() {
-		return roadAddress;
+	public String getMb_roadAddress() {
+		return mb_roadAddress;
 	}
-	public void setRoadAddress(String roadAddress) {
-		this.roadAddress = roadAddress;
+	public void setMb_roadAddress(String mb_roadAddress) {
+		this.mb_roadAddress = mb_roadAddress;
 	}
-	public String getJibunAddress() {
-		return jibunAddress;
+	public String getMb_jibunAddress() {
+		return mb_jibunAddress;
 	}
-	public void setJibunAddress(String jibunAddress) {
-		this.jibunAddress = jibunAddress;
+	public void setMb_jibunAddress(String mb_jibunAddress) {
+		this.mb_jibunAddress = mb_jibunAddress;
 	}
-	public String getDetailAddress() {
-		return detailAddress;
+	public String getMb_detailAddress() {
+		return mb_detailAddress;
 	}
-	public void setDetailAddress(String detailAddress) {
-		this.detailAddress = detailAddress;
+	public void setMb_detailAddress(String mb_detailAddress) {
+		this.mb_detailAddress = mb_detailAddress;
 	}
-	public int getPhone() {
-		return phone;
+	public String getMb_phone() {
+		return mb_phone;
 	}
-	public void setPhone(int phone) {
-		this.phone = phone;
+	public void setMb_phone(String mb_phone) {
+		this.mb_phone = mb_phone;
 	}
-	public String getEmail() {
-		return email;
+	public String getMb_email() {
+		return mb_email;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMb_email(String mb_email) {
+		this.mb_email = mb_email;
 	}
-	public String getDivision() {
-		return division;
+	public String getMb_division() {
+		return mb_division;
 	}
-	public void setDivision(String division) {
-		this.division = division;
+	public void setMb_division(String mb_division) {
+		this.mb_division = mb_division;
 	}
-	public Date getJoinDate() {
-		return joinDate;
+	public Date getMb_joinDate() {
+		return mb_joinDate;
 	}
-	public void setJoinDate(Date joinDate) {
-		this.joinDate = joinDate;
+	public void setMb_joinDate(Date mb_joinDate) {
+		this.mb_joinDate = mb_joinDate;
 	}
-	public String getIsWithdrawal() {
-		return isWithdrawal;
+	public String getMb_isWithdrawal() {
+		return mb_isWithdrawal;
 	}
-	public void setIsWithdrawal(String isWithdrawal) {
-		this.isWithdrawal = isWithdrawal;
+	public void setMb_isWithdrawal(String mb_isWithdrawal) {
+		this.mb_isWithdrawal = mb_isWithdrawal;
 	}
-	public Date getWithdawalDate() {
-		return withdawalDate;
+	public Date getMb_withdawalDate() {
+		return mb_withdawalDate;
 	}
-	public void setWithdawalDate(Date withdawalDate) {
-		this.withdawalDate = withdawalDate;
+	public void setMb_withdawalDate(Date mb_withdawalDate) {
+		this.mb_withdawalDate = mb_withdawalDate;
 	}
 	public String getMb_calss() {
 		return mb_calss;
@@ -111,11 +110,12 @@ public class MemberVo {
 	}
 	@Override
 	public String toString() {
-		return "MemberVo [id=" + id + ", pw=" + pw + ", name=" + name + ", gender=" + gender + ", postcode=" + postcode
-				+ ", roadAddress=" + roadAddress + ", jibunAddress=" + jibunAddress + ", detailAddress=" + detailAddress
-				+ ", phone=" + phone + ", email=" + email + ", division=" + division + ", joinDate=" + joinDate
-				+ ", isWithdrawal=" + isWithdrawal + ", withdawalDate=" + withdawalDate + ", mb_calss=" + mb_calss
-				+ "]";
+		return "MemberVo [mb_id=" + mb_id + ", mb_pw=" + mb_pw + ", mb_name=" + mb_name + ", mb_gender=" + mb_gender
+				+ ", mb_postcode=" + mb_postcode + ", mb_roadAddress=" + mb_roadAddress + ", mb_jibunAddress="
+				+ mb_jibunAddress + ", mb_detailAddress=" + mb_detailAddress + ", mb_phone=" + mb_phone + ", mb_email="
+				+ mb_email + ", mb_division=" + mb_division + ", mb_joinDate=" + mb_joinDate + ", mb_isWithdrawal="
+				+ mb_isWithdrawal + ", mb_withdawalDate=" + mb_withdawalDate + ", mb_calss=" + mb_calss + "]";
 	}
+	
 }
 

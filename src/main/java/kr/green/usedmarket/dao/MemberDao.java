@@ -6,9 +6,9 @@ import kr.green.usedmarket.vo.MemberVo;
 
 public interface MemberDao {
 
-	MemberVo getMember(@Param("id")String id);
-
 	void insertMember(@Param("member")MemberVo member);
+
+	MemberVo getMember(@Param("id")String id);
 
 
 

@@ -36,18 +36,15 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ModelAndView signupPost(ModelAndView mv, MemberVo member) {
-		System.out.println(member);
 		memberService.signupMember(member);
-		
+	
 		mv.setViewName("redirect:/");
 		return mv;
 	}
 	@RequestMapping(value = "/check/id", method = RequestMethod.POST)
 	@ResponseBody
 	public String checkIdPost(String id) {
-		System.out.println(id);
 		MemberVo member = memberService.getMember(id);
-		System.out.println(member);
 		if(member == null)
 			return "possible";
 		return "impossible";

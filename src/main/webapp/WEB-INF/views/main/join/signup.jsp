@@ -50,29 +50,29 @@
             <div class="form-group">
                 <h5>아이디</h5>
                 <div>
-                    <input type="text" class="form-control col-6 check" id="id" name="id">
+                    <input type="text" class="form-control col-6 check" id="id" name="mb_id">
                     <button class="btn btn-info col-2 check" id="id-check-btn" type="button">아이디 중복검사</button>
                 </div>
                 <label for="id" class="error" id="id-error"></label>
             </div>
             <div class="form-group">
                 <h5>비밀번호</h5>
-                <input type="password" class="form-control col-8" id="pw" name="pw">
+                <input type="password" class="form-control col-8" id="pw" name="mb_pw">
                 <label for="pw" class="error" id="pw-error"></label>
             </div>
             <div class="form-group">
                 <h5>비밀번호확인</h5>
-                <input type="password" class="form-control col-8" id="pw2" name="pw2">
+                <input type="password" class="form-control col-8" id="pw2" name="mb_pw2">
                 <label for="pw2" class="error" id="pw2-error"></label>
             </div>
             <div class="form-group">
                 <h5>이름</h5>
-                <input type="text" class="form-control col-8" id="name" name="name">
+                <input type="text" class="form-control col-8" id="name" name="mb_name">
                 <label for="name" class="error" id="name-error"></label>
             </div>
             <div class="form-group">
                 <h5>성별</h5>
-                <select class="form-control col-8" id="gender" name="gender">
+                <select class="form-control col-8" id="gender" name="mb_gender">
                     <option value="남">남자</option>
                     <option value="여">여자</option>
                 </select>
@@ -80,24 +80,25 @@
             </div>
             <div class="form-group">
                 <h5>주소(선택)</h5>
-                <input type="text"  class="form-control col-3 address" id="sample4_postcode" placeholder="우편번호" name="postcode">
+                <input type="text"  class="form-control col-3 address" id="sample4_postcode" placeholder="우편번호" name="mb_postcode">
                 <input type="button" class="btn btn-secondary col-2 address" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-                <input type="text" class="form-control col-8" id="sample4_roadAddress" placeholder="도로명주소" name="roadAddress" style="margin-bottom: 5px;">
-                <input type="text" class="form-control col-8" id="sample4_jibunAddress" placeholder="지번주소" name="jibunAddress" style="margin-bottom: 5px;">
+                <input type="text" class="form-control col-8" id="sample4_roadAddress" placeholder="도로명주소" name="mb_roadAddress" style="margin-bottom: 5px;">
+                <input type="text" class="form-control col-8" id="sample4_jibunAddress" placeholder="지번주소" name="mb_jibunAddress" style="margin-bottom: 5px;">
                 <span id="guide" style="color:#999;display:none"></span>
-                <input type="text" class="form-control col-3 address" id="sample4_detailAddress" placeholder="상세주소" name="detailAddress">
+                <input type="text" class="form-control col-3 address" id="sample4_detailAddress" placeholder="상세주소" name="mb_detailAddress">
+                <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
             </div>
             <div class="form-group">
                 <h5>연락처</h5>
-                <input type="text" class="form-control col-8" id="phone" name="phone" placeholder="'-' 빼고 입력">
+                <input type="number" class="form-control col-8" id="phone" name="mb_phone" placeholder="'-' 빼고 입력">
                 <label for="phone" class="error" id="phone-error"></label>
             </div>
             <div class="form-group">
                 <h5>이메일(선택)</h5>
-                <input type="email" class="form-control col-8" id="email" name="email">
+                <input type="email" class="form-control col-8" id="email" name="mb_email">
                 <label for="email" class="error" id="email-error"></label>
             </div>
-            <input type="hidden" name="division" value="normal">
+            <input type="hidden" name="mb_division" value="normal">
             <div class="form-group">
                 <button class="btn btn-success col-8">회원가입</button>
             </div>
@@ -107,7 +108,7 @@
         $(function(){
         	var idCheck = false;
         	$('#id-check-btn').click(function(){
-        		var id = $('input[name=id]').val()
+        		var id = $('input[name=mb_id]').val()
         		if(id == ''){
         			alert('아이디를 입력해주세요');
         			return false;
@@ -139,49 +140,49 @@
         	})
             $('form').validate({
                 rules : {
-                    id : {
+                	mb_id : {
                         required : true,
                         regex : /^[a-z0-9]{8,15}$/
                     },
-                    pw : {
+                    mb_pw : {
                         required : true,
                         regex : /^[a-zA-Z0-9]{8,}$/
                     },
-                    pw2 : {
+                    mb_pw2 : {
                         required : true,
                         equalTo : pw
                     },
-                    name : {
+                    mb_name : {
                         required : true,
                     },
-                    phone : {
+                    mb_phone : {
                         required : true
                     },
-                    email : {
+                    mb_email : {
                         email : true
                     }
                 },
                 messages : {
-                    id : {
+                	mb_id : {
                         required : '필수 입력사항 입니다.',
                         regex : '8~15자의 영문 소문자, 숫자만 사용 가능합니다.'
                     },
-                    pw : {
+                    mb_pw : {
                         required : '필수 입력사항 입니다.',
                         regex : '8자이상 영문 소문자, 영문 대문자, 숫자만 사용 가능합니다.'
                     },
-                    pw2 : {
+                    mb_pw2 : {
                         required : '필수 입력사항 입니다.',
                         equalTo : '비밀번호가 일치하지 않습니다.'
                     },
-                    name : {
+                    mb_name : {
                         required : '필수 입력사항 입니다.'
                     },
-                    phone : {
+                    mb_phone : {
                         required : '필수 입력사항 입니다.',
                         digits : '숫자만 입력 가능합니다.'
                     },
-                    email : {
+                    mb_email : {
                         email : '이메일 형식에 맞지 않습니다.'
                     }
                 }

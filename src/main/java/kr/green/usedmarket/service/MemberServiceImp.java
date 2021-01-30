@@ -14,8 +14,8 @@ public class MemberServiceImp implements MemberService {
 
 	@Override
 	public MemberVo getMember(String id) {
-		System.out.println(id);
-		return memberDao.getMember(id);
+		MemberVo member = memberDao.getMember(id);
+		return member;
 	}
 
 	@Override
