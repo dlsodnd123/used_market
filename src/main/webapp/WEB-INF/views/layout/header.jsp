@@ -57,72 +57,82 @@
   </style>
 </head>
 <body>
-<div class="line-box">
-  <div class="container">
-    <form class="form-inline" action="#">
-      <nav class="navbar navbar-expand-sm navbar-light">
-        <!-- Brand -->
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
+	<div class="line-box">
+		<div class="container">
+    		<form class="form-inline" action="#">
+      		<nav class="navbar navbar-expand-sm navbar-light">
+        	<!-- Brand -->
+        	<a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
 
-        <div class="search-box">
-          <input type="text" placeholder="상품명, 지역명 입력">
-          <button class="btn btn-basic" type="submit"><i class="fas fa-search"></i></button>
-        </div>
+	        <div class="search-box">
+	          <input type="text" placeholder="상품명, 지역명 입력">
+	          <button class="btn btn-basic" type="submit"><i class="fas fa-search"></i></button>
+	        </div>
 
-        <ul class="navbar-nav">
-          <li class="nav-item">
-              <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">회원가입</a>
-                <!-- The Modal -->
-               <div class="container">
-                 <div class="modal fade" id="myModal">
-                   <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                      
-                        <!-- Modal Header -->
-                       <div class="modal-header">
-                         <h4 class="modal-title">중고시장 회원가입</h4>
-                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                       </div>
-                        
-                        <!-- Modal body -->
-                       <div class="modal-body">
-                         <div><a href="<%=request.getContextPath()%>/termsOfService"><button type="button" class="btn btn-outline-secondary">일반회원가입</button></a></div>
-                         <div><a href="#"><button type="button" class="btn btn-outline-warning">카카오로 가입하기</button></a></div>
-                         <div><a href="#"><button type="button" class="btn btn-outline-success">네이버로 가입하기</button></a></div>
-                       </div>
-                        
-                       <!-- Modal footer -->
-                       <div class="modal-footer">
-                       </div>
-                        
-                     </div>
-                   </div>
-                 </div>
-               </div>
-           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">내가판대</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">채팅</a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-              마이페이지
-            </a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">회원정보수정</a>
-                <a class="dropdown-item" href="#">구매/판매 내역</a>
-                <a class="dropdown-item" href="#">찜한상품</a>
-            </div>
-          </li>
-        </ul>
-      </nav>
-    </form>
-  </div>
-</div>
+	        <ul class="navbar-nav">
+	          <li class="nav-item">
+	          	  <c:if test="${member == null}">
+	             	 <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">회원가입</a>
+	              </c:if>
+	                <!-- The Modal -->
+	               <div class="container">
+	                 <div class="modal fade" id="myModal">
+	                   <div class="modal-dialog modal-dialog-centered">
+	                     <div class="modal-content">
+	                      
+	                        <!-- Modal Header -->
+	                       <div class="modal-header">
+	                         <h4 class="modal-title">중고시장 회원가입</h4>
+	                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                       </div>
+	                        
+	                        <!-- Modal body -->
+	                       <div class="modal-body">
+	                         <div><a href="<%=request.getContextPath()%>/termsOfService"><button type="button" class="btn btn-outline-secondary">일반회원가입</button></a></div>
+	                         <div><a href="#"><button type="button" class="btn btn-outline-warning">카카오로 가입하기</button></a></div>
+	                         <div><a href="#"><button type="button" class="btn btn-outline-success">네이버로 가입하기</button></a></div>
+	                       </div>
+	                        
+	                       <!-- Modal footer -->
+	                       <div class="modal-footer">
+	                       </div>
+	                        
+	                     </div>
+	                   </div>
+	                 </div>
+	               </div>
+	           </li>
+	          <c:if test="${member == null}">
+		          <li class="nav-item">
+		            <a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
+		          </li>
+	          </c:if>
+	          <c:if test="${member != null }">
+		          <li class="nav-item">
+		            <a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
+		          </li>
+	          
+		          <li class="nav-item">
+		            <a class="nav-link" href="#">내가판대</a>
+		          </li>
+		          <li class="nav-item">
+		            <a class="nav-link" href="#">채팅</a>
+		          </li>
+		
+		          <li class="nav-item dropdown">
+		            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		              마이페이지
+		            </a>
+		            <div class="dropdown-menu">
+		                <a class="dropdown-item" href="#">회원정보수정</a>
+		                <a class="dropdown-item" href="#">구매/판매 내역</a>
+		                <a class="dropdown-item" href="#">찜한상품</a>
+		            </div>
+		          </li>
+	          </c:if>
+	        </ul>
+      		</nav>
+    		</form>
+  		</div>
+	</div>
 </body>
