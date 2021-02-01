@@ -1,6 +1,7 @@
 package kr.green.usedmarket.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.MemberDao;
@@ -11,16 +12,20 @@ public class MemberServiceImp implements MemberService {
 
 	@Autowired
 	MemberDao memberDao;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public MemberVo getMember(String id) {
 		MemberVo member = memberDao.getMember(id);
-		System.out.println(member);
 		return member;
 	}
 
 	@Override
 	public void signupMember(MemberVo member) {
+		String encPw = passwordEncoder.encode(member.getMb_pw());
+		member.setMb_pw(encPw);
 		memberDao.insertMember(member);
 		
 	}
@@ -31,7 +36,7 @@ public class MemberServiceImp implements MemberService {
 		String result = "";
 		if(oriMember == null)
 			result = "notId";
-		else if(!oriMember.getMb_pw().equals(member.getMb_pw()))
+		else if(!passwordEncoder.matches(member.getMb_pw(), oriMember.getMb_pw()))
 			result = "notSamePw";
 		else
 			result = "same";
