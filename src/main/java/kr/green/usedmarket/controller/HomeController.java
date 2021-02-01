@@ -2,6 +2,8 @@ package kr.green.usedmarket.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,5 +74,11 @@ public class HomeController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("result", result);
 		return map;
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ModelAndView logoutGet(ModelAndView mv, HttpServletRequest request) {
+		request.getSession().removeAttribute("member");
+		mv.setViewName("redirect:/");
+		return mv;
 	}
 }
