@@ -13,5 +13,10 @@
 			values(#{member.mb_id}, #{member.mb_pw}, #{member.mb_name}, #{member.mb_gender}, #{member.mb_postcode}, 
 					#{member.mb_roadAddress}, #{member.mb_jibunAddress}, #{member.mb_detailAddress}, #{member.mb_phone}, #{member.mb_email}, #{member.mb_division})
 	</insert>
+	<insert id="insertStand">
+		insert into
+			stand(st_name, st_mb_id)
+			values(#{stand.st_name}, #{stand.st_mb_id})
+	</insert>
 
 </mapper>

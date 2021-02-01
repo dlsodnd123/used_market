@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.MemberDao;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.StandVo;
 
 @Service
 public class MemberServiceImp implements MemberService {
@@ -27,7 +28,8 @@ public class MemberServiceImp implements MemberService {
 		String encPw = passwordEncoder.encode(member.getMb_pw());
 		member.setMb_pw(encPw);
 		memberDao.insertMember(member);
-		
+		StandVo stand = new StandVo(member.getMb_id());
+		memberDao.insertStand(stand);
 	}
 
 	@Override
