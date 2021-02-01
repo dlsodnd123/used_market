@@ -1,7 +1,10 @@
 package kr.green.usedmarket.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,5 +51,25 @@ public class HomeController {
 		if(member == null)
 			return "possible";
 		return "impossible";
+	}
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView loginGet(ModelAndView mv) {
+
+		mv.setViewName("/main/login");
+		return mv;
+	}
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView loginPost(ModelAndView mv, String id, String pw) {
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	@RequestMapping(value = "/idpw/check", method = RequestMethod.POST)
+	@ResponseBody
+	public Object idpwCheckPost(@RequestBody MemberVo member) {
+		String result = memberService.idpwCheck(member);
+		System.out.println(result);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("result", result);
+		return map;
 	}
 }

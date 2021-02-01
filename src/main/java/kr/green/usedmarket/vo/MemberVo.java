@@ -18,6 +18,7 @@ public class MemberVo {
 	private String mb_isWithdrawal;
 	private Date mb_withdawalDate;
 	private String mb_calss;
+	
 	public String getMb_id() {
 		return mb_id;
 	}

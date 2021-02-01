@@ -38,6 +38,6 @@
 	            <beans:value>/WEB-INF/spring/tiles-def.xml</beans:value>
 	        </beans:list>
 	    </beans:property>
-	</beans:bean>	
+	</beans:bean>
 	
 </beans:beans>

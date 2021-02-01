@@ -20,7 +20,7 @@
 	              value="jdbc:mysql://localhost:3306/used_market?useSSL=false&amp;serverTimezone=Asia/Seoul">
 	    </property>
 	    <property name="username" value="root"></property>
-	    <property name="password" value="LR_w00ng00"></property>
+	    <property name="password" value="cjgreen"></property>
 	</bean> 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	    <property name="dataSource" ref="dataSource" />

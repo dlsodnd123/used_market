@@ -17,9 +17,6 @@
     .navbar-brand{
       padding-right: 55px;
     }
-    .form-control{
-      float: left;
-    }
     ul{
       float: right;
     }
@@ -44,6 +41,19 @@
     .navbar-light .navbar-nav .nav-link {
       color: #505050;
     }
+    .modal-body{
+      text-align: center;
+      margin-top: 25px;
+    }
+    .modal-body>div{
+      margin-bottom: 25px;
+    }
+    .modal-body>div>a>.btn{
+      width: 250px;
+      height: 75px;
+      font-size: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -61,10 +71,37 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/termsOfService">회원가입</a>
-          </li>
+              <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">회원가입</a>
+                <!-- The Modal -->
+               <div class="container">
+                 <div class="modal fade" id="myModal">
+                   <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                      
+                        <!-- Modal Header -->
+                       <div class="modal-header">
+                         <h4 class="modal-title">중고시장 회원가입</h4>
+                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       </div>
+                        
+                        <!-- Modal body -->
+                       <div class="modal-body">
+                         <div><a href="<%=request.getContextPath()%>/termsOfService"><button type="button" class="btn btn-outline-secondary">일반회원가입</button></a></div>
+                         <div><a href="#"><button type="button" class="btn btn-outline-warning">카카오로 가입하기</button></a></div>
+                         <div><a href="#"><button type="button" class="btn btn-outline-success">네이버로 가입하기</button></a></div>
+                       </div>
+                        
+                       <!-- Modal footer -->
+                       <div class="modal-footer">
+                       </div>
+                        
+                     </div>
+                   </div>
+                 </div>
+               </div>
+           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">로그인</a>
+            <a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">내가판대</a>

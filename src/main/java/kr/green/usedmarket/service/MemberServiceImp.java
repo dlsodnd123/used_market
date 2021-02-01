@@ -15,6 +15,7 @@ public class MemberServiceImp implements MemberService {
 	@Override
 	public MemberVo getMember(String id) {
 		MemberVo member = memberDao.getMember(id);
+		System.out.println(member);
 		return member;
 	}
 
@@ -23,6 +24,17 @@ public class MemberServiceImp implements MemberService {
 		memberDao.insertMember(member);
 		
 	}
-	
 
+	@Override
+	public String idpwCheck(MemberVo member) {
+		MemberVo oriMember = memberDao.getMember(member.getMb_id());
+		String result = "";
+		if(oriMember == null)
+			result = "notId";
+		else if(!oriMember.getMb_pw().equals(member.getMb_pw()))
+			result = "notSamePw";
+		else
+			result = "same";
+		return result;
+	}
 }
