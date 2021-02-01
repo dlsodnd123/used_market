@@ -60,6 +60,8 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView loginPost(ModelAndView mv, String id, String pw) {
+		MemberVo member = memberService.getMember(id);
+		mv.addObject("member",member);
 		mv.setViewName("redirect:/");
 		return mv;
 	}
@@ -67,7 +69,6 @@ public class HomeController {
 	@ResponseBody
 	public Object idpwCheckPost(@RequestBody MemberVo member) {
 		String result = memberService.idpwCheck(member);
-		System.out.println(result);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("result", result);
 		return map;
