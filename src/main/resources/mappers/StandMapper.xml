@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.usedmarket.dao.StandDao">
+
+	<select id="selectStand" resultType="kr.green.usedmarket.vo.StandVo">
+		select * from stand where st_mb_id = #{id}
+	</select>
+	
+	<update id="updateStandName">
+		update stand set st_name = #{standName} where st_mb_id = #{id}
+	</update>
+	
+	<select id="dupStandName" resultType="kr.green.usedmarket.vo.StandVo">
+		select * from stand where st_name = #{standName}
+	</select>
+	
+	<update id="updateStandIntroduce">
+		update stand set st_content = #{standIntroduce} where st_mb_id = #{id}
+	</update>
+
+</mapper>

@@ -113,7 +113,7 @@
 		          </li>
 	          
 		          <li class="nav-item">
-		            <a class="nav-link" href="#">내가판대</a>
+		            <a class="nav-link" href="<%=request.getContextPath()%>/stand">내가판대</a>
 		          </li>
 		          <li class="nav-item">
 		            <a class="nav-link" href="#">채팅</a>

@@ -11,6 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/372f53c69c.js" crossorigin="anonymous"></script>
+<script src="<%=request.getContextPath()%>/resources/js/jquery.validate.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/additional-methods.js"></
+<script src="<%=request.getContextPath()%>/resources/js/jquery"></script>
 </head>
 <body>
     <tiles:insertAttribute name="header"/>
