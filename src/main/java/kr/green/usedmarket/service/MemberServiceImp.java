@@ -29,6 +29,7 @@ public class MemberServiceImp implements MemberService {
 		member.setMb_pw(encPw);
 		memberDao.insertMember(member);
 		StandVo stand = new StandVo(member.getMb_id());
+		
 		memberDao.insertStand(stand);
 	}
 

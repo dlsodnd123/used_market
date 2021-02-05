@@ -17,7 +17,7 @@
     .navbar-brand{
       padding-right: 55px;
     }
-    ul{
+    .navbar-nav{
       float: right;
     }
     .search-box{
