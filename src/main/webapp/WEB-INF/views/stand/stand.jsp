@@ -42,8 +42,12 @@
         .stand-introduce-box .stand-btn-box>.btn{
             margin-top: 10px;
         }
-        .stand-introduce-box .stand-btn-box>.btn-primary{
-            margin-left: 15px;
+        .stand-introduce-box .stand-btn-box>a>.btn-primary{
+            float: right;
+            font-size: 15px;
+        }
+        .stand-title{
+        	width: 250px
         }
         .stand-title, .stand-introduce{
             border: none;
@@ -83,9 +87,9 @@
 </head>
 <body>
 	<div class="container stand-top">
-		<form action="<%=request.getContextPath()%>/stand" method="post">
+		<form action="<%=request.getContextPath()%>/stand" method="post" enctype="multipart/form-data">
 	        <div class="img-box">
-	            <img src="http://res.heraldm.com/phpwas/restmb_idxmake.php?idx=621&simg=/content/image/2020/03/10/20200310000043_0.jpg" class="rounded" alt="가판대 대표 이미지" width="304px" height="236px">
+	            <img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" class="rounded" alt="가판대 대표 이미지" width="304px" height="236px">
 	        </div>
 	        <div class="content-box">
 	            <div class="stand-title-box">
@@ -94,7 +98,7 @@
 		                <button type="button" class="btn btn-light">가판대명수정</button>
 	                </div>
 	                <div class="modify-box" style="display: none;">
-		                <input type="text" class="stand-title modify col-6" maxlength="15" value="${stand.st_name}">
+		                <input type="text" class="stand-title modify" maxlength="15" value="${stand.st_name}">
 		                <div class="btn-box">
 			                <button type="button" class="btn btn-light confirm">확인</button>
 			                <button type="button" class="btn btn-light cancel">취소</button>
@@ -111,8 +115,10 @@
 	                </div>
 	                <div class="stand-btn-box">
 	                    <button type="button" class="btn btn-light introduce-btn">가판대소개글수정</button>
-	                    <button type="button" class="btn btn-light">가판대이미지수정</button>
-	                    <button type="button" class="btn btn-primary">상품등록</button>
+	                    <button type="button" class="btn btn-light img-modify">가판대이미지수정</button>
+	                    <input type="file" class="stand-img-upload" style="display: none;" name="file">
+	                    <button type="sumbit" class="send-img-btn" style="display: none;">전송</button>
+	                    <a href="<%=request.getContextPath()%>/product/register?name=${stand.st_name}"><button type="button" class="btn btn-primary">상품등록</button></a>
 	                </div>
 	            </div>
 	        </div>
@@ -206,6 +212,13 @@
 	   	        }
    	    	})
    	    })
+   	    $('.img-modify').click(function(){
+   	    	$('.stand-img-upload').click();
+   	    })
+   	    $('.stand-img-upload').change(function(){
+   	    	$('.send-img-btn').click();
+   	    })
+   	    
   	</script>
 </body>
 </html>

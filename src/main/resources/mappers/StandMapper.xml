@@ -19,5 +19,9 @@
 	<update id="updateStandIntroduce">
 		update stand set st_content = #{standIntroduce} where st_mb_id = #{id}
 	</update>
+	
+	<update id="updateStandImg">
+		update stand set st_img = #{fileName} where st_mb_id = #{id}
+	</update>
 
 </mapper>

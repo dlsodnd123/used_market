@@ -42,4 +42,9 @@ public class StandServiceImp implements StandService{
 		standDao.updateStandIntroduce(standIntroduce, mb_id);
 	}
 
+	@Override
+	public void updateStandImg(String fileName, String mb_id) {
+		standDao.updateStandImg(fileName, mb_id);
+	}
+
 }

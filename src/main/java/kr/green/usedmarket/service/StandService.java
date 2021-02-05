@@ -17,4 +17,6 @@ public interface StandService {
 
 	void modifyStandIntroduce(String standIntroduce, String mb_id);
 
+	void updateStandImg(String fileName, String mb_id);
+
 }
