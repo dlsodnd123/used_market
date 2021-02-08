@@ -32,12 +32,10 @@
         .pd-img-content{
             width: 240px;
             height: 240px;
-            margin-right: 25px;
+            margin-right: 20px;
             display: inline-block;
             text-align: center;
-            padding-top: 50px;
             border: 1px solid  #dae0e5;
-            cursor: pointer;
         }
         .pd-img-box>li{
             float: left;
@@ -45,26 +43,31 @@
         .pd-img-content .fa-images{
             font-size: 45px;
             display: block;
+            cursor: pointer;
+            padding-top: 50px;
         }
         .pd_price{
             display: inline-block;
             margin-right: 15px;
         }
         .register-btn{
-            float: right;
-            margin: 0 50px 70px 0;
-            padding: 20px;
-            font-size: 20px;
+            margin: 30px 0 70px 0;
+            padding: 30px;
+            font-size: 25px;
         }
         label.error{
             color: red;
             display: none;
         }
+        .previewImg>img{
+        	width: 240px;
+            height: 240px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <form action="<%=request.getContextPath()%>/product/register" method="post">
+        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data">
           <div class="form-group pd-line">
             <h4>제목(필수)</h4> <br>
             <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24">
@@ -73,18 +76,18 @@
             <h4>카테고리(필수)</h4> <br>
             <label for="pd_category" class="error" id="pd_category-error"></label>
             <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
-                <option>여성의류</option>
-                <option>남성의류</option>
-                <option>패션잡화</option>
-                <option>뷰티/미용</option>
-                <option>키즈</option>
-                <option>가전</option>
-                <option>가구/인테리어</option>
-                <option>생활용품</option>
-                <option>스포츠</option>
-                <option>문화</option>
-                <option>차량/오토바이</option>
-                <option>무료나눔</option>
+                <option value="여성의류">여성의류</option>
+                <option value="남성의류">남성의류</option>
+                <option value="패션잡화">패션잡화</option>
+                <option value="뷰티/미용">뷰티/미용</option>
+                <option value="키즈">키즈</option>
+                <option value="가전">가전</option>
+                <option value="가구/인테리어">가구/인테리어</option>
+                <option value="생활용품">생활용품</option>
+                <option value="스포츠">스포츠</option>
+                <option value="문화">문화</option>
+                <option value="차량/오토바이">차량/오토바이</option>
+                <option value="무료나눔">무료나눔</option>
             </select>
           </div>
           <div class="form-group pd-line">
@@ -93,8 +96,6 @@
               <ul class="pd-img-box">
                   <li class="pd-img-content">
                     <i class="far fa-images uploadpdimg"></i>이미지등록
-                    <input type="file" name="pdimg_name" id="pdimg_name" class="pd-img-file" style="display: none;">
-                    <button type="submit" class="send-pdimg-btn" style="display: none;">전송</button>
                   </li>
               </ul>
           </div>
@@ -162,8 +163,31 @@
         return this.optional(elemnt) || re.test(value);
     })
     $('.uploadpdimg').click(function(){
-        $('.pd-img-file').click();
+    	// 숨겨져 있는 이미지 파일 첨부박스 있는 확인
+    	var fileCheck = $('.pd-img-file').last().val()
+    	// 숨겨져 있는 이미지 파일이 없으면 새로운 이미지 파일 첨부박스를 생성
+    	if(fileCheck != ''){
+    		$('.pd-img-box').append('<li class="pd-img-content">');
+	    	$('.pd-img-content').last().append('<input type="file" name="imgFileList" id="pdimg_name" class="pd-img-file" onchange="previewImg(event);" style="display: none;">');
+	    	$('.pd-img-content').last().append('<div class="previewImg"></div>');
+	    	$('.pd-img-box').append('</li>');
+    	}
+        $('.pd-img-file').last().click();
+        $('.pd-img-content').last().hide();
+        $('.pd-img-file').last().change(function(){
+        	$('.pd-img-content').last().show();
+    	})
     })
+    function previewImg(event) { 
+    	var reader = new FileReader(); 
+    	
+    	reader.onload = function(event) { 
+    		var img = document.createElement("img"); 
+    		img.setAttribute("src", event.target.result); 
+    		document.querySelector(".pd-img-content:last-child .previewImg").appendChild(img);
+    	};
+    	reader.readAsDataURL(event.target.files[0]);
+    }
 </script>
 </body>
 </html>

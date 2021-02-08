@@ -1,8 +1,11 @@
 package kr.green.usedmarket.vo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProductVo {
+	private int pd_num;
 	private String pd_mb_id;
 	private String pd_st_name;
 	private String pd_title;
@@ -17,6 +20,13 @@ public class ProductVo {
 	
 	public ProductVo() {}
 	
+	
+	public int getPd_num() {
+		return pd_num;
+	}
+	public void setPd_num(int pd_num) {
+		this.pd_num = pd_num;
+	}
 	public String getPd_mb_id() {
 		return pd_mb_id;
 	}
@@ -59,12 +69,14 @@ public class ProductVo {
 	public void setPd_deal(String pd_deal) {
 		this.pd_deal = pd_deal;
 	}
-	public Date getPd_registerDate() {
-		return pd_registerDate;
+	public String getPd_registerDate() {
+		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String dateString = simpleFormat.format(pd_registerDate);
+		return dateString;
 	}
 	public void setPd_registerDate(Date pd_registerDate) {
 		this.pd_registerDate = pd_registerDate;
-	}
+	}
 	public String getPd_isSail() {
 		return pd_isSail;
 	}
@@ -85,9 +97,10 @@ public class ProductVo {
 	}
 	@Override
 	public String toString() {
-		return "ProductVo [pd_mb_id=" + pd_mb_id + ", pd_st_name=" + pd_st_name + ", pd_title=" + pd_title
-				+ ", pd_category=" + pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price
+		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_st_name=" + pd_st_name + ", pd_title="
+				+ pd_title + ", pd_category=" + pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price
 				+ ", pd_deal=" + pd_deal + ", pd_registerDate=" + pd_registerDate + ", pd_isSail=" + pd_isSail
 				+ ", pd_isDel=" + pd_isDel + ", pd_count=" + pd_count + "]";
 	}
+
 }

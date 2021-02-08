@@ -3,6 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.green.usedmarket.dao.ProductDao">
-
+	
+	<insert id="insertProduct" parameterType="kr.green.usedmarket.vo.ProductVo" useGeneratedKeys="true" keyProperty="product.pd_num">
+		insert into 
+			product(pd_mb_id, pd_st_name, pd_title, pd_category, pd_content, pd_price, pd_deal)
+			values(#{product.pd_mb_id}, #{product.pd_st_name}, #{product.pd_title}, #{product.pd_category}, 
+					#{product.pd_content}, #{product.pd_price}, #{product.pd_deal})
+	</insert>
+	
+	<insert id="insertProductImg">
+		insert into
+			product_image(pdimg_pd_num, pdimg_name)
+			values(#{pd_num}, #{fileName})
+	</insert>
 
 </mapper>
