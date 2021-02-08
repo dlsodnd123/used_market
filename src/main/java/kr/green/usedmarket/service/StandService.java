@@ -1,8 +1,11 @@
 package kr.green.usedmarket.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
 public interface StandService {
@@ -18,5 +21,7 @@ public interface StandService {
 	void modifyStandIntroduce(String standIntroduce, String mb_id);
 
 	void updateStandImg(String fileName, String mb_id);
+
+	ArrayList<ProductVo> getProduct(String st_name);
 
 }

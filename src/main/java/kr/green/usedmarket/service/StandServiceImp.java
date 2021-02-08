@@ -1,5 +1,7 @@
 package kr.green.usedmarket.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.StandDao;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
 @Service
@@ -19,32 +22,37 @@ public class StandServiceImp implements StandService{
 	public MemberVo getMemberId(HttpServletRequest request) {
 		return (MemberVo)request.getSession().getAttribute("member");
 	}
-
+	// 가판대 정보 가져오기
 	@Override
 	public StandVo getStand(MemberVo member) {
 		StandVo stand = standDao.selectStand(member.getMb_id());
 		return stand;
 	}
-
+	// 가판대명 수정
 	@Override
 	public void modifyStandName(String standName, MemberVo member) {
 		standDao.updateStandName(standName, member.getMb_id());
 	}
-
+	// 가판대명 중복 검사
 	@Override
 	public StandVo dupStandName(String standName) {
 		StandVo stand = standDao.dupStandName(standName);
 		return stand;
 	}
-
+	// 가판대 소개글 수정
 	@Override
 	public void modifyStandIntroduce(String standIntroduce, String mb_id) {
 		standDao.updateStandIntroduce(standIntroduce, mb_id);
 	}
-
+	// 가판대 대표이미지 수정
 	@Override
 	public void updateStandImg(String fileName, String mb_id) {
 		standDao.updateStandImg(fileName, mb_id);
+	}
+	// 등록된 상품 가져오기
+	@Override
+	public ArrayList<ProductVo> getProduct(String st_name) {
+		return standDao.selectProductList(st_name);
 	}
 
 }

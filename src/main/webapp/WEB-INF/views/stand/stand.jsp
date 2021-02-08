@@ -47,7 +47,11 @@
             font-size: 15px;
         }
         .stand-title{
-        	width: 250px
+        	width: 250px;        	
+        }
+        .show-box>.stand-title{
+        	font-size : 20px;
+        	 font-weight: bold;
         }
         .stand-title, .stand-introduce{
             border: none;
@@ -144,8 +148,35 @@
        <!-- Tab panes -->
        <div class="tab-content">
          <div id="home" class="container tab-pane active"><br>
-           <h3>판매목록</h3>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+           <h4>판매목록</h4>
+           <div class="container">
+           		<table class="table table-active table-hover">
+                    <thead>
+                        <tr>
+                        	<th>상품번호</th>
+                            <th>제목</th>
+                            <th>카테고리</th>
+                            <th>가격</th>
+                            <th>거래방법</th>
+                            <th>등록일</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	<c:forEach items="${productList}" var="product">                
+	                        <tr>
+	                        	<td>${product.pd_num}</td>
+	                            <td>${product.pd_title}</td>
+	                            <td>${product.pd_category}</td>
+	                            <td>${product.pd_price}</td>
+	                            <td>${product.pd_deal}</td>
+	                            <td>${product.pd_registerDate}</td>
+	                            <td><a href="#"><button type="button" class="btn btn-light">관리</button></a></td>
+	                        </tr>             
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
          </div>
          <div id="menu1" class="container tab-pane fade"><br>
            <h3>상품관리</h3>
@@ -200,7 +231,7 @@
    	    })
    	    $('.stand-introduce-box .modify-box .confirm').click(function(){
    	    	var standIntroduce = $(this).prev().val();
-   	    	var data = {'standIntroduce' : standIntroduce};
+   	    	var data = {'standIntroduce' : standIntroduce}; 
    	    	$.ajax({
 	  	        type:'post',
 	  	        data:data,

@@ -1,6 +1,7 @@
 package kr.green.usedmarket.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
 @Controller
@@ -23,12 +26,18 @@ public class StandController {
 	@Autowired
 	StandService standService;
 	
+	@Autowired
+	ProductService productService;
+	
 	private String uploadPath = "D:\\JAVA_LRW\\git\\used_market\\src\\main\\webapp\\resources\\stand_img";
 
 	@RequestMapping(value = "/stand", method = RequestMethod.GET)
 	public ModelAndView standGet(ModelAndView mv, HttpServletRequest request) {
 		MemberVo member = standService.getMemberId(request);
 		StandVo stand = standService.getStand(member);
+		ArrayList<ProductVo> productList = standService.getProduct(stand.getSt_name());
+		
+		mv.addObject("productList", productList);
 		mv.addObject("stand", stand);
 		mv.setViewName("/stand/stand");
 		return mv;

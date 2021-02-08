@@ -23,5 +23,8 @@
 	<update id="updateStandImg">
 		update stand set st_img = #{fileName} where st_mb_id = #{id}
 	</update>
-
+	
+	<select id="selectProductList" resultType="kr.green.usedmarket.vo.ProductVo">
+		select * from product where pd_st_name = #{st_name}
+	</select>
 </mapper>

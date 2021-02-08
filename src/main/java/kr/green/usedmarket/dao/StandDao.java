@@ -1,8 +1,10 @@
 package kr.green.usedmarket.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Param;
 
-import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
 public interface StandDao {
@@ -16,5 +18,7 @@ public interface StandDao {
 	void updateStandIntroduce(@Param("standIntroduce")String standIntroduce, @Param("id")String mb_id);
 
 	void updateStandImg(@Param("fileName")String fileName, @Param("id")String mb_id);
+
+	ArrayList<ProductVo> selectProductList(@Param("st_name")String st_name);
 
 }
