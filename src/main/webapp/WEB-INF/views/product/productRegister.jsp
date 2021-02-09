@@ -40,11 +40,23 @@
         .pd-img-box>li{
             float: left;
         }
+        .pd-img-content{
+        	position: relative;
+        }
         .pd-img-content .fa-images{
             font-size: 45px;
             display: block;
             cursor: pointer;
             padding-top: 50px;
+        }
+        .deleteImg{
+        	font-size: 18px;
+        	position: absolute;
+        	right: 10px;
+        	top: 10px;
+        	opacity: 0.7;
+        	cursor: pointer;
+        	z-index: 1;
         }
         .pd_price{
             display: inline-block;
@@ -167,6 +179,7 @@
     	// 숨겨져 있는 이미지 파일이 없으면 새로운 이미지 파일 첨부박스를 생성
     	if(fileCheck != ''){
     		$('.pd-img-box').append('<li class="pd-img-content">');
+    		$('.pd-img-content').last().append('<i class="fas fa-times deleteImg"></i>')
 	    	$('.pd-img-content').last().append('<input type="file" name="imgFileList" id="pdimg_name" class="pd-img-file" onchange="previewImg(event);" style="display: none;">');
 	    	$('.pd-img-content').last().append('<div class="previewImg"></div>');
 	    	$('.pd-img-box').append('</li>');
@@ -176,7 +189,13 @@
         $('.pd-img-file').last().change(function(){
         	$('.pd-img-content').last().show();
     	})
+    	// 첨부한 이미지 box 오른쪽 상단 X 클릭시 이미지 box삭제
+	    $('.deleteImg').click(function(){
+	    	$(this).parent().remove();
+	    })
     })
+    
+       
     function previewImg(event) { 
     	var reader = new FileReader(); 
     	
