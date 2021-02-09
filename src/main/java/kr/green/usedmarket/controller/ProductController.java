@@ -32,9 +32,8 @@ public class ProductController {
 	public ModelAndView productRegisterGet(ModelAndView mv, HttpServletRequest request, String name) {
 		MemberVo member = standService.getMemberId(request);
 		
-		mv.addObject("name", name);
 		mv.addObject("member", member);
-		mv.setViewName("/product/product_register");
+		mv.setViewName("/product/productRegister");
 		return mv;
 	}
 	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
@@ -48,9 +47,16 @@ public class ProductController {
 				}
 			}
 		}
-		
 		mv.setViewName("redirect:/stand");
 		return mv;
 	}
-	
+	@RequestMapping(value = "/product/modify", method = RequestMethod.GET)
+	public ModelAndView productModifyGet(ModelAndView mv, int pd_num) {
+		System.out.println(pd_num);
+		ProductVo product = standService.getProduct(pd_num);
+		System.out.println(product);
+		mv.addObject("product", product);
+		mv.setViewName("/product/productModify");
+		return mv;
+	}
 }

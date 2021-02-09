@@ -140,7 +140,7 @@
 	                    <button type="button" class="btn btn-light introduce-btn">가판대소개글수정</button>
 	                    <button type="button" class="btn btn-light img-modify">가판대이미지수정</button>
 	                    <input type="file" class="stand-img-upload" style="display: none;" name="file">
-	                    <button type="sumbit" class="send-img-btn" style="display: none;">전송</button>
+	                    <button type="submit" class="send-img-btn" style="display: none;">전송</button>
 	                    <a href="<%=request.getContextPath()%>/product/register?name=${stand.st_name}"><button type="button" class="btn btn-primary">상품등록</button></a>
 	                </div>
 	            </div>
@@ -194,7 +194,7 @@
 		                            <td>${product.pd_registerDate}</td>
 		                            <td>
 			                            <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
-			                            <a href="#"><button type="button" class="btn btn-light product-modify-btn">수정</button></a>
+			                            <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>
 			                            <button type="button" class="btn btn-light product-delete-btn">삭제</button>
 		                            </td>
 		                        </tr>             
