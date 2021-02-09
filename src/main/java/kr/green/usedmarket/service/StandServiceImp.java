@@ -51,8 +51,19 @@ public class StandServiceImp implements StandService{
 	}
 	// 등록된 상품 가져오기
 	@Override
-	public ArrayList<ProductVo> getProduct(String st_name) {
-		return standDao.selectProductList(st_name);
+	public ArrayList<ProductVo> getProduct(String mb_id) {
+		return standDao.selectProductList(mb_id);
+	}
+	// 등록된 상품의 개수 가져오기
+	@Override
+	public int getProductCount(String mb_id) {
+		
+		return standDao.selectProductCount(mb_id);
+	}
+	// 판매여부 수정하는 기능
+	@Override
+	public void modifyisSale(String isSale, String mb_id) {
+		standDao.updateProductisSale(isSale, mb_id);
 	}
 
 }

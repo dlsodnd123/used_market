@@ -123,7 +123,6 @@
             <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price">원 
           </div>
           <button type="submit" class="btn btn-primary register-btn col-2">등록하기</button>
-          <input type="hidden" name="pd_st_name" value="${name}">
           <input type="hidden" name="pd_mb_id" value="${member.mb_id}">
         </form>
     </div>

@@ -7,7 +7,6 @@ import java.util.Date;
 public class ProductVo {
 	private int pd_num;
 	private String pd_mb_id;
-	private String pd_st_name;
 	private String pd_title;
 	private String pd_category;
 	private String pd_content;
@@ -32,12 +31,6 @@ public class ProductVo {
 	}
 	public void setPd_mb_id(String pd_mb_id) {
 		this.pd_mb_id = pd_mb_id;
-	}
-	public String getPd_st_name() {
-		return pd_st_name;
-	}
-	public void setPd_st_name(String pd_st_name) {
-		this.pd_st_name = pd_st_name;
 	}
 	public String getPd_title() {
 		return pd_title;
@@ -97,10 +90,9 @@ public class ProductVo {
 	}
 	@Override
 	public String toString() {
-		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_st_name=" + pd_st_name + ", pd_title="
-				+ pd_title + ", pd_category=" + pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price
-				+ ", pd_deal=" + pd_deal + ", pd_registerDate=" + pd_registerDate + ", pd_isSail=" + pd_isSail
-				+ ", pd_isDel=" + pd_isDel + ", pd_count=" + pd_count + "]";
+		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_category="
+				+ pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
+				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSail=" + pd_isSail + ", pd_isDel=" + pd_isDel
+				+ ", pd_count=" + pd_count + "]";
 	}
-
 }

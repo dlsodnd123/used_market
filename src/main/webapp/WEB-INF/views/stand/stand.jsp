@@ -51,7 +51,7 @@
         }
         .show-box>.stand-title{
         	font-size : 20px;
-        	 font-weight: bold;
+        	font-weight: bold;
         }
         .stand-title, .stand-introduce{
             border: none;
@@ -86,6 +86,25 @@
         }
         .hidden{
         	display: none;
+        }
+        table{
+        	font-size : 12px;
+        }
+        .tabTitle{
+        	display: inline-block;
+        	font-size: 20px;
+        	font-weight: bold;
+        }
+        .count{
+        	display: inline-block;
+        }
+        .product-Sale-btn,
+        .product-modify-btn,
+        .product-delete-btn{
+        	font-size : 13px
+        }
+        .table td, .table th{
+        	vertical-align: middle;
         }
     </style>
 </head>
@@ -132,61 +151,72 @@
        <!-- Nav tabs -->
        <ul class="nav nav-tabs" role="tablist">
          <li class="nav-item">
-           <a class="nav-link active" data-toggle="tab" href="#home">판매목록</a>
+           <a class="nav-link active" data-toggle="tab" href="#home">상품목록/관리</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" data-toggle="tab" href="#menu1">상품관리</a>
+           <a class="nav-link" data-toggle="tab" href="#menu1">판매한상품</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" data-toggle="tab" href="#menu2">거래후기</a>
+           <a class="nav-link" data-toggle="tab" href="#menu2">찜한상품</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" data-toggle="tab" href="#menu3">문의사항</a>
+           <a class="nav-link" data-toggle="tab" href="#menu3">거래후기</a>
+         </li>
+         <li class="nav-item">
+           <a class="nav-link" data-toggle="tab" href="#menu4">문의사항</a>
          </li>
        </ul>
      
        <!-- Tab panes -->
        <div class="tab-content">
          <div id="home" class="container tab-pane active"><br>
-           <h4>판매목록</h4>
+           <h4 class="tabTitle">상품목록/관리</h4><p class="count">(${productCount})</p>
            <div class="container">
-           		<table class="table table-active table-hover">
-                    <thead>
-                        <tr>
-                        	<th>상품번호</th>
-                            <th>제목</th>
-                            <th>카테고리</th>
-                            <th>가격</th>
-                            <th>거래방법</th>
-                            <th>등록일</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    	<c:forEach items="${productList}" var="product">                
+           		<c:if test="${productCount != 0}">
+	           		<table class="table table-active table-hover">
+	                    <thead>
 	                        <tr>
-	                        	<td>${product.pd_num}</td>
-	                            <td>${product.pd_title}</td>
-	                            <td>${product.pd_category}</td>
-	                            <td>${product.pd_price}</td>
-	                            <td>${product.pd_deal}</td>
-	                            <td>${product.pd_registerDate}</td>
-	                            <td><a href="#"><button type="button" class="btn btn-light">관리</button></a></td>
-	                        </tr>             
-                        </c:forEach>
-                    </tbody>
-                </table>
+	                        	<th>상품번호</th>
+	                            <th>제목</th>
+	                            <th>가격</th>
+	                            <th>거래방법</th>
+	                            <th>등록일</th>
+	                            <th></th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                    	<c:forEach items="${productList}" var="product">                
+		                        <tr>
+		                        	<td>${product.pd_num}</td>
+		                            <td>${product.pd_title}</td>
+		                            <td>${product.pd_price}</td>
+		                            <td>${product.pd_deal}</td>
+		                            <td>${product.pd_registerDate}</td>
+		                            <td>
+			                            <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
+			                            <a href="#"><button type="button" class="btn btn-light product-modify-btn">수정</button></a>
+			                            <button type="button" class="btn btn-light product-delete-btn">삭제</button>
+		                            </td>
+		                        </tr>             
+	                        </c:forEach>
+	                    </tbody>
+	                </table>
+                </c:if>
             </div>
          </div>
          <div id="menu1" class="container tab-pane fade"><br>
-           <h3>상품관리</h3>
+           <h3>판매한상품</h3>
            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
          </div>
          <div id="menu2" class="container tab-pane fade"><br>
-           <h3>거래후기</h3>
+           <h3>찜한상품</h3>
            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
          </div>
          <div id="menu3" class="container tab-pane fade"><br>
+           <h3>거래후기</h3>
+           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+         </div>
+         <div id="menu4" class="container tab-pane fade"><br>
            <h3>문의사항</h3>
            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
          </div>
@@ -223,15 +253,31 @@
 		        		$('.stand-title').val(standName);
 		        	}
 	   	        }
-   	    	})
+   	    	})   	    	
    	  	})
+   	  	// 판매처리 버튼 클릭시 판매여부 변경
+   	  	$('.product-sale-btn').click(function(){
+   	  		var isSale = confirm('판매완료처리 하시겠습니까?');
+   	  		if(isSale == true){
+   	  			var data = {'isSale' : 'Y'}
+		   	  	$.ajax({
+		  	        type:'post',
+		  	        data:data,
+		  	        url:'<%=request.getContextPath()%>/modify/isSale',
+		  	        success : function(data){
+	
+		   	        }
+		    	})   
+   	  		}   	  			    
+   	    })
+   	  	
    	    $('.stand-introduce-box .stand-btn-box .introduce-btn').click(function(){
    	    	$('.stand-introduce-box .modify-box').show();
    	    	$('.stand-introduce-box .show-box').hide();
    	    })
    	    $('.stand-introduce-box .modify-box .confirm').click(function(){
    	    	var standIntroduce = $(this).prev().val();
-   	    	var data = {'standIntroduce' : standIntroduce}; 
+   	    	var data = {'standIntroduce' : standIntroduce};
    	    	$.ajax({
 	  	        type:'post',
 	  	        data:data,

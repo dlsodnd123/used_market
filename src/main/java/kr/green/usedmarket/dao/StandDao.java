@@ -13,12 +13,16 @@ public interface StandDao {
 
 	StandVo dupStandName(@Param("standName")String standName);
 	
-	void updateStandName(@Param("standName")String standName, @Param("id")String mb_id);
+	void updateStandName(@Param("standName")String standName, @Param("mb_id")String mb_id);
 
-	void updateStandIntroduce(@Param("standIntroduce")String standIntroduce, @Param("id")String mb_id);
+	void updateStandIntroduce(@Param("standIntroduce")String standIntroduce, @Param("mb_id")String mb_id);
 
-	void updateStandImg(@Param("fileName")String fileName, @Param("id")String mb_id);
+	void updateStandImg(@Param("fileName")String fileName, @Param("mb_id")String mb_id);
 
-	ArrayList<ProductVo> selectProductList(@Param("st_name")String st_name);
+	ArrayList<ProductVo> selectProductList(@Param("mb_id")String mb_id);
+
+	int selectProductCount(@Param("mb_id")String mb_id);
+
+	void updateProductisSale(@Param("isSale")String isSale, @Param("mb_id")String mb_id);
 
 }

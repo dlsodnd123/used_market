@@ -9,7 +9,7 @@
 	</select>
 	
 	<update id="updateStandName">
-		update stand set st_name = #{standName} where st_mb_id = #{id}
+		update stand set st_name = #{standName} where st_mb_id = #{mb_id}
 	</update>
 	
 	<select id="dupStandName" resultType="kr.green.usedmarket.vo.StandVo">
@@ -17,14 +17,22 @@
 	</select>
 	
 	<update id="updateStandIntroduce">
-		update stand set st_content = #{standIntroduce} where st_mb_id = #{id}
+		update stand set st_content = #{standIntroduce} where st_mb_id = #{mb_id}
 	</update>
 	
 	<update id="updateStandImg">
-		update stand set st_img = #{fileName} where st_mb_id = #{id}
+		update stand set st_img = #{fileName} where st_mb_id = #{mb_id}
 	</update>
 	
 	<select id="selectProductList" resultType="kr.green.usedmarket.vo.ProductVo">
-		select * from product where pd_st_name = #{st_name}
+		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
 	</select>
+	
+	<select id="selectProductCount" resultType="int">
+		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
+	</select>
+	
+	<update id="updateProductisSale">
+		update product set pd_isSale = #{isSale} where pd_mb_id = #{mb_id}
+	</update>
 </mapper>

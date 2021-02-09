@@ -40,9 +40,6 @@ public class ProductController {
 	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
 	public ModelAndView productRegisterPost(ModelAndView mv, ProductVo product, MultipartFile [] imgFileList) throws IOException, Exception {
 		productService.setProduct(product);
-		for(int i = 0; i<imgFileList.length; i++) {
-			System.out.println(imgFileList);			
-		}
 		if(imgFileList != null && imgFileList.length != 0) {
 			for(MultipartFile file : imgFileList) {
 				System.out.println(file);
