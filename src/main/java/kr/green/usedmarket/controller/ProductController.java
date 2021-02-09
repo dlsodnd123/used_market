@@ -42,7 +42,6 @@ public class ProductController {
 		productService.setProduct(product);
 		if(imgFileList != null && imgFileList.length != 0) {
 			for(MultipartFile file : imgFileList) {
-				System.out.println(file);
 				if(file != null && file.getOriginalFilename().length() != 0) {
 					String fileName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(),file.getBytes());
 					productService.setProductImg(fileName, product.getPd_num());

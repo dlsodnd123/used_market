@@ -32,7 +32,11 @@
 		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
 	</select>
 	
+	<select id="selectProduct" resultType="kr.green.usedmarket.vo.ProductVo">
+		select * from product where pd_num = #{pd_num}
+	</select>
+	
 	<update id="updateProductisSale">
-		update product set pd_isSale = #{isSale} where pd_mb_id = #{mb_id}
+		update product set pd_isSale = #{product.pd_isSale}, pd_isDel = #{product.pd_isDel} where pd_num = #{product.pd_num}
 	</update>
 </mapper>

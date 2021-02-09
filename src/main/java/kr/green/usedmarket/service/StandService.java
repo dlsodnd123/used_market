@@ -22,10 +22,14 @@ public interface StandService {
 
 	void updateStandImg(String fileName, String mb_id);
 
-	ArrayList<ProductVo> getProduct(String mb_id);
+	ArrayList<ProductVo> getProductList(String mb_id);
 
 	int getProductCount(String mb_id);
 
-	void modifyisSale(String isSale, String mb_id);
+	ProductVo getProduct(int pd_num);
+
+	void updateProductisSale(ProductVo product);
+
+	void updateProductisDel(ProductVo product);
 
 }

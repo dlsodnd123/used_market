@@ -259,16 +259,34 @@
    	  	$('.product-sale-btn').click(function(){
    	  		var isSale = confirm('판매완료처리 하시겠습니까?');
    	  		if(isSale == true){
-   	  			var data = {'isSale' : 'Y'}
+   	  			var pd_num = $(this).parent().siblings().first().text();
+   	  			var data = {'pd_num' : pd_num}
 		   	  	$.ajax({
 		  	        type:'post',
 		  	        data:data,
 		  	        url:'<%=request.getContextPath()%>/modify/isSale',
 		  	        success : function(data){
-	
+		  	        	
 		   	        }
 		    	})   
    	  		}   	  			    
+   	    })
+   	    // 삭제 버튼 클릭시 삭제여부 변경
+   	    $('.product-delete-btn').click(function(){
+   	    	var isDel = confirm('등록된 상품이 삭제됩니다. 삭제 하시겠습니까?')
+   	    	if(isDel == true){
+   	    		var pd_num = $(this).parent().siblings().first().text();
+   	    		var data = {'pd_num' : pd_num}
+   	    		console.log(pd_num);
+		   	  	$.ajax({
+		  	        type:'post',
+		  	        data:data,
+		  	        url:'<%=request.getContextPath()%>/modify/isDel',
+		  	        success : function(data){
+		  	        	
+		   	        }
+		    	})   
+   	    	}
    	    })
    	  	
    	    $('.stand-introduce-box .stand-btn-box .introduce-btn').click(function(){
@@ -295,7 +313,6 @@
    	    $('.stand-img-upload').change(function(){
    	    	$('.send-img-btn').click();
    	    })
-   	    
   	</script>
 </body>
 </html>

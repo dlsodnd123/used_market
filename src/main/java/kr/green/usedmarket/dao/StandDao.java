@@ -23,6 +23,8 @@ public interface StandDao {
 
 	int selectProductCount(@Param("mb_id")String mb_id);
 
-	void updateProductisSale(@Param("isSale")String isSale, @Param("mb_id")String mb_id);
+	ProductVo selectProduct(@Param("pd_num")int pd_num);
+
+	void updateProductisSale(@Param("product")ProductVo product);
 
 }

@@ -13,12 +13,9 @@ public class ProductVo {
 	private int pd_price;
 	private String pd_deal;
 	private Date pd_registerDate;
-	private String pd_isSail;
+	private String pd_isSale;
 	private String pd_isDel;
 	private int pd_count;
-	
-	public ProductVo() {}
-	
 	
 	public int getPd_num() {
 		return pd_num;
@@ -70,11 +67,11 @@ public class ProductVo {
 	public void setPd_registerDate(Date pd_registerDate) {
 		this.pd_registerDate = pd_registerDate;
 	}
-	public String getPd_isSail() {
-		return pd_isSail;
+	public String getPd_isSale() {
+		return pd_isSale;
 	}
-	public void setPd_isSail(String pd_isSail) {
-		this.pd_isSail = pd_isSail;
+	public void setPd_isSale(String pd_isSale) {
+		this.pd_isSale = pd_isSale;
 	}
 	public String getPd_isDel() {
 		return pd_isDel;
@@ -92,7 +89,7 @@ public class ProductVo {
 	public String toString() {
 		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_category="
 				+ pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
-				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSail=" + pd_isSail + ", pd_isDel=" + pd_isDel
+				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSale=" + pd_isSale + ", pd_isDel=" + pd_isDel
 				+ ", pd_count=" + pd_count + "]";
 	}
 }

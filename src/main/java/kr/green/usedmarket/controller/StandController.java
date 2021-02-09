@@ -36,10 +36,9 @@ public class StandController {
 		MemberVo member = standService.getMemberId(request);
 		StandVo stand = standService.getStand(member);
 		// ID와 일치하는 상품목록 가져오기
-		ArrayList<ProductVo> productList = standService.getProduct(member.getMb_id());
+		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
 		// ID와 일치하는 상품목록 개수 가져오기
 		int productCount = standService.getProductCount(member.getMb_id());
-		System.out.println(productCount);
 		
 		mv.addObject("productCount", productCount);
 		mv.addObject("productList", productList);
@@ -78,12 +77,20 @@ public class StandController {
 		mv.setViewName("redirect:/stand");
 		return mv;
 	}
-	// 판매여부를 수정하는 기능
+	// 판매여부를 변경하는 기능
 	@RequestMapping(value = "/modify/isSale", method = RequestMethod.POST)
 	@ResponseBody
-	public String modifyisSale(String isSale, HttpServletRequest request) {
-		MemberVo member = standService.getMemberId(request);
-		standService.modifyisSale(isSale, member.getMb_id());
+	public String modifyisSale(int pd_num) {
+		ProductVo product = standService.getProduct(pd_num);
+		standService.updateProductisSale(product);
+		return "success";
+	}
+	// 삭제여부를 변경하는 기능
+	@RequestMapping(value = "modify/isDel", method = RequestMethod.POST)
+	@ResponseBody
+	public String modifyisDel(int pd_num) {
+		ProductVo product = standService.getProduct(pd_num);
+		standService.updateProductisDel(product);
 		return "success";
 	}
 }
