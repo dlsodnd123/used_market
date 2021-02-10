@@ -60,10 +60,12 @@ public class StandServiceImp implements StandService{
 		
 		return standDao.selectProductCount(mb_id);
 	}
+	// 상품 번호와 일치하는 상품내용 가져오기
 	@Override
 	public ProductVo getProduct(int pd_num) {
 		return standDao.selectProduct(pd_num);
 	}
+	// 판매여부
 	@Override
 	public void updateProductisSale(ProductVo product) {
 		if(product.getPd_isSale().equals("N")) {
@@ -73,6 +75,7 @@ public class StandServiceImp implements StandService{
 		}
 		standDao.updateProductisSale(product);
 	}
+	// 삭제여부
 	@Override
 	public void updateProductisDel(ProductVo product) {
 		if(product.getPd_isDel().equals("N")) {

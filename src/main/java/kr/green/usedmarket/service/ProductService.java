@@ -10,4 +10,10 @@ public interface ProductService {
 
 	void setProductImg(String fileName, int pd_num);
 
+	ArrayList<String> getProductImg(int pd_num);
+
+	void productModfiy(ProductVo product);
+
+	void deleteImg(String deleteImg, int pd_num);
+
 }

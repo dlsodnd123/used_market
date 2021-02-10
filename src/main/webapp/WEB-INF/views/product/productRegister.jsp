@@ -33,6 +33,7 @@
             width: 240px;
             height: 240px;
             margin-right: 20px;
+            margin-bottom: 20px;
             display: inline-block;
             text-align: center;
             border: 1px solid  #dae0e5;

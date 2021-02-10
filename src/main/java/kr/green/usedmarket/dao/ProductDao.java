@@ -11,4 +11,10 @@ public interface ProductDao {
 	void insertProduct(@Param("product")ProductVo product);
 
 	void insertProductImg(@Param("fileName")String fileName, @Param("pd_num")int pd_num);
+
+	ArrayList<String> selectProductImg(@Param("pd_num")int pd_num);
+
+	void updateProduct(@Param("product")ProductVo product);
+
+	void deleteImg(@Param("deleteImg")String deleteImg, @Param("pd_num")int pd_num);
 }

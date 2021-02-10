@@ -35,6 +35,7 @@
             width: 240px;
             height: 240px;
             margin-right: 20px;
+           	margin-bottom: 20px;
             display: inline-block;
             text-align: center;
             border: 1px solid  #dae0e5;
@@ -51,7 +52,8 @@
             cursor: pointer;
             padding-top: 50px;
         }
-        .deleteImg{
+        .deleteImg,
+        .deleteImg-new{
         	font-size: 18px;
         	position: absolute;
         	right: 10px;
@@ -64,16 +66,21 @@
             display: inline-block;
             margin-right: 15px;
         }
-        .register-btn{
+        .register-btn,
+        .cancel-btn{
             margin: 30px 0 70px 0;
-            padding: 30px;
-            font-size: 25px;
+            padding: 20px;
+            font-size: 20px;
         }
         label.error{
             color: red;
             display: none;
         }
         .previewImg>img{
+        	width: 240px;
+            height: 240px;
+        }
+        .pd-img-content>img{
         	width: 240px;
             height: 240px;
         }
@@ -114,6 +121,13 @@
                   <li class="pd-img-content">
                     <i class="far fa-images uploadpdimg"></i>이미지등록
                   </li>
+                  <c:forEach items="${productImgList}" var="index">
+	                  <li class="pd-img-content">
+	                  	<i class="fas fa-times deleteImg"></i>
+	                  	<img alt="" src="<%=request.getContextPath()%>/resources/product_img/${index}">
+	                  	<input type="hidden" value="${index}">
+	                  </li>
+                  </c:forEach>
               </ul>
           </div>
           <div class="form-group pd-line">
@@ -140,6 +154,7 @@
             <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price" value="${product.pd_price}">원 
           </div>
           <button type="submit" class="btn btn-primary register-btn col-2">수정하기</button>
+          <a href="<%=request.getContextPath()%>/stand"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
           <input type="hidden" name="pd_num" value="${product.pd_num}">
         </form>
     </div>
@@ -184,7 +199,7 @@
     	// 숨겨져 있는 이미지 파일이 없으면 새로운 이미지 파일 첨부박스를 생성
     	if(fileCheck != ''){
     		$('.pd-img-box').append('<li class="pd-img-content">');
-    		$('.pd-img-content').last().append('<i class="fas fa-times deleteImg"></i>')
+    		$('.pd-img-content').last().append('<i class="fas fa-times deleteImg-new"></i>')
 	    	$('.pd-img-content').last().append('<input type="file" name="imgFileList" id="pdimg_name" class="pd-img-file" onchange="previewImg(event);" style="display: none;">');
 	    	$('.pd-img-content').last().append('<div class="previewImg"></div>');
 	    	$('.pd-img-box').append('</li>');
@@ -195,9 +210,16 @@
         	$('.pd-img-content').last().show();
     	})
     	// 첨부한 이미지 box 오른쪽 상단 X 클릭시 이미지 box삭제
-	    $('.deleteImg').click(function(){
+	    $('.deleteImg-new').click(function(){
 	    	$(this).parent().remove();
 	    })
+    })
+    // 첨부되어있던 이미지 box 오른쪽 상단 X 클릭시 이미지 box를 삭제하고 imgNmae을 따로 저장
+    $('.deleteImg').click(function(){
+    	var deleteImg = $(this).siblings().last().val();
+    	$(this).parent().remove();
+    	$('form').append('<input type="hidden" name="deleteImgList" value="">');
+    	$('input[name=deleteImgList]').last().val(deleteImg);
     })
     
        

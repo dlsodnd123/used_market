@@ -16,5 +16,20 @@
 			product_image(pdimg_pd_num, pdimg_name)
 			values(#{pd_num}, #{fileName})
 	</insert>
+	
+	<select id="selectProductImg" resultType="String">
+		select pdimg_name from product_image where pdimg_pd_num = #{pd_num}
+	</select>
+	
+	<update id="updateProduct" parameterType="kr.green.usedmarket.vo.ProductVo">
+		update product 
+			set pd_title = #{product.pd_title}, pd_category = #{product.pd_category}, pd_deal = #{product.pd_deal},
+				pd_content = #{product.pd_content}, pd_price = #{product.pd_price}
+		where pd_num = #{product.pd_num}
+	</update>
+	
+	<delete id="deleteImg">
+		delete from product_image where pdimg_pd_num = #{pd_num} and pdimg_name = #{deleteImg}
+	</delete>
 
 </mapper>

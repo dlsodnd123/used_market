@@ -1,8 +1,10 @@
 package kr.green.usedmarket.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.multi.MultiMenuItemUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,13 +52,39 @@ public class ProductController {
 		mv.setViewName("redirect:/stand");
 		return mv;
 	}
+	// 내용수정 화면 담당
 	@RequestMapping(value = "/product/modify", method = RequestMethod.GET)
 	public ModelAndView productModifyGet(ModelAndView mv, int pd_num) {
-		System.out.println(pd_num);
 		ProductVo product = standService.getProduct(pd_num);
-		System.out.println(product);
+		
+		ArrayList<String> productImgList = productService.getProductImg(pd_num);
+		
+		mv.addObject("productImgList",productImgList);
 		mv.addObject("product", product);
 		mv.setViewName("/product/productModify");
+		return mv;
+	}
+	// 등록된 상품 내용수정 담당
+	@RequestMapping(value = "/product/modify", method = RequestMethod.POST)
+	public ModelAndView productModifyPost(ModelAndView mv, ProductVo product, String [] deleteImgList, MultipartFile [] imgFileList) throws IOException, Exception {		
+		// 상품 내용 수정
+		productService.productModfiy(product);
+		// 기존 이미지을 삭제했을 경우
+		if(deleteImgList != null && deleteImgList.length != 0) {
+			for(String deleteImg : deleteImgList) {
+				productService.deleteImg(deleteImg, product.getPd_num());
+			}
+		}
+		// 추가된 이미지가 있을 경우
+		if(imgFileList != null && imgFileList.length != 0) {
+			for(MultipartFile file : imgFileList) {
+				if(file != null && file.getOriginalFilename().length() != 0) {
+					String fileName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(),file.getBytes());
+					productService.setProductImg(fileName, product.getPd_num());
+				}
+			}
+		}
+		mv.setViewName("redirect:/stand");
 		return mv;
 	}
 }
