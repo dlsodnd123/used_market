@@ -16,7 +16,15 @@ public class ProductVo {
 	private String pd_isSale;
 	private String pd_isDel;
 	private int pd_count;
+	private int pd_views;
 	
+	
+	public int getPd_views() {
+		return pd_views;
+	}
+	public void setPd_views(int pd_views) {
+		this.pd_views = pd_views;
+	}
 	public int getPd_num() {
 		return pd_num;
 	}
@@ -90,6 +98,7 @@ public class ProductVo {
 		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_category="
 				+ pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
 				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSale=" + pd_isSale + ", pd_isDel=" + pd_isDel
-				+ ", pd_count=" + pd_count + "]";
+				+ ", pd_count=" + pd_count + ", pd_views=" + pd_views + "]";
 	}
+
 }
