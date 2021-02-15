@@ -31,5 +31,13 @@
 	<delete id="deleteImg">
 		delete from product_image where pdimg_pd_num = #{pd_num} and pdimg_name = #{deleteImg}
 	</delete>
-
+	
+	<select id="selectProductNum" resultType="kr.green.usedmarket.vo.PreviewVo">
+		select * from product where pd_num != #{pd_num} and pd_mb_id = #{pd_mb_id}
+	</select>
+	
+	<select id="selectPreviewImg" resultType="String">
+		select pdimg_name from product_image where pdimg_pd_num = #{pd_num} limit 0,1
+	</select>
+	
 </mapper>

@@ -12,7 +12,7 @@ public interface StandService {
 
 	MemberVo getMemberId(HttpServletRequest request);
 
-	StandVo getStand(MemberVo member);
+	StandVo getStand(String mb_id);
 
 	void modifyStandName(String standName, MemberVo member);
 
@@ -31,5 +31,7 @@ public interface StandService {
 	void updateProductisSale(ProductVo product);
 
 	void updateProductisDel(ProductVo product);
+
+	int getProductSaleCount(String mb_id);
 
 }

@@ -34,7 +34,7 @@ public class StandController {
 	@RequestMapping(value = "/stand", method = RequestMethod.GET)
 	public ModelAndView standGet(ModelAndView mv, HttpServletRequest request) {
 		MemberVo member = standService.getMemberId(request);
-		StandVo stand = standService.getStand(member);
+		StandVo stand = standService.getStand(member.getMb_id());
 		// ID와 일치하는 상품목록 가져오기
 		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
 		// ID와 일치하는 상품목록 개수 가져오기

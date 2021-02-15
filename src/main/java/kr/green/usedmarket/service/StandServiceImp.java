@@ -24,8 +24,8 @@ public class StandServiceImp implements StandService{
 	}
 	// 가판대 정보 가져오기
 	@Override
-	public StandVo getStand(MemberVo member) {
-		StandVo stand = standDao.selectStand(member.getMb_id());
+	public StandVo getStand(String mb_id) {
+		StandVo stand = standDao.selectStand(mb_id);
 		return stand;
 	}
 	// 가판대명 수정
@@ -85,5 +85,9 @@ public class StandServiceImp implements StandService{
 		}
 		standDao.updateProductisSale(product);
 	}
-
+	// 판매완료상품 갯수 가져오기
+	@Override
+	public int getProductSaleCount(String mb_id) {
+		return standDao.selectProductSaleCount(mb_id);
+	}
 }

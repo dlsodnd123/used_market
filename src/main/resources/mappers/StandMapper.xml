@@ -39,4 +39,8 @@
 	<update id="updateProductisSale">
 		update product set pd_isSale = #{product.pd_isSale}, pd_isDel = #{product.pd_isDel} where pd_num = #{product.pd_num}
 	</update>
+	
+	<select id="selectProductSaleCount" resultType="int">
+		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N'
+	</select>
 </mapper>

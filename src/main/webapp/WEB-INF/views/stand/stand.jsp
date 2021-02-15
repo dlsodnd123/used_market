@@ -199,7 +199,7 @@
 			                            <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
 			                            <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>
 			                            <button type="button" class="btn btn-light product-delete-btn">삭제</button>
-			                            <a href="#"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>
+			                            <a href="<%=request.getContextPath()%>/product/detail?pd_num=${product.pd_num}"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>
 		                            </td>
 		                        </tr>             
 	                        </c:forEach>

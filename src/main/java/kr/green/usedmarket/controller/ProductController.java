@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.multi.MultiMenuItemUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,9 @@ import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.PreviewVo;
 import kr.green.usedmarket.vo.ProductVo;
+import kr.green.usedmarket.vo.StandVo;
 
 @Controller
 public class ProductController {
@@ -57,7 +58,7 @@ public class ProductController {
 	public ModelAndView productModifyGet(ModelAndView mv, int pd_num) {
 		ProductVo product = standService.getProduct(pd_num);
 		
-		ArrayList<String> productImgList = productService.getProductImg(pd_num);
+		String [] productImgList = productService.getProductImg(pd_num);
 		
 		mv.addObject("productImgList",productImgList);
 		mv.addObject("product", product);
@@ -85,6 +86,31 @@ public class ProductController {
 			}
 		}
 		mv.setViewName("redirect:/stand");
+		return mv;
+	}
+	// 상품상세 페이지
+	@RequestMapping(value = "/product/detail", method = RequestMethod.GET)
+	public ModelAndView productDetailGet(ModelAndView mv, int pd_num) {
+		
+		String [] productImgList = productService.getImgList(pd_num);
+		ProductVo product = standService.getProduct(pd_num);
+		StandVo stand = standService.getStand(product.getPd_mb_id());
+		
+		ArrayList<PreviewVo> previewList = productService.getPreviewList(pd_num, product.getPd_mb_id()); 
+		// 판매중인 상품의 갯수
+		int productCount = standService.getProductCount(product.getPd_mb_id());
+		// 판매완료된 상품의 갯수
+		int productSaleCount = standService.getProductSaleCount(product.getPd_mb_id());
+		
+		mv.addObject("productImgList", productImgList);
+		mv.addObject("product", product);
+		mv.addObject("stand", stand);
+		mv.addObject("previewList", previewList);
+		mv.addObject("productCount", productCount);
+		mv.addObject("productSaleCount",productSaleCount);
+		
+		mv.setViewName("/product/productDetail");
+		
 		return mv;
 	}
 }
