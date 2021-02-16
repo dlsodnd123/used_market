@@ -111,9 +111,11 @@
             outline: none;
         }
         .question .content-box{
-            border-bottom: 1px solid #dae0e5;
             border-top: 1px solid #dae0e5;
             padding: 20px 0;
+        }
+        .question .content-box:last-child{
+            border-bottom: 1px solid #dae0e5;
         }
         .question .content-box .stand-img{
             width: 60px;
@@ -127,6 +129,7 @@
         }
         .question .content-box .stand_name{
             margin-bottom: 15px;
+            font-weight: 700;
         }
         .question .register-box{
             padding: 25px 0;
@@ -217,6 +220,11 @@
         .proudct-box .more-title{
         	padding: 15px 0 10px 40px;
         	border-top: 1px solid #dae0e5;
+        	font-weight: 700;
+        	font-size: 18px;
+        }
+        .middle-box .btn-box .btn>i{
+        	color: red;
         }
 </style>
 <body>
@@ -252,7 +260,12 @@
                         <div class="category content">${product.pd_category}</div>
                     </div>
                     <div class="btn-box">
-                        <button type="button" class="btn btn-secondary">찜하기</button>
+                    	<c:if test="${interestPd.itpd_selected == 1}">
+                        	<button type="button" class="btn btn-light"><i class="fas fa-heart"></i> 찜하기</button>
+                        </c:if>
+                        <c:if test="${interestPd.itpd_selected == 0 || interestPd.itpd_selected == null}">
+                        	<button type="button" class="btn btn-light"><i class="far fa-heart"></i> 찜하기</button>
+                        </c:if>
                         <button type="button" class="btn btn-info">연락하기</button>
                     </div>
                 </div>
@@ -281,17 +294,20 @@
               <div id="menu1" class="container tab-pane fade"><br>
                 <h3>상품문의</h3>
                 <div class="container question">
-                    <div class="content-box">
-                        <img src="https://t1.daumcdn.net/cfile/tistory/2513B53E55DB206927" alt="" class="stand-img">
-                        <div class="info-box">
-                            <div class="stand_name">qweqwe123</div>
-                            <div class="content">문의한 내용</div>
-                        </div>
-                    </div>
+                    <c:forEach items="${productQuestionsList}" var="boardList">
+	                    <div class="content-box">
+	                       	<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
+	                       	<div class="info-box">
+	                            <div class="stand_name">${boardList.bo_mb_id}</div>
+	                            <div class="content">${boardList.bo_content}</div>
+	                       	</div>
+	                    </div>
+	                </c:forEach>
                     <div class="register-box">
-                        <textarea class="form-control" rows="3" id="comment" style="resize: none;"></textarea>
+                        <textarea class="form-control" rows="3" id="content" style="resize: none;"></textarea>
                         <div class="btn-box">
                             <button type="button" class="btn btn-light">등록</button>
+                            <input type="hidden" name="bo_type" value="4">
                         </div>
                     </div>
                 </div>
@@ -333,20 +349,70 @@
 	        var slideIndex = 1;
 	        showDivs(slideIndex);
 	        
-	        function plusDivs(n) {
-	          showDivs(slideIndex += n);
+	        function plusDivs(n) {	        	
+	          	showDivs(slideIndex += n);
 	        }
 	        
-	        function showDivs(n) {
-	          var i;
-	          var x = document.getElementsByClassName("mySlides");
-	          if (n > x.length) {slideIndex = 1}
-	          if (n < 1) {slideIndex = x.length}
-	          for (i = 0; i < x.length; i++) {
-	            x[i].style.display = "none";  
-	          }
-	          x[slideIndex-1].style.display = "inline-block";  
+	        function showDivs(n) {	        	
+	          	var i;
+	          	var x = document.getElementsByClassName("mySlides");
+	          	if (n > x.length) {slideIndex = 1}
+	          	if (n < 1) {slideIndex = x.length}
+	          	for (i = 0; i < x.length; i++) {
+	            	x[i].style.display = "none";  
+	          	}
+	          	x[slideIndex-1].style.display = "inline-block";  
 	        }
+	        // 상품문의 탭에서 등록버튼 클릭시
+	        $('.register-box .btn').click(function(){
+	        	var bo_pd_num = ${product.pd_num}
+	        	var bo_content = $('#content').val();
+	        	var bo_type = $('input[name=bo_type]').val();
+	        	var sendData = {'bo_pd_num' : bo_pd_num, 'bo_content' : bo_content, 'bo_type' : bo_type}
+	        	$.ajax({
+    				url : '<%=request.getContextPath()%>/product/questions',
+    				async:false,
+    				type : 'post',
+    				data : JSON.stringify(sendData),
+    				dataType:"json",
+    		        contentType:"application/json; charset=UTF-8",
+    				success : function(data){
+    					
+    				}
+    			})
+	        })
+	        // 찜하기 버튼 클릭시
+	        $('.middle-box .btn-box .btn').click(function(){
+	        	var interest = ${interestPd.itpd_selected}
+	        	console.log(interest);
+	        	if(interest == 0){
+	        		var interestTmp = confirm('상품을 찜하시겠습니까?');
+	        		if(!interestTmp)
+		        		return false;
+	        	}else{
+	        		var interestTmp = confirm('상품 찜을 취소하시겠습니까?');
+		        	if(!interestTmp)
+		        		return false;
+	        	}
+	        	console.log(interest);
+	        	var pd_num = ${product.pd_num}
+	        	var data = {'pd_num' : pd_num }
+	        	$.ajax({
+        	        type:'post',
+        	        data:data,
+        	        url:'<%=request.getContextPath()%>/product/interest',
+        	        success : function(data){
+        	        	console.log(data)
+        	        	if(data == 'notLogin'){
+        	        		
+        	        	}else if(data == 'interest'){
+        	        		alert('찜하였습니다.')
+        	        	}else if(data == 'cancelInterest'){
+        	        		alert('찜을 취소하였습니다.')
+        	        	}
+        	        }
+        	    })
+	        })
         </script>
         
 </body>
