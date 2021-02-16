@@ -27,18 +27,21 @@ public class HomeController {
 		mv.setViewName("/main/home");
 		return mv;
 	}
+	// 약관동의 화면
 	@RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
 	public ModelAndView termsOfServiceGet(ModelAndView mv) {
 
 		mv.setViewName("/main/join/termsOfService");
 		return mv;
 	}
+	// 일반 회원가입 화면
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public ModelAndView signupGet(ModelAndView mv) {
 
 		mv.setViewName("/main/join/signup");
 		return mv;
 	}
+	// 일반 회원가입 정보받아 처리하는 기능
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ModelAndView signupPost(ModelAndView mv, MemberVo member) {
 		memberService.signupMember(member);
@@ -46,6 +49,7 @@ public class HomeController {
 		mv.setViewName("redirect:/");
 		return mv;
 	}
+	// 아이디 중복검사하는 기능
 	@RequestMapping(value = "/check/id", method = RequestMethod.POST)
 	@ResponseBody
 	public String checkIdPost(String id) {
@@ -54,12 +58,14 @@ public class HomeController {
 			return "possible";
 		return "impossible";
 	}
+	// 로그인 화면
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginGet(ModelAndView mv) {
 
 		mv.setViewName("/main/login");
 		return mv;
 	}
+	// 로그인정보 입력받아 처리하는 기능
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView loginPost(ModelAndView mv, String id, String pw) {
 		MemberVo member = memberService.getMember(id);
@@ -67,6 +73,7 @@ public class HomeController {
 		mv.setViewName("redirect:/");
 		return mv;
 	}
+	// 로그인할 때 아이디 비번 체크하는 기능
 	@RequestMapping(value = "/idpw/check", method = RequestMethod.POST)
 	@ResponseBody
 	public Object idpwCheckPost(@RequestBody MemberVo member) {
@@ -75,6 +82,7 @@ public class HomeController {
 		map.put("result", result);
 		return map;
 	}
+	// 로그아웃 기능
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logoutGet(ModelAndView mv, HttpServletRequest request) {
 		request.getSession().removeAttribute("member");
