@@ -14,7 +14,7 @@
 <script src="https://kit.fontawesome.com/372f53c69c.js" crossorigin="anonymous"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery.validate.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/additional-methods.js"></script>
-<script src="<%=request.getContextPath()%>/resources/js/jquery"></script>
+<script src="<%=request.getContextPath()%>/resources/js/jquery.js"></script>
 </head>
 <body>
     <tiles:insertAttribute name="header"/>
