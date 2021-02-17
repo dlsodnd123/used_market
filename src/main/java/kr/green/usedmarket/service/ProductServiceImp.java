@@ -84,14 +84,12 @@ public class ProductServiceImp implements ProductService {
 			// 찜한 정보가 있고 찜으로 되어있지 않다면 추천으로 변경
 			if(interestPd.getItpd_selected() == 0) {
 				interestPd.setItpd_selected(1);
-				System.out.println("추천 : " + interestPd);
 				productDao.updateInterestPd(interestPd);
 				result = "interest";
 			}
 			// 찜으로 되어있다면
 			else {
 				interestPd.setItpd_selected(0);
-				System.out.println("비추천 : " + interestPd);
 				productDao.updateInterestPd(interestPd);
 				result = "cancelInterest";
 			}

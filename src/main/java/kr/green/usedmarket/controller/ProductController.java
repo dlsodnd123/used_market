@@ -150,6 +150,7 @@ public class ProductController {
 	public String productInterestPost(int pd_num, HttpServletRequest request) {
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
+		System.out.println(member);
 		// 로그인 정보가 없으면 화면에 'Not login' 이라고 전송
 		if(member == null) {
 			return "notLogin";
@@ -157,5 +158,29 @@ public class ProductController {
 		// 로그인 정보가 있으면 회원정보와 상품번호로 찜하기 기능실행
 		String result = productService.setProductInterest(member, pd_num);
 		return result;
+	}
+	// 판매여부를 변경하는 기능
+	@RequestMapping(value = "/modify/detail/isSale", method = RequestMethod.POST)
+	@ResponseBody
+	public String modifyDetailisSale(int pd_num, HttpServletRequest request) throws Exception {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		ProductVo product = standService.getProduct(pd_num);
+		if(!product.getPd_mb_id().equals(member.getMb_id()))
+			return "memberDifferent";
+		standService.updateProductisSale(product);
+		return "success";
+	}
+	// 삭제여부를 변경하는 기능
+	@RequestMapping(value = "modify/detail/isDel", method = RequestMethod.POST)
+	@ResponseBody
+	public String modifyisDel(int pd_num, HttpServletRequest request) {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		ProductVo product = standService.getProduct(pd_num);
+		if(!product.getPd_mb_id().equals(member.getMb_id()))
+			return "memberDifferent";
+		standService.updateProductisDel(product);
+		return "success";
 	}
 }

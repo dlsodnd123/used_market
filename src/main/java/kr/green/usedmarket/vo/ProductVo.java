@@ -1,6 +1,5 @@
 package kr.green.usedmarket.vo;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +13,7 @@ public class ProductVo {
 	private String pd_deal;
 	private Date pd_registerDate;
 	private String pd_isSale;
+	private String pd_saleDate;
 	private String pd_isDel;
 	private int pd_count;
 	private int pd_views;
@@ -93,12 +93,19 @@ public class ProductVo {
 	public void setPd_count(int pd_count) {
 		this.pd_count = pd_count;
 	}
+	public String getPd_saleDate() {
+		return pd_saleDate;
+	}
+	public void setPd_saleDate(String pd_saleDate) {
+		this.pd_saleDate = pd_saleDate;
+	}
 	@Override
 	public String toString() {
 		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_category="
 				+ pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
-				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSale=" + pd_isSale + ", pd_isDel=" + pd_isDel
-				+ ", pd_count=" + pd_count + ", pd_views=" + pd_views + "]";
+				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSale=" + pd_isSale + ", pd_saleDate=" + pd_saleDate
+				+ ", pd_isDel=" + pd_isDel + ", pd_count=" + pd_count + ", pd_views=" + pd_views + "]";
 	}
+	
 
 }

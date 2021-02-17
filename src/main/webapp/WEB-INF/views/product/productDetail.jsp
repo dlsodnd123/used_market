@@ -96,7 +96,7 @@
             height: 50px;
             font-size: 18px;
         }
-        .right-box .btn-box .btn:first-child{
+        .right-box .btn-box .btn{
             margin-right: 10px;
         }
         .tab-box{
@@ -228,192 +228,261 @@
         }
 </style>
 <body>
-        <div class="container top-line">
-            <div class="left-box">
-                <div class="w3-content w3-display-container">
-                	<c:forEach items="${productImgList}" var="imgList">
-                		<img class="mySlides" src="<%=request.getContextPath()%>/resources/product_img/${imgList}">
-                	</c:forEach>
-                	                   
-                    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-                    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
-                </div>
+    <div class="container top-line">
+        <div class="left-box">
+            <div class="w3-content w3-display-container">
+            	<c:forEach items="${productImgList}" var="imgList">
+            		<img class="mySlides" src="<%=request.getContextPath()%>/resources/product_img/${imgList}">
+            	</c:forEach>
+            	                   
+                <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
             </div>
+        </div>
 
-            <div class="right-box">
-                <div class="top-box">
-                    <div class="title">${product.pd_title}</div>
-                    <div class="price">${product.pd_price}</div> 원
+        <div class="right-box">
+            <div class="top-box">
+                <div class="title">${product.pd_title}</div>
+                <div class="price">${product.pd_price}</div> 원
+            </div>
+            <div class="middle-box">
+                <div class="info-box">
+                    <div class="info interest">관심 ${product.pd_count}</div>
+                    <div class="info views">조회 ${product.pd_views}</div>
+                    <div class="info registerDate">등록일 ${product.pd_registerDate}</div>
                 </div>
-                <div class="middle-box">
-                    <div class="info-box">
-                        <div class="info interest">관심 ${product.pd_count}</div>
-                        <div class="info views">조회 ${product.pd_views}</div>
-                        <div class="info registerDate">등록일 ${product.pd_registerDate}</div>
-                    </div>
-                    <div class="deal-box">
-                        <div class="deal title"><i class="fas fa-caret-right"></i> 거래방법</div>
-                        <div class="deal content">${product.pd_deal}</div>
-                    </div>
-                    <div class="category-box">
-                        <div class="category title"><i class="fas fa-caret-right"></i> 카테고리</div>
-                        <div class="category content">${product.pd_category}</div>
-                    </div>
-                    <div class="btn-box">
-                    	<c:if test="${interestPd.itpd_selected == 1}">
-                        	<button type="button" class="btn btn-light"><i class="fas fa-heart"></i> 찜하기</button>
-                        </c:if>
-                        <c:if test="${interestPd.itpd_selected == 0 || interestPd.itpd_selected == null}">
-                        	<button type="button" class="btn btn-light"><i class="far fa-heart"></i> 찜하기</button>
-                        </c:if>
-                        <button type="button" class="btn btn-info">연락하기</button>
-                    </div>
+                <div class="deal-box">
+                    <div class="deal title"><i class="fas fa-caret-right"></i> 거래방법</div>
+                    <div class="deal content">${product.pd_deal}</div>
+                </div>
+                <div class="category-box">
+                    <div class="category title"><i class="fas fa-caret-right"></i> 카테고리</div>
+                    <div class="category content">${product.pd_category}</div>
+                </div>
+                <div class="btn-box">
+                	<!-- 상품판매자와 로그인한 회원이 같지 않다면 -->
+                	<c:if test="${product.pd_mb_id != member.mb_id}">
+                		<!-- 찜상태 -->
+	                 	<c:if test="${interestPd.itpd_selected == 1}">
+	                     	<button type="button" class="btn btn-light selected-btn"><i class="fas fa-heart"></i> 찜하기</button>
+	                    </c:if>
+	                 	<!-- 찜하지 않은 상태 -->
+	                    <c:if test="${interestPd.itpd_selected == 0 || interestPd.itpd_selected == null}">
+	                    	<button type="button" class="btn btn-light selected-btn"><i class="far fa-heart"></i> 찜하기</button>
+	                    </c:if>	                    
+                     <button type="button" class="btn btn-info">연락하기</button>
+                    </c:if>
+                    <!-- 상품판매자와 로그인한 회원이 같다면 -->
+                    <c:if test="${product.pd_mb_id == member.mb_id}">
+                    	<button type="button" class="btn btn-secondary product-Sale-btn">판매처리</button>
+                    	<a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-secondary product-modify-btn">내용수정</button></a>
+                    	<button type="button" class="btn btn-secondary product-delete-btn">삭제</button>
+                    </c:if>
                 </div>
             </div>
         </div>
-        <div class="container tab-box">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home">상품정보</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#menu1">상품문의</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#menu2">가판대정보</a>
-              </li>
-            </ul>
-          
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div id="home" class="container tab-pane active"><br>
-                <h3>상품정보</h3>
-                <textarea class="product-content col-8" rows="8" readonly style="resize: none;">${product.pd_content}</textarea>
-              </div>
-              <div id="menu1" class="container tab-pane fade"><br>
-                <h3>상품문의</h3>
-                <div class="container question">
-                    <c:forEach items="${productQuestionsList}" var="boardList">
-	                    <div class="content-box">
-	                       	<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
-	                       	<div class="info-box">
-	                            <div class="stand_name">${boardList.bo_mb_id}</div>
-	                            <div class="content">${boardList.bo_content}</div>
-	                       	</div>
-	                    </div>
-	                </c:forEach>
-                    <div class="register-box">
-                        <textarea class="form-control" rows="3" id="content" style="resize: none;"></textarea>
-                        <div class="btn-box">
-                            <button type="button" class="btn btn-light">등록</button>
-                            <input type="hidden" name="bo_type" value="4">
-                        </div>
+    </div>
+    <div class="container tab-box">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home">상품정보</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu1">상품문의</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2">가판대정보</a>
+          </li>
+        </ul>
+      
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div id="home" class="container tab-pane active"><br>
+            <h3>상품정보</h3>
+            <textarea class="product-content col-8" rows="8" readonly style="resize: none;">${product.pd_content}</textarea>
+          </div>
+          <div id="menu1" class="container tab-pane fade"><br>
+            <h3>상품문의</h3>
+            <div class="container question">
+                <c:forEach items="${productQuestionsList}" var="boardList">
+                 <div class="content-box">
+                    	<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
+                    	<div class="info-box">
+                         <div class="stand_name">${boardList.bo_mb_id}</div>
+                         <div class="content">${boardList.bo_content}</div>
+                    	</div>
+                 </div>
+             </c:forEach>
+                <div class="register-box">
+                    <textarea class="form-control" rows="3" id="content" style="resize: none;"></textarea>
+                    <div class="btn-box">
+                        <button type="button" class="btn btn-light">등록</button>
+                        <input type="hidden" name="bo_type" value="4">
                     </div>
                 </div>
-              </div>
-              <div id="menu2" class="container tab-pane fade"><br>
-                <h3>가판대정보</h3>
-                <div class="container stand-info">
-                    <div class="stand-info-box">
-                        <img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" alt="" class="stand-img">
-                        <div class="info-box">
-                            <div class="stand_name">${stand.st_name}</div>
-                            <div class="product-count">판매중상품 ${productCount}</div>
-                            <div class="product-sale-count">판매완료상품 ${productSaleCount}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container proudct-box">
-                	<div class="more-title">판매자의 다른 상품</div>             	
-                    <ul class="product-list">            
-                    	<c:forEach items="${previewList}" begin="0" end="3" var="previewList">
-	                        <li>
-	                            <div class="product-info">
-	                                <a href="<%=request.getContextPath()%>/product/detail?pd_num=${previewList.pd_num}"><img src="<%=request.getContextPath()%>/resources/product_img/${previewList.img_name}" alt="" class="product-img"></a>
-	                                <div class="product-price-bgbox"></div>
-	                                <div class="product-price">${previewList.pd_price}원</div>
-	                            </div>
-	                        </li>
-                        </c:forEach>
-                    </ul>
-                    <c:if test="${previewList.size() > 4}">
-                    	<div class="more-btn"><a href="#">상품 더 보기></a></div>
-                    </c:if>
-                </div>
-              </div>
             </div>
           </div>
-        
-        <script>
-	        var slideIndex = 1;
-	        showDivs(slideIndex);
-	        
-	        function plusDivs(n) {	        	
-	          	showDivs(slideIndex += n);
-	        }
-	        
-	        function showDivs(n) {	        	
-	          	var i;
-	          	var x = document.getElementsByClassName("mySlides");
-	          	if (n > x.length) {slideIndex = 1}
-	          	if (n < 1) {slideIndex = x.length}
-	          	for (i = 0; i < x.length; i++) {
-	            	x[i].style.display = "none";  
-	          	}
-	          	x[slideIndex-1].style.display = "inline-block";  
-	        }
-	        // 상품문의 탭에서 등록버튼 클릭시
-	        $('.register-box .btn').click(function(){
-	        	var bo_pd_num = ${product.pd_num}
-	        	var bo_content = $('#content').val();
-	        	var bo_type = $('input[name=bo_type]').val();
-	        	var sendData = {'bo_pd_num' : bo_pd_num, 'bo_content' : bo_content, 'bo_type' : bo_type}
-	        	$.ajax({
-    				url : '<%=request.getContextPath()%>/product/questions',
-    				async:false,
-    				type : 'post',
-    				data : JSON.stringify(sendData),
-    				dataType:"json",
-    		        contentType:"application/json; charset=UTF-8",
-    				success : function(data){
-    					
-    				}
-    			})
-	        })
-	        // 찜하기 버튼 클릭시
-	        $('.middle-box .btn-box .btn').click(function(){
-	        	var interest = ${interestPd.itpd_selected}
-	        	console.log(interest);
-	        	if(interest == 0){
-	        		var interestTmp = confirm('상품을 찜하시겠습니까?');
-	        		if(!interestTmp)
-		        		return false;
-	        	}else{
-	        		var interestTmp = confirm('상품 찜을 취소하시겠습니까?');
-		        	if(!interestTmp)
-		        		return false;
-	        	}
-	        	console.log(interest);
-	        	var pd_num = ${product.pd_num}
-	        	var data = {'pd_num' : pd_num }
-	        	$.ajax({
-        	        type:'post',
-        	        data:data,
-        	        url:'<%=request.getContextPath()%>/product/interest',
-        	        success : function(data){
-        	        	console.log(data)
-        	        	if(data == 'notLogin'){
-        	        		
-        	        	}else if(data == 'interest'){
-        	        		alert('찜하였습니다.')
-        	        	}else if(data == 'cancelInterest'){
-        	        		alert('찜을 취소하였습니다.')
-        	        	}
-        	        }
-        	    })
-	        })
-        </script>
-        
+          <div id="menu2" class="container tab-pane fade"><br>
+            <h3>가판대정보</h3>
+            <div class="container stand-info">
+                <div class="stand-info-box">
+                    <img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" alt="" class="stand-img">
+                    <div class="info-box">
+                        <div class="stand_name">${stand.st_name}</div>
+                        <div class="product-count">판매중상품 ${productCount}</div>
+                        <div class="product-sale-count">판매완료상품 ${productSaleCount}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container proudct-box">
+            	<div class="more-title">판매자의 다른 상품</div>             	
+                <ul class="product-list">            
+                	<c:forEach items="${previewList}" begin="0" end="3" var="previewList">
+                     <li>
+                         <div class="product-info">
+                             <a href="<%=request.getContextPath()%>/product/detail?pd_num=${previewList.pd_num}"><img src="<%=request.getContextPath()%>/resources/product_img/${previewList.img_name}" alt="" class="product-img"></a>
+                             <div class="product-price-bgbox"></div>
+                             <div class="product-price">${previewList.pd_price}원</div>
+                         </div>
+                     </li>
+                    </c:forEach>
+                </ul>
+                <c:if test="${previewList.size() > 4}">
+                	<div class="more-btn"><a href="#">상품 더 보기></a></div>
+                </c:if>
+            </div>
+          </div>
+        </div>
+      </div>
+	
+    <script>
+    	var slideIndex = 1;
+    	showDivs(slideIndex);
+     
+    	function plusDivs(n) {	        	
+    		showDivs(slideIndex += n);
+    	}
+     
+     	function showDivs(n) {	        	
+	       	var i;
+	       	var x = document.getElementsByClassName("mySlides");
+	       	if (n > x.length) {slideIndex = 1}
+	       	if (n < 1) {slideIndex = x.length}
+	       	for (i = 0; i < x.length; i++) {
+	        	x[i].style.display = "none";  
+	       	}
+	       	x[slideIndex-1].style.display = "inline-block";  
+     	}
+	    // 상품문의 탭에서 등록버튼 클릭시
+	    $('.register-box .btn').click(function(){
+	    	var bo_pd_num = ${product.pd_num}
+	     	var bo_content = $('#content').val();
+	     	var bo_type = $('input[name=bo_type]').val();
+	     	var sendData = {'bo_pd_num' : bo_pd_num, 'bo_content' : bo_content, 'bo_type' : bo_type}	     	
+	     	$.ajax({
+				url : '<%=request.getContextPath()%>/product/questions',
+				async:false,
+				type : 'post',
+				data : JSON.stringify(sendData),
+				dataType:"json",
+		        contentType:"application/json; charset=UTF-8",
+				success : function(data){
+					
+				},
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
+			})
+	    })
+	    // 찜하기 버튼 클릭시
+	    var interest = ${interestPd.itpd_selected}
+	    $('.middle-box .btn-box .selected-btn').click(function(){
+	    	if(interest == 1){
+				var interestTmp = confirm('상품 찜을 취소하겠습니까?');
+				if(!interestTmp)
+	      			return false;
+			}else{
+	     		var interestTmp = confirm('상품을 찜 하시겠습니까?');
+	      	if(!interestTmp)
+	      		return false;
+	     	}
+	     	var pd_num = ${product.pd_num}
+	     	var data = {'pd_num' : pd_num }
+	     	$.ajax({
+    	        type:'post',
+    	        data:data,
+    	        url:'<%=request.getContextPath()%>/product/interest',
+    	        success : function(data){
+    	        	if(data == 'notLogin'){
+    	        		var login = confirm('로그인 후 이용가능 합니다. 로그인 하시겠습니까?')
+    	        		if(login)
+    	        			location.href = '<%=request.getContextPath()%>/login'
+    	        	}else if(data == 'interest'){
+    	        		alert('찜하였습니다.')
+    	        		$('.middle-box .btn-box .selected-btn>i').removeClass('far').addClass('fas')
+    	        		interest = 1
+    	        	}else if(data == 'cancelInterest'){
+    	        		alert('찜을 취소하였습니다.')
+    	        		$('.middle-box .btn-box .selected-btn>i').removeClass('fas').addClass('far')
+    	        		interest = 0
+    	        	}
+    	        },
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
+	    	})    
+	    })
+	    // 판매처리 버튼 클릭시 판매여부 변경
+		$('.product-sale-btn').click(function(){
+		var isSale = confirm('판매완료처리 하시겠습니까?');
+		if(isSale == true){
+			pd_num = ${product.pd_num}
+			var data = {'pd_num' : pd_num}
+				$.ajax({
+				    type:'post',
+				    data:data,
+				    url:'<%=request.getContextPath()%>/modify/detail/isSale',
+				    success : function(data){
+				      	if(data == 'memberDifferent')
+				      		alert('수정 권한이 없습니다.')
+				      	else
+				      		var move = confirm('처리가 완료 되었습니다. 내가판대로 가시겠습니까?(취소버튼 클릭시 메인홈으로 이동합니다.)');
+					      	if(move)
+					      		location.href = '<%=request.getContextPath()%>/stand'
+					      	else
+					      		location.href = '<%=request.getContextPath()%>/'
+				    },
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
+				})   
+			}   	  			    
+		})
+		// 삭제 버튼 클릭시 삭제여부 변경
+   	    $('.product-delete-btn').click(function(){
+   	    	var isDel = confirm('등록된 상품이 삭제됩니다. 삭제 하시겠습니까?')
+   	    	if(isDel == true){
+   	    		pd_num = ${product.pd_num}
+   	    		var data = {'pd_num' : pd_num}
+		   	  	$.ajax({
+		  	        type:'post',
+		  	        data:data,
+		  	        url:'<%=request.getContextPath()%>/modify/detail/isDel',
+		  	        success : function(data){
+		  	        	if(data == 'memberDifferent')
+				      		alert('수정 권한이 없습니다.')
+				      	else{
+				      		alert('삭제가 완료되었습니다. 메인홈으로 돌아갑니다.')
+				      		location.href = '<%=request.getContextPath()%>/'
+				      	}
+		   	        },
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
+		    	})   
+   	    	}
+   	    })
+    </script>
 </body>
 </html>
