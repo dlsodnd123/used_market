@@ -1,6 +1,8 @@
 package kr.green.usedmarket.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,7 +59,6 @@ public class StandServiceImp implements StandService{
 	// 등록된 상품의 개수 가져오기
 	@Override
 	public int getProductCount(String mb_id) {
-		
 		return standDao.selectProductCount(mb_id);
 	}
 	// 상품 번호와 일치하는 상품내용 가져오기
@@ -65,13 +66,18 @@ public class StandServiceImp implements StandService{
 	public ProductVo getProduct(int pd_num) {
 		return standDao.selectProduct(pd_num);
 	}
-	// 판매여부
+	// 판매여부처리
 	@Override
-	public void updateProductisSale(ProductVo product) {
+	public void updateProductisSale(ProductVo product) throws Exception {
 		if(product.getPd_isSale().equals("N")) {
 			product.setPd_isSale("Y");
+			Date date = new Date();
+			SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String dateString = simpleFormat.format(date);
+			product.setPd_saleDate(dateString);
 		}else {
 			product.setPd_isSale("N");
+			product.setPd_saleDate(null);
 		}
 		standDao.updateProductisSale(product);
 	}
@@ -83,11 +89,21 @@ public class StandServiceImp implements StandService{
 		}else {
 			product.setPd_isDel("N");
 		}
-		standDao.updateProductisSale(product);
+		standDao.updateProductisDel(product);
 	}
 	// 판매완료상품 갯수 가져오기
 	@Override
 	public int getProductSaleCount(String mb_id) {
 		return standDao.selectProductSaleCount(mb_id);
+	}
+	// 판매완료된 상품리스트 가져오기
+	@Override
+	public ArrayList<ProductVo> getSaleProductList(String mb_id) {
+		return standDao.selectSaleProductList(mb_id);
+	}
+	// 판매완료된 상품 개수 가져오기
+	@Override
+	public int getSaleProductCount(String mb_id) {
+		return standDao.selectSaleProductCount(mb_id);
 	}
 }

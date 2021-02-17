@@ -28,10 +28,14 @@ public interface StandService {
 
 	ProductVo getProduct(int pd_num);
 
-	void updateProductisSale(ProductVo product);
+	void updateProductisSale(ProductVo product) throws Exception;
 
 	void updateProductisDel(ProductVo product);
 
 	int getProductSaleCount(String mb_id);
+
+	ArrayList<ProductVo> getSaleProductList(String mb_id);
+
+	int getSaleProductCount(String mb_id);
 
 }

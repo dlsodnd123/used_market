@@ -37,12 +37,19 @@ public class StandController {
 		StandVo stand = standService.getStand(member.getMb_id());
 		// ID와 일치하는 상품목록 가져오기
 		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
-		// ID와 일치하는 상품목록 개수 가져오기
+		// ID와 일치하는 상품 개수 가져오기
 		int productCount = standService.getProductCount(member.getMb_id());
+		// ID와 일치하면서 판매완료된 상품목록 가져오기
+		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(member.getMb_id());
+		// ID와 일치하는 판매완료한 상품 개수 가져오기
+		int saleProductCount = standService.getSaleProductCount(member.getMb_id());
 		
 		mv.addObject("productCount", productCount);
 		mv.addObject("productList", productList);
 		mv.addObject("stand", stand);
+		mv.addObject("saleProductList", saleProductList);
+		mv.addObject("saleProductCount", saleProductCount);
+		
 		mv.setViewName("/stand/stand");
 		return mv;
 	}
@@ -80,9 +87,16 @@ public class StandController {
 	// 판매여부를 변경하는 기능
 	@RequestMapping(value = "/modify/isSale", method = RequestMethod.POST)
 	@ResponseBody
-	public String modifyisSale(int pd_num) {
+	public String modifyisSale(int pd_num, HttpServletRequest request) throws Exception {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
 		ProductVo product = standService.getProduct(pd_num);
+		if(!product.getPd_mb_id().equals(member.getMb_id()))
+			return "memberDifferent";
 		standService.updateProductisSale(product);
+
+		// ID와 일치하는 상품목록 가져오기
+		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
 		return "success";
 	}
 	// 삭제여부를 변경하는 기능

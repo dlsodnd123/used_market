@@ -100,7 +100,8 @@
         }
         .product-Sale-btn,
         .product-modify-btn,
-        .product-delete-btn{
+        .product-delete-btn,
+        .product-SaleCancel-btn{
         	font-size : 13px
         }
         .move-detail-btn{
@@ -172,45 +173,69 @@
      
        <!-- Tab panes -->
        <div class="tab-content">
-         <div id="home" class="container tab-pane active"><br>
-           <h4 class="tabTitle">상품목록/관리</h4><p class="count">(${productCount})</p>
-           <div class="container">
-           		<c:if test="${productCount != 0}">
-	           		<table class="table table-active table-hover">
+         <div id="home" class="container tab-pane active"><br>         	
+            <h4 class="tabTitle">상품목록/관리</h4><p class="count">(${productCount})</p>
+      		<c:if test="${productCount != 0}">      			
+       			<table class="table table-active table-hover">
+                	<thead>
+	                    <tr>
+	                    	<th>상품번호</th>
+	                        <th>제목</th>
+	                        <th>가격</th>
+	                        <th>거래방법</th>
+	                        <th>등록일</th>
+	                        <th></th>
+	                    </tr>
+                	</thead>
+                	<tbody>
+                	<c:forEach items="${productList}" var="product">                
+	                    <tr>
+	                     	<td>${product.pd_num}</td>
+	                        <td>${product.pd_title}</td>
+	                        <td>${product.pd_price}</td>
+	                        <td>${product.pd_deal}</td>
+	                        <td>${product.pd_registerDate}</td>
+	                        <td>
+		                        <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
+		                        <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>
+		                        <button type="button" class="btn btn-light product-delete-btn">삭제</button>
+		                        <a href="<%=request.getContextPath()%>/product/detail?pd_num=${product.pd_num}"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>
+	                        </td>
+	                     </tr>             
+                    </c:forEach>
+				
+                </tbody>
+			</table>
+			</c:if>
+		</div>
+         <div id="menu1" class="container tab-pane fade"><br>
+           <h4 class="tabTitle">판매한상품</h4><p class="count">(${saleProductCount})</p>
+           			<table class="table table-active table-hover">
 	                    <thead>
 	                        <tr>
 	                        	<th>상품번호</th>
 	                            <th>제목</th>
 	                            <th>가격</th>
 	                            <th>거래방법</th>
-	                            <th>등록일</th>
+	                            <th>판매완료일</th>
 	                            <th></th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
-	                    	<c:forEach items="${productList}" var="product">                
+	                    	<c:forEach items="${saleProductList}" var="saleProduct">                
 		                        <tr>
-		                        	<td>${product.pd_num}</td>
-		                            <td>${product.pd_title}</td>
-		                            <td>${product.pd_price}</td>
-		                            <td>${product.pd_deal}</td>
-		                            <td>${product.pd_registerDate}</td>
+		                        	<td>${saleProduct.pd_num}</td>
+		                            <td>${saleProduct.pd_title}</td>
+		                            <td>${saleProduct.pd_price}</td>
+		                            <td>${saleProduct.pd_deal}</td>
+		                            <td>${saleProduct.pd_saleDate}</td>
 		                            <td>
-			                            <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
-			                            <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>
-			                            <button type="button" class="btn btn-light product-delete-btn">삭제</button>
-			                            <a href="<%=request.getContextPath()%>/product/detail?pd_num=${product.pd_num}"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>
+			                            <button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button>
 		                            </td>
 		                        </tr>             
 	                        </c:forEach>
 	                    </tbody>
 	                </table>
-                </c:if>
-            </div>
-         </div>
-         <div id="menu1" class="container tab-pane fade"><br>
-           <h3>판매한상품</h3>
-           <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
          </div>
          <div id="menu2" class="container tab-pane fade"><br>
            <h3>찜한상품</h3>
@@ -256,12 +281,21 @@
 		        		$('.stand-title-box .show-box').show();
 		        		$('.stand-title').val(standName);
 		        	}
-	   	        }
+	   	        },
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
    	    	})   	    	
    	  	})
-   	  	// 판매처리 버튼 클릭시 판매여부 변경
-   	  	$('.product-sale-btn').click(function(){
-   	  		var isSale = confirm('판매완료처리 하시겠습니까?');
+   	  	// 판매처리 판매처리취소 버튼 클릭시 판매여부 변경
+   	  	$('.product-sale-btn, .product-SaleCancel-btn').click(function(){
+   	  		var tmp = $(this).text();
+   	  		var isSale = false;
+   	  		if(tmp == '판매처리'){
+   	  			isSale = confirm('판매완료처리 하시겠습니까?');
+   	  		}else{
+   	  			isSale = confirm('판매완료처리를 취소 하시겠습니까?');
+   	  		}
    	  		if(isSale == true){
    	  			var pd_num = $(this).parent().siblings().first().text();
    	  			var data = {'pd_num' : pd_num}
@@ -270,8 +304,14 @@
 		  	        data:data,
 		  	        url:'<%=request.getContextPath()%>/modify/isSale',
 		  	        success : function(data){
-		  	        	
-		   	        }
+		  	        	if(data == 'memberDifferent')
+				      		alert('수정 권한이 없습니다.')
+				      	else
+				      		alert('처리되었습니다.')
+		   	        },
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
 		    	})   
    	  		}   	  			    
    	    })
@@ -288,7 +328,10 @@
 		  	        url:'<%=request.getContextPath()%>/modify/isDel',
 		  	        success : function(data){
 		  	        	
-		   	        }
+		   	        },
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
 		    	})   
    	    	}
    	    })
@@ -308,7 +351,10 @@
 	  	        	$('.stand-introduce-box .modify-box').hide();
 	  	   	    	$('.stand-introduce-box .show-box').show();
 	        		$('.stand-introduce').val(standIntroduce);
-	   	        }
+	   	        },
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
    	    	})
    	    })
    	    $('.img-modify').click(function(){

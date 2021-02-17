@@ -27,7 +27,7 @@
 	<select id="selectProductList" resultType="kr.green.usedmarket.vo.ProductVo">
 		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
 	</select>
-	
+<!-- 판매중인 상품 개수를 가져오는 쿼리문 -->
 	<select id="selectProductCount" resultType="int">
 		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
 	</select>
@@ -35,12 +35,31 @@
 	<select id="selectProduct" resultType="kr.green.usedmarket.vo.ProductVo">
 		select * from product where pd_num = #{pd_num}
 	</select>
-	
+<!-- 판매여부를 변경하는 쿼리문 -->
 	<update id="updateProductisSale">
-		update product set pd_isSale = #{product.pd_isSale}, pd_isDel = #{product.pd_isDel} where pd_num = #{product.pd_num}
+		update product set pd_isSale = #{product.pd_isSale}, pd_saleDate = #{product.pd_saleDate} where pd_num = #{product.pd_num}
 	</update>
-	
+<!-- 삭제여부를 변경하는 쿼리문 -->
+	<update id="updateProductisDel">
+		update product set pd_isDel = #{product.pd_isDel} where pd_num = #{product.pd_num}
+	</update>
+<!-- 판매중인 상품 갯수를 가져오는 쿼리문 -->
 	<select id="selectProductSaleCount" resultType="int">
 		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N'
 	</select>
+<!-- 판매완료된 상품리스트를 가져오는 쿼리문 -->
+	<select id="selectSaleProductList" resultType="kr.green.usedmarket.vo.ProductVo">
+		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N'
+	</select>
+<!-- 판매환료된 상품 개수를 가져오는 쿼리문 -->
+	<select id="selectSaleProductCount" resultType="int">
+		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N' 
+	</select>
+	
+	
+	
+	
+	
+	
+	
 </mapper>
