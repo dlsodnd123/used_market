@@ -46,9 +46,9 @@
 			board(bo_mb_id, bo_pd_num, bo_type, bo_title, bo_content)
 			values(#{board.bo_mb_id}, #{board.bo_pd_num}, #{board.bo_type}, #{board.bo_title}, #{board.bo_content})
 	</insert>
-<!-- 상품번호와 일치하는 상품문의 게시글 가져오는 쿼리문 -->
+<!-- 상품번호와 일치하는 상품문의 게시글들을 가져오는 쿼리문 -->
 	<select id="selectgetProductQuestionsList" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
-		select * from board where bo_pd_num = #{pd_num} and bo_type = '4'
+		select * from board where bo_pd_num = #{pd_num} and bo_type = '4' and bo_isDel = 'N'
 	</select>
 <!-- 상품문의 작성자와 일치하는 가판대이미지 가져오는 쿼리문 -->
 	<select id="selectProductQuestionsImg" resultType="String">
@@ -68,9 +68,18 @@
 	<update id="updateInterestPd" parameterType="kr.green.usedmarket.vo.InterestPdVo">
 		update interest_product set itpd_selected = #{interestPd.itpd_selected} where itpd_num = #{interestPd.itpd_num}
 	</update>
-
-
-
-
-
+<!-- 게시물의 번호와 일치하는 게시물을 가져오는 쿼리문 -->
+	<select id="selectProductQuestions" resultType="kr.green.usedmarket.vo.BoardVo">
+		select * from board where bo_num = ${bo_num}
+	</select>
+<!-- 게실물의 번호와 일치하는 게시물 변경하는 쿼리문 -->
+	<update id="updatePdQuestions" parameterType="kr.green.usedmarket.vo.BoardVo">
+		update board
+			set bo_title = #{originalBoard.bo_title}, bo_content = #{originalBoard.bo_content}, bo_isDel = #{originalBoard.bo_isDel}
+			where bo_num = #{originalBoard.bo_num}
+	</update>
+<!-- 게시글 번호와 일치하는 답글을 가져오는 쿼리문 -->
+	<select id="selectComment" resultType="kr.green.usedmarket.vo.CommentVo">
+		select * from comment where cmt_bo_num = #{cmt_bo_num}
+	</select>
 </mapper>

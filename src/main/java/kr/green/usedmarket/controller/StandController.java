@@ -96,7 +96,7 @@ public class StandController {
 		standService.updateProductisSale(product);
 
 		// ID와 일치하는 상품목록 가져오기
-		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
+//		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
 		return "success";
 	}
 	// 삭제여부를 변경하는 기능

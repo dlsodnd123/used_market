@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import kr.green.usedmarket.vo.BoardVo;
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.PreviewVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
@@ -37,4 +38,10 @@ public interface ProductDao {
 	void insertInterestPd(@Param("mb_id")String mb_id, @Param("pd_num")int pd_num);
 
 	void updateInterestPd(@Param("interestPd")InterestPdVo interestPd);
+
+	BoardVo selectProductQuestions(@Param("bo_num")int bo_num);
+
+	void updatePdQuestions(@Param("originalBoard")BoardVo originalBoard);
+
+	CommentVo selectComment(@Param("cmt_bo_num")int cmt_bo_num);
 }

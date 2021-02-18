@@ -19,6 +19,7 @@ import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.BoardVo;
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.PreviewVo;
@@ -113,6 +114,7 @@ public class ProductController {
 		int productSaleCount = standService.getProductSaleCount(product.getPd_mb_id());
 		// 상품문의에 등록된 게시글을 보여줄 정보 가져오기
 		ArrayList<ProductQuestionsVo> productQuestionsList = productService.getProductQuestionsList(pd_num);
+		
 		// 로그인 정보 null이 아니면
 		if(member != null ) {
 			// 로그인된 유저와 상품 정보가 일치하는 상품찜한 정보 가져오기
@@ -139,9 +141,47 @@ public class ProductController {
 	public Object productQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
 		MemberVo member = standService.getMemberId(request);
 		board.setBo_mb_id(member.getMb_id());
-		System.out.println(board);
 		productService.setProductQuestions(board);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		return map;
+	}
+	// 상품문의에 등록된 글 수정하는 기능
+	@RequestMapping(value = "modify/product/questions", method = RequestMethod.POST)
+	@ResponseBody
+	public Object mondifyProductQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 로그인 된 회원정보를 가져옴
+		MemberVo member = standService.getMemberId(request);
+		if(member == null) {
+			map.put("result", "notLogin");
+		}else {			
+			// 로그인 된 회원정보와 상품문의 작성자가 같지 않다면
+			if(!member.getMb_id().equals(board.getBo_mb_id())) {
+				map.put("result", "memberDifferent");
+			}
+			// 로그인 된 회원정보와 상품문의 작성자가 같고 삭제 여부가 'N' 이라면
+			else if(member.getMb_id().equals(board.getBo_mb_id()) && board.getBo_isDel().equals("N")) {
+				String result = productService.modifyPdQuestions(board);
+				map.put("result", result);
+			}
+			// 로그인 된 회원정보와 상품문의 작성자가 같고 삭제 여부가 'Y' 라면
+			else if(member.getMb_id().equals(board.getBo_mb_id()) && board.getBo_isDel().equals("Y")) {
+				board.setBo_isDel("Y");
+				String result = productService.modifyPdQuestions(board);
+				map.put("result", result);
+			}
+		}
+		return map;
+	}
+	// 답글 등록 기능
+	@RequestMapping(value = "/register/comment", method = RequestMethod.POST)
+	@ResponseBody
+	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		comment.setCmt_mb_id(member.getMb_id());
+		String result = productService.registerComment(comment);
 		return map;
 	}
 	// 찜하기 기능
@@ -150,7 +190,6 @@ public class ProductController {
 	public String productInterestPost(int pd_num, HttpServletRequest request) {
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
-		System.out.println(member);
 		// 로그인 정보가 없으면 화면에 'Not login' 이라고 전송
 		if(member == null) {
 			return "notLogin";

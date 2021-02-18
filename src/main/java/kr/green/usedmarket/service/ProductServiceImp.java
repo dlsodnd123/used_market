@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.vo.BoardVo;
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.PreviewVo;
@@ -100,5 +101,28 @@ public class ProductServiceImp implements ProductService {
 	@Override
 	public InterestPdVo setInterestPd(MemberVo member, int pd_num) {
 		return productDao.selectInterestPd(member.getMb_id(), pd_num);
+	}
+	// 상품문의 게시글의 정보를 변경하기
+	@Override
+	public String modifyPdQuestions(BoardVo board) {
+		// 상품번호와 일치하는 상품문의 게시글을 가져오기
+		BoardVo originalBoard = productDao.selectProductQuestions(board.getBo_num());
+		// 상품번호와 일치하는 상품문의 게시글이 없다면
+		if(originalBoard == null) {
+			return "notInfo";
+		}
+		// 일치하는 상품문의 게시글이 있으면 업데이트 시킴
+		originalBoard.setBo_content(board.getBo_content());
+		originalBoard.setBo_isDel(board.getBo_isDel());
+		productDao.updatePdQuestions(originalBoard);
+		return "success";
+	}
+	// 답글 등록 하기
+	@Override
+	public String registerComment(CommentVo comment) {
+		String result = "";
+		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
+		System.out.println(checkComment);
+		return result;
 	}
 }

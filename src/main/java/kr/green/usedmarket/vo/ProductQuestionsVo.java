@@ -1,6 +1,7 @@
 package kr.green.usedmarket.vo;
 
 public class ProductQuestionsVo {
+	private int bo_num;
 	private int bo_pd_num;
 	private String bo_content;
 	private String bo_mb_id;
@@ -8,6 +9,15 @@ public class ProductQuestionsVo {
 	public int getBo_pd_num() {
 		return bo_pd_num;
 	}
+	
+	public int getBo_num() {
+		return bo_num;
+	}
+
+	public void setBo_num(int bo_num) {
+		this.bo_num = bo_num;
+	}
+
 	public void setBo_pd_num(int bo_pd_num) {
 		this.bo_pd_num = bo_pd_num;
 	}
@@ -29,10 +39,12 @@ public class ProductQuestionsVo {
 	public void setSt_img(String st_img) {
 		this.st_img = st_img;
 	}
+
 	@Override
 	public String toString() {
-		return "ProductQuestionsVo [bo_pd_num=" + bo_pd_num + ", bo_content=" + bo_content + ", bo_mb_id=" + bo_mb_id
-				+ ", st_img=" + st_img + "]";
+		return "ProductQuestionsVo [bo_num=" + bo_num + ", bo_pd_num=" + bo_pd_num + ", bo_content=" + bo_content
+				+ ", bo_mb_id=" + bo_mb_id + ", st_img=" + st_img + "]";
 	}
+	
 
 }
