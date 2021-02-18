@@ -69,7 +69,10 @@
     					}else if(data.result == 'same'){
     						check = true;
     					}
-    				}
+    				},
+    	   	     	error: function(error) {
+    	   	        	console.log('에러발생');
+    	   	    	}
     			})
     			console.log(check);
     			return check;
