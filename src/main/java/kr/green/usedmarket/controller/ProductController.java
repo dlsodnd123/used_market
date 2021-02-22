@@ -114,6 +114,8 @@ public class ProductController {
 		int productSaleCount = standService.getProductSaleCount(product.getPd_mb_id());
 		// 상품문의에 등록된 게시글을 보여줄 정보 가져오기
 		ArrayList<ProductQuestionsVo> productQuestionsList = productService.getProductQuestionsList(pd_num);
+		// 상품문의에 등록된 게시글에 답글 정보 가져오기
+		ArrayList<CommentVo> commentList = productService.getCommentList(pd_num);
 		
 		// 로그인 정보 null이 아니면
 		if(member != null ) {
@@ -130,6 +132,7 @@ public class ProductController {
 		mv.addObject("productCount", productCount);
 		mv.addObject("productSaleCount",productSaleCount);
 		mv.addObject("productQuestionsList", productQuestionsList);
+		mv.addObject("commentList", commentList);
 		
 		mv.setViewName("/product/productDetail");
 		
@@ -150,6 +153,7 @@ public class ProductController {
 	@ResponseBody
 	public Object mondifyProductQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		System.out.println(board);
 		// 로그인 된 회원정보를 가져옴
 		MemberVo member = standService.getMemberId(request);
 		if(member == null) {
@@ -179,9 +183,11 @@ public class ProductController {
 	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
+		System.out.println("Controller : " + comment);
 		MemberVo member = standService.getMemberId(request);
 		comment.setCmt_mb_id(member.getMb_id());
 		String result = productService.registerComment(comment);
+		map.put("result", result);
 		return map;
 	}
 	// 찜하기 기능

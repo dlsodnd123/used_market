@@ -48,7 +48,7 @@
 	</insert>
 <!-- 상품번호와 일치하는 상품문의 게시글들을 가져오는 쿼리문 -->
 	<select id="selectgetProductQuestionsList" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
-		select * from board where bo_pd_num = #{pd_num} and bo_type = '4' and bo_isDel = 'N'
+		select * from board where bo_pd_num = #{pd_num} and bo_type = '4' and bo_isDel = 'N'		
 	</select>
 <!-- 상품문의 작성자와 일치하는 가판대이미지 가져오는 쿼리문 -->
 	<select id="selectProductQuestionsImg" resultType="String">
@@ -82,4 +82,16 @@
 	<select id="selectComment" resultType="kr.green.usedmarket.vo.CommentVo">
 		select * from comment where cmt_bo_num = #{cmt_bo_num}
 	</select>
+<!-- 상품문의글에 답글을 등록하는 쿼리문 -->
+	<insert id="insertComment" parameterType="kr.green.usedmarket.vo.CommentVo">
+	 	insert into
+	 		comment(cmt_bo_num, cmt_pd_num, cmt_mb_id, cmt_content)
+	 		values(#{comment.cmt_bo_num}, #{comment.cmt_pd_num}, #{comment.cmt_mb_id}, #{comment.cmt_content})
+	</insert>
+<!-- 상품문의글에 등록된 답글을 가져오는 쿼리문 -->
+	<select id="selectCommentList" resultType="kr.green.usedmarket.vo.CommentVo">
+		select * from comment where cmt_pd_num = #{pd_num} and cmt_isDel = 'N'
+	</select>
+	
+	
 </mapper>

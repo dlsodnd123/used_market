@@ -38,4 +38,6 @@ public interface ProductService {
 
 	String registerComment(CommentVo comment);
 
+	ArrayList<CommentVo> getCommentList(int pd_num);
+
 }

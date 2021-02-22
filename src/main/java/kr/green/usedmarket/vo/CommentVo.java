@@ -6,6 +6,7 @@ import java.util.Date;
 public class CommentVo {
 	private int cmt_num;
 	private int cmt_bo_num;
+	private int cmt_pd_num;
 	private String cmt_mb_id;
 	private String cmt_content;
 	private String cmt_isDel;
@@ -48,10 +49,16 @@ public class CommentVo {
 	public void setCmt_registerDate(Date cmt_registerDate) {
 		this.cmt_registerDate = cmt_registerDate;
 	}
+		public int getCmt_pd_num() {
+		return cmt_pd_num;
+	}
+	public void setCmt_pd_num(int cmt_pd_num) {
+		this.cmt_pd_num = cmt_pd_num;
+	}
 	@Override
 	public String toString() {
-		return "CommentVo [cmt_num=" + cmt_num + ", cmt_bo_num=" + cmt_bo_num + ", cmt_mb_id=" + cmt_mb_id
-				+ ", cmt_content=" + cmt_content + ", cmt_isDel=" + cmt_isDel + ", cmt_registerDate=" + cmt_registerDate
-				+ "]";
-	}	
+		return "CommentVo [cmt_num=" + cmt_num + ", cmt_bo_num=" + cmt_bo_num + ", cmt_pd_num=" + cmt_pd_num
+				+ ", cmt_mb_id=" + cmt_mb_id + ", cmt_content=" + cmt_content + ", cmt_isDel=" + cmt_isDel
+				+ ", cmt_registerDate=" + cmt_registerDate + "]";
+	}
 }

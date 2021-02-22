@@ -145,11 +145,12 @@
         	display: none;
         	margin-bottom: 15px;
         }
-        .question .content-box .btn-box>div{
+        .question .content-box .btn-box>div{        	
         	float: right;     
         }
         .question .content-box .btn-box .btn{
-        	margin : 5px 10px 0 0;
+        	margin: 0 5px 10px 0;
+        	font-size: 13px;
         }
         .question .content-box .btn-box .btn:last-child{
         	margin-right: 0;
@@ -193,14 +194,18 @@
         	border: none;
         	outline: none;
         }
-        .question .comment .comment-rigister-box,
+        .question .content-box .comment-rigister-box,
         .question .comment .comment-modify-box{
         	display: none;
         }
-        .question .comment .comment-regBtn-box,
+        .question .content-box .comment-regBtn-box,
         .question .comment .comment-modiBtn-box{
         	float: right;
         	margin: 8px 0;
+        }
+        .question .content-box .comment-regBtn-box>.btn,
+        .question .comment .comment-modiBtn-box>.btn{
+        	font-size: 13px;
         }
         .register-box .btn-box .btn{
             width: 65px;
@@ -360,11 +365,11 @@
             <h3>상품문의</h3>
             <div class="container question">
                 <c:forEach items="${productQuestionsList}" var="boardList">
-                 <div class="content-box">
+                 <div class="content-box after">
                    	<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
                    	<div class="info-box">
                         <div class="stand_name">${boardList.bo_mb_id}</div>
-                        <div class="question-regTime">2021-02-17 13:59:32</div>
+                        <div class="question-regTime">${boardList.bo_registerDate}</div>                        
                         <textarea class="content" rows="2" style="resize: none;" readonly>${boardList.bo_content}</textarea>
                     	<div class="modify-box">
 	                    	<textarea class="form-control" rows="2" id="modify-content" style="resize: none;">${boardList.bo_content}</textarea>
@@ -374,42 +379,50 @@
 	                    	</div>		                
 	                    </div>
                    	</div>
-                   	<div class="comment after">
-                    	<div class="comment-info-box after">
-                    		<div class="product-stand-name">qweqwe123</div>
-                    		<div class="comment-regTime">2021-02-18 12:35:13</div>
-                    		<div class="comment-btn-box">
-                    			<button type="button" class="btn btn-light comment-del-btn">삭제</button>
-                   				<button type="button" class="btn btn-light comment-modify-btn">수정</button>
-                    		</div>
-                    		<div class="comment-content-box">
-                    			<textarea class="comment-content" rows="2" style="resize: none;" readonly>테스트중입니다.</textarea>
-                    			<div class="comment-rigister-box">
-	                    			<textarea class="form-control comment-register-content" rows="2" style="resize: none;"></textarea>
-	                    			<div class="comment-regBtn-box">
-		                    			<button type="button" class="btn btn-light comment-register-btn">등록</button>
-		                    			<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>
-	                    			</div>
-                    			</div>
-                    			<div class="comment-modify-box">
-	                    			<textarea class="form-control comment-modify-content" rows="2" style="resize: none;"></textarea>
-	                    			<div class="comment-modiBtn-box">
-		                    			<button type="button" class="btn btn-light comment-modify-btn">수정</button>
-		                    			<button type="button" class="btn btn-light comment-modiCancel-btn">취소</button>
-	                    			</div>
-                    			</div>
-                    		</div>
-                    	</div>
-                    </div>
                    	<div class="btn-box after">
                    		<div>
-                    		<button type="button" class="btn btn-light question-comment-btn">답글</button>
                     		<button type="button" class="btn btn-light question-del-btn">삭제</button>
                     		<button type="button" class="btn btn-light question-modify-btn">수정</button>
                    		</div>
                    	</div>
+                   	<c:forEach items="${commentList}" var="commentList">
+                   		<c:if test="${commentList.cmt_bo_num == boardList.bo_num }">
+		                   	<div class="comment after">
+		                    	<div class="comment-info-box after">
+		                    		<div class="product-stand-name">${commentList.cmt_mb_id}</div>
+		                    		<div class="comment-regTime">${commentList.cmt_registerDate}</div>
+		                    		<div class="comment-btn-box">
+		                    			<button type="button" class="btn btn-light comment-del-btn">삭제</button>
+		                   				<button type="button" class="btn btn-light comment-modify-btn">수정</button>
+		                    		</div>
+		                    		<div class="comment-content-box">
+		                    			<textarea class="comment-content" rows="2" style="resize: none;" readonly>${commentList.cmt_content}</textarea>                    			
+		                    			<div class="comment-modify-box">
+			                    			<textarea class="form-control comment-modify-content" rows="2" style="resize: none;">${commentList.cmt_content}</textarea>
+			                    			<div class="comment-modiBtn-box">
+				                    			<button type="button" class="btn btn-light comment-modify-btn">수정</button>
+				                    			<button type="button" class="btn btn-light comment-modiCancel-btn">취소</button>
+			                    			</div>
+		                    			</div>
+		                    		</div>
+		                    	</div>
+		                    </div>
+                    	</c:if>
+                    </c:forEach>
+                    <div class="comment-rigister-box">
+                    	<textarea class="form-control comment-register-content" rows="2" style="resize: none;"></textarea>
+                    	<div class="comment-regBtn-box">
+	                    	<button type="button" class="btn btn-light comment-register-btn">등록</button>
+	                    	<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>
+                    	</div>
+                   	</div>
+                    <div class="btn-box after">
+                   		<div>
+                    		<button type="button" class="btn btn-light question-comment-btn">답글</button>
+                   		</div>
+                   	</div>                  	
+                 	<input type="hidden" name="bo_num" value="${boardList.bo_num}">
                  </div>
-                 <input type="hidden" name="bo_num" value="${boardList.bo_num}">
              </c:forEach>
                 <div class="register-box after">
                     <textarea class="form-control" rows="3" id="content" style="resize: none;"></textarea>
@@ -507,14 +520,15 @@
    	    	//확인버튼 클릭시
    	    	$('.modify-btn-box .confirm-btn').click(function(){
    	    		// 문의번호, 작성자, 상품번호, 게시글타입, 내용을 ajax로 서버에 전달
-   	    		var bo_num = $('input[name=bo_num]').val();
+   	    		var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
    	    		var bo_mb_id = $(this).parents('.info-box').children('.stand_name').text();
    	    		var bo_pd_num = ${product.pd_num}
    	    		var bo_type = $('input[name=bo_type]').val();
-   	    		var bo_content = $('textarea[id=modify-content]').val();
+   	    		var bo_content = $(this).parents('.modify-box').find('textarea[id=modify-content]').val();
    	    		var bo_isDel = 'N'
    	    		var sendData = {'bo_num' : bo_num, 'bo_mb_id' : bo_mb_id, 'bo_pd_num' : bo_pd_num, 
    	    						'bo_type' : bo_type, 'bo_content' : bo_content, 'bo_isDel' : bo_isDel}
+   	    		var clickPoint = $(this);
    	    		$.ajax({
     				url : '<%=request.getContextPath()%>/modify/product/questions',
     				async:false,
@@ -529,9 +543,9 @@
     						alert('존재하지 않는 상품문의 글입니다.');
     					else{
     						// var bo_content에 있는 내용을 contnet에 넣어주고, modify-box는 숨기고, btn-box는 보여주기 
-    						$('.question .info-box .content').html(bo_content);
-    						$('.question .info-box .modify-box').hide();
-    						$('.question .info-box .content').show();
+    						$(clickPoint).parents('.info-box').find('.content').html(bo_content);
+    						$(clickPoint).parents('.info-box').find('.modify-box').hide();
+    						$(clickPoint).parents('.info-box').find('.content').show();
     						$('.question .btn-box').show();
     					}
     				},
@@ -545,7 +559,7 @@
    	    $('.question-del-btn').click(function(){
    	    	var deltmp = confirm('상품문의글이 삭제 됩니다. 삭제 하시겠습니까?')
    	    	if(deltmp){   	    		
-	   	    	var bo_num = $('input[name=bo_num]').val();
+	   	    	var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
 		    	var bo_mb_id = $(this).parents('.btn-box').siblings('.info-box').children('.stand_name').text();
 		    	var bo_pd_num = ${product.pd_num}
 		    	var bo_type = $('input[name=bo_type]').val();
@@ -575,29 +589,26 @@
 				})
    	    	}
    	    })
-   	    // 답글 버튼 클릭시 기존에 있던 내용과 버튼을 숨기고, 등록창 보이기
+   	    // 답글 버튼 클릭시 답글 입력창이 나타나고 답글 버튼은 숨긴다
    	    $('.question-comment-btn').click(function(){
-   	    	$(this).parents('.btn-box').siblings('.comment').find('.comment-rigister-box').show();
-   	    	$(this).parents('.btn-box').siblings('.comment').find('.comment-content').hide();
-   	    	$(this).parents('.btn-box').siblings('.comment').find('.comment-btn-box').hide();
+   	    	$(this).parents('.btn-box').siblings('.comment-rigister-box').show();
    	    	$(this).parents('.btn-box').hide();
    	    	// 취소버튼 클릭시 원래대로 돌아가기
-   	    	$('.comment-regCancel-btn').click(function(){   	    		
-	   	    	$(this).parents('.comment ').siblings('.btn-box').show();
-	   	    	$(this).parents('.comment-content-box').siblings('.comment-btn-box').show();
-	   	    	$(this).parents('.comment-content-box').find('.comment-content').show();
-	   	    	$(this).parents('.comment-rigister-box').hide();
+   	    	$('.comment-regCancel-btn').click(function(){  
+	   	    	$(this).parents('.comment-rigister-box ').next('.btn-box').show();
+	   	    	$(this).parents('.btn-box').siblings('.comment-rigister-box').hide();
    	    	})
-   	    	// 등록버튼 클릭시 ajax를 이용행 서버로 데이터 전송하기
+   	    	// 등록버튼 클릭시 ajax를 이용해 서버로 데이터 전송하기
    	    	$('.comment-register-btn').click(function(){
-   	    		var cmt_bo_num = $('input[name=bo_num]').val();
-   	    		var cmt_content = $(this).parents('.comment-rigister-box').find('.comment-register-content').val();
-   	    		console.log(cmt_content);
+   	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+   	    		var cmt_pd_num = ${product.pd_num}
+   	    		var cmt_content = $(this).parents('.comment-rigister-box').find('.comment-register-content').val();   	    		
+   	    		console.log(cmt_bo_num);
    	    		if(cmt_content == ''){
    	    			alert('최소 1글자 이상 입력해야 합니다.');
    	    			return false;
    	    		}
-   	    		var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content}
+   	    		var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_pd_num' : cmt_pd_num, 'cmt_content' : cmt_content}
    	    		$.ajax({
 					url : '<%=request.getContextPath()%>/register/comment',
 					async:false,
@@ -606,7 +617,11 @@
 					dataType:"json",
 			        contentType:"application/json; charset=UTF-8",
 					success : function(data){
-						
+						if(data.result == 'sameComment')
+							alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
+						else if(data.result == 'success'){
+							// 답글 부분 지우고 다시 뿌려주는 코드 작성
+						}
 					},
 		   	     	error: function(error) {
 		   	        	console.log('에러발생');

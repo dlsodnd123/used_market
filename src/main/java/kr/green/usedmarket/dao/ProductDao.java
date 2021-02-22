@@ -44,4 +44,9 @@ public interface ProductDao {
 	void updatePdQuestions(@Param("originalBoard")BoardVo originalBoard);
 
 	CommentVo selectComment(@Param("cmt_bo_num")int cmt_bo_num);
+
+	void insertComment(@Param("comment")CommentVo comment);
+
+	ArrayList<CommentVo> selectCommentList(@Param("pd_num")int pd_num);
+
 }

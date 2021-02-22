@@ -62,7 +62,7 @@ public class ProductServiceImp implements ProductService {
 	public void setProductQuestions(BoardVo board) {
 		productDao.insertProductQuestions(board);
 	}
-	// 상품문의 게시글의 상품번호와 일치하는 게시글을의 작성자와 내용을가져오고 작성자와 일치하는 가판대이미지 가져오기
+	// 상품문의 게시글의 상품번호와 일치하는 게시글을의 작성자와 내용을가져오고 작성자와 일치하는 가판대이미지, 답글정보 가져오기
 	@Override
 	public ArrayList<ProductQuestionsVo> getProductQuestionsList(int pd_num) {
 		ArrayList<ProductQuestionsVo> getProductQuestionsList = productDao.selectgetProductQuestionsList(pd_num);
@@ -120,9 +120,18 @@ public class ProductServiceImp implements ProductService {
 	// 답글 등록 하기
 	@Override
 	public String registerComment(CommentVo comment) {
-		String result = "";
+		// 해당 글의 등록되어있는 답글이 있는지 확인
 		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
-		System.out.println(checkComment);
-		return result;
+		// 등록되어 있는 답글이 있으면 "sameComment"를 반환
+		if(checkComment != null) {
+			return "sameComment";
+		}
+		productDao.insertComment(comment);
+		return "suceess";
+	}
+	// 게시글의 등록된 답변들 가져오는 기능
+	@Override
+	public ArrayList<CommentVo> getCommentList(int pd_num) {
+		return productDao.selectCommentList(pd_num);
 	}
 }
