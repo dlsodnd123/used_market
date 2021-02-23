@@ -183,10 +183,25 @@ public class ProductController {
 	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
-		System.out.println("Controller : " + comment);
 		MemberVo member = standService.getMemberId(request);
 		comment.setCmt_mb_id(member.getMb_id());
 		String result = productService.registerComment(comment);
+		map.put("result", result);
+		CommentVo getComment = productService.getComment(comment.getCmt_bo_num());
+		map.put("cmt_mb_id", getComment.getCmt_mb_id());
+		map.put("cmt_registerDate", getComment.getCmt_registerDate());
+		map.put("cmt_content", getComment.getCmt_content());
+		
+		return map;
+	}
+	// 답글 내용 수정하는 기능(삭제, 수정)
+	@RequestMapping(value = "/modify/comment", method = RequestMethod.POST)
+	@ResponseBody
+	public Object modifyCommentPost(@RequestBody CommentVo comment) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		System.out.println(comment);
+		String result = productService.modifyComment(comment);
+		
 		map.put("result", result);
 		return map;
 	}

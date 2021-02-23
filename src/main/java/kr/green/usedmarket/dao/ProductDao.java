@@ -49,4 +49,6 @@ public interface ProductDao {
 
 	ArrayList<CommentVo> selectCommentList(@Param("pd_num")int pd_num);
 
+	void updateComment(@Param("comment")CommentVo comment);
+
 }

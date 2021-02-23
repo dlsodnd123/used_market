@@ -122,16 +122,36 @@ public class ProductServiceImp implements ProductService {
 	public String registerComment(CommentVo comment) {
 		// 해당 글의 등록되어있는 답글이 있는지 확인
 		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
+		System.out.println(checkComment);
 		// 등록되어 있는 답글이 있으면 "sameComment"를 반환
 		if(checkComment != null) {
 			return "sameComment";
 		}
 		productDao.insertComment(comment);
-		return "suceess";
+		return "success";
 	}
 	// 게시글의 등록된 답변들 가져오는 기능
 	@Override
 	public ArrayList<CommentVo> getCommentList(int pd_num) {
 		return productDao.selectCommentList(pd_num);
+	}
+	// 게시글 번호와 일치하는 답글 정보 가져오기
+	@Override
+	public CommentVo getComment(int cmt_bo_num) {
+		return productDao.selectComment(cmt_bo_num);
+	}
+	// 답글 정보 변경하기(삭제, 수정)
+	@Override
+	public String modifyComment(CommentVo comment) {
+		// 전달받은 답글정보의 게시글번호와 일치하는 답글정보를 가져오기
+		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
+		// 일치하는 답글정보가 없으면 "notComment" 반환하고 있으면 업데이트 시키기
+		if(checkComment == null) {
+			System.out.println("notComment");
+			return "notComment";
+		}		
+		productDao.updateComment(comment);
+		checkComment = productDao.selectComment(comment.getCmt_bo_num());
+		return "success";
 	}
 }

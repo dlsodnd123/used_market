@@ -379,28 +379,32 @@
 	                    	</div>		                
 	                    </div>
                    	</div>
-                   	<div class="btn-box after">
-                   		<div>
-                    		<button type="button" class="btn btn-light question-del-btn">삭제</button>
-                    		<button type="button" class="btn btn-light question-modify-btn">수정</button>
-                   		</div>
-                   	</div>
+                   	<c:if test="${boardList.bo_mb_id == member.mb_id }">
+	                   	<div class="btn-box after">
+	                   		<div>
+	                    		<button type="button" class="btn btn-light question-del-btn">삭제</button>
+	                    		<button type="button" class="btn btn-light question-modify-btn">수정</button>
+	                   		</div>
+	                   	</div>
+                   	</c:if>
                    	<c:forEach items="${commentList}" var="commentList">
                    		<c:if test="${commentList.cmt_bo_num == boardList.bo_num }">
 		                   	<div class="comment after">
 		                    	<div class="comment-info-box after">
 		                    		<div class="product-stand-name">${commentList.cmt_mb_id}</div>
 		                    		<div class="comment-regTime">${commentList.cmt_registerDate}</div>
-		                    		<div class="comment-btn-box">
-		                    			<button type="button" class="btn btn-light comment-del-btn">삭제</button>
-		                   				<button type="button" class="btn btn-light comment-modify-btn">수정</button>
-		                    		</div>
+		                    		<c:if test="${commentList.cmt_mb_id == member.mb_id }">
+			                    		<div class="comment-btn-box">
+			                    			<button type="button" class="btn btn-light comment-del-btn">삭제</button>
+			                   				<button type="button" class="btn btn-light comment-modify-btn">수정</button>
+			                    		</div>
+		                    		</c:if>
 		                    		<div class="comment-content-box">
 		                    			<textarea class="comment-content" rows="2" style="resize: none;" readonly>${commentList.cmt_content}</textarea>                    			
 		                    			<div class="comment-modify-box">
 			                    			<textarea class="form-control comment-modify-content" rows="2" style="resize: none;">${commentList.cmt_content}</textarea>
 			                    			<div class="comment-modiBtn-box">
-				                    			<button type="button" class="btn btn-light comment-modify-btn">수정</button>
+				                    			<button type="button" class="btn btn-light comment-modify-send-btn">수정</button>
 				                    			<button type="button" class="btn btn-light comment-modiCancel-btn">취소</button>
 			                    			</div>
 		                    			</div>
@@ -416,11 +420,17 @@
 	                    	<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>
                     	</div>
                    	</div>
-                    <div class="btn-box after">
-                   		<div>
-                    		<button type="button" class="btn btn-light question-comment-btn">답글</button>
-                   		</div>
-                   	</div>                  	
+                   	
+                   	<c:if test="${product.pd_mb_id == member.mb_id}">
+                   	
+	                    <div class="btn-box reply after">
+	                   		<div>
+	                    		<button type="button" class="btn btn-light question-comment-btn">답글</button>
+	                   		</div>
+	                   	</div>
+	                   	
+                   	</c:if>
+                   	                	
                  	<input type="hidden" name="bo_num" value="${boardList.bo_num}">
                  </div>
              </c:forEach>
@@ -467,6 +477,8 @@
       </div>
 	
     <script>
+    
+    
     	var slideIndex = 1;
     	showDivs(slideIndex);
      
@@ -589,25 +601,26 @@
 				})
    	    	}
    	    })
-   	    // 답글 버튼 클릭시 답글 입력창이 나타나고 답글 버튼은 숨긴다
+   	    // 답글 버튼 클릭시 
+   	    // 답글 입력창이 나타나고 답글 버튼은 숨긴다
    	    $('.question-comment-btn').click(function(){
    	    	$(this).parents('.btn-box').siblings('.comment-rigister-box').show();
    	    	$(this).parents('.btn-box').hide();
    	    	// 취소버튼 클릭시 원래대로 돌아가기
    	    	$('.comment-regCancel-btn').click(function(){  
-	   	    	$(this).parents('.comment-rigister-box ').next('.btn-box').show();
-	   	    	$(this).parents('.btn-box').siblings('.comment-rigister-box').hide();
+	   	    	$(this).parents('.comment-rigister-box').hide();
+	   	    	$(this).parents('.comment-rigister-box').siblings('.reply').show();
    	    	})
    	    	// 등록버튼 클릭시 ajax를 이용해 서버로 데이터 전송하기
    	    	$('.comment-register-btn').click(function(){
    	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
    	    		var cmt_pd_num = ${product.pd_num}
    	    		var cmt_content = $(this).parents('.comment-rigister-box').find('.comment-register-content').val();   	    		
-   	    		console.log(cmt_bo_num);
    	    		if(cmt_content == ''){
    	    			alert('최소 1글자 이상 입력해야 합니다.');
    	    			return false;
    	    		}
+   	    		var clickPoint = $(this);
    	    		var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_pd_num' : cmt_pd_num, 'cmt_content' : cmt_content}
    	    		$.ajax({
 					url : '<%=request.getContextPath()%>/register/comment',
@@ -620,7 +633,22 @@
 						if(data.result == 'sameComment')
 							alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
 						else if(data.result == 'success'){
-							// 답글 부분 지우고 다시 뿌려주는 코드 작성
+							// 등록 성공시 답글 등록창은 숨기고, 등록한 답글을 나타내는 html코드 삽입
+							$(clickPoint).parents('.comment-rigister-box').hide();
+							$(clickPoint).parents('.comment-rigister-box').before('<div class="comment after"></div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').append('<div class="comment-info-box after"></div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-info-box').append('<div class="product-stand-name">'+ data.cmt_mb_id +'</div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-info-box').append('<div class="comment-regTime">'+ data.cmt_registerDate +'</div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-info-box').append('<div class="comment-btn-box"></div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-btn-box').append('<button type="button" class="btn btn-light comment-del-btn">삭제</button>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-btn-box').append('<button type="button" class="btn btn-light comment-modify-btn">수정</button>')
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-info-box').append('<div class="comment-content-box"></div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-content-box').append('<textarea class="comment-content" rows="2" style="resize: none;" readonly>'+ data.cmt_content +'</textarea>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-content-box').append('<div class="comment-modify-box"></div>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-box').append('<textarea class="comment-content comment-modify-content" rows="2" style="resize: none;">'+ data.cmt_content +'</textarea>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-box').append('<div class="comment-modiBtn-box"><div>');					
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light confirm-btn">확인</button>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light cancel-btn">취소</button>');
 						}
 					},
 		   	     	error: function(error) {
@@ -629,6 +657,89 @@
 				})   	    		
    	    	})
    	    })
+   	    // 답글에 삭제 버튼 클릭시
+   	    $('.comment-del-btn').click(function(){
+   	    	var isDel = confirm('해당답글이 삭제 됩니다. 삭제 하시겠습니까?')
+   	    	if(isDel == false)
+   	    		return false;
+   	    	var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+   	    	var cmt_content = $(this).parent().siblings('.comment-content-box').find('.comment-content').val();
+   	    	var cmt_isDel = 'Y';
+   	    	var clickPoint = $(this);
+   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+   	    	$.ajax({
+				url : '<%=request.getContextPath()%>/modify/comment',
+				async:false,
+				type : 'post',
+				data : JSON.stringify(sendData),
+				dataType:"json",
+		        contentType:"application/json; charset=UTF-8",
+				success : function(data){
+					if(data.result == 'notComment')
+						alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+					else if(data.result == 'success'){
+						alert('삭제 처리 되었습니다.')
+						$(clickPoint).parents('.comment').siblings('.reply').show();
+						$(clickPoint).parents('.comment').remove();
+					}
+				},
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
+			})
+   	    	
+   	    })
+   	    // 답글에 수정 버튼 클릭시   	    
+   	    $('.comment-modify-btn').click(function(){
+   	    	// 답글 수정창은 나태내고, 답글내용창과 답글버튼창은 숨기기
+   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-modify-box').show();
+   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-content').hide();
+   	    	$(this).parents('.comment-btn-box').hide();
+   	    	// 취소버튼 클릭시 원래대로 되돌리기
+   	    	$('.comment-modiCancel-btn').click(function(){
+   	    		$(this).parents('.comment-content-box').siblings('.comment-btn-box').show();
+   	    		$(this).parents('.comment-content-box').find('.comment-content').show();
+   	    		$(this).parents('.comment-modify-box').hide();
+   	    	})
+   	    	// 수정버튼 클릭시 ajax를 이용하여 내용처리
+   	    	$('.comment-modify-send-btn').click(function(){
+   	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+   	    		var cmt_content = $(this).parents('.comment-modify-box').find('.comment-modify-content').val();
+   	    		var cmt_isDel = 'N'
+   	    		var clickPoint = $(this);
+   	   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+   	   	    	$.ajax({
+   					url : '<%=request.getContextPath()%>/modify/comment',
+   					async:false,
+   					type : 'post',
+   					data : JSON.stringify(sendData),
+   					dataType:"json",
+   			        contentType:"application/json; charset=UTF-8",
+   					success : function(data){
+   						if(data.result == 'notComment')
+   							alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+   						else if(data.result == 'success'){
+   							$(clickPoint).parents('.comment-content-box').find('.comment-content').text(cmt_content);
+   							$(clickPoint).parents('.comment-content-box').find('.comment-content').show();
+   							$(clickPoint).parents('.comment-content-box').siblings('.comment-btn-box').show();
+   							$(clickPoint).parents('.comment-modify-box').hide();
+   						}
+   					},
+   		   	     	error: function(error) {
+   		   	        	console.log('에러발생');
+   		   	    	}
+   				})
+   	    	})
+   	    })
+   	    
+   	    
+   	    // 답글 버튼 숨기기
+   	    $('.content-box').each(function(){
+   	    	var tmp = $(this).find('.comment-content').text();
+	    	if(tmp !== ''){
+	    		$(this).find('.reply').css('display', 'none');
+	    	}
+	    })
 	    // 찜하기 버튼 클릭시
 	    var interest = ${interestPd.itpd_selected}
 	    $('.middle-box .btn-box .selected-btn').click(function(){

@@ -40,4 +40,8 @@ public interface ProductService {
 
 	ArrayList<CommentVo> getCommentList(int pd_num);
 
+	CommentVo getComment(int cmt_bo_num);
+
+	String modifyComment(CommentVo comment);
+
 }
