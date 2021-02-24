@@ -154,4 +154,11 @@ public class ProductServiceImp implements ProductService {
 		checkComment = productDao.selectComment(comment.getCmt_bo_num());
 		return "success";
 	}
+	// 상품문의글 번호와 일치하는 상품문의글 가져오기
+	@Override
+	public ProductQuestionsVo getProductQuestions(int bo_num) {
+		ProductQuestionsVo questions = productDao.selectgetProductQuestions(bo_num);
+		questions.setSt_img(productDao.selectProductQuestionsImg(questions.getBo_mb_id()));
+		return questions;
+	}
 }

@@ -142,10 +142,18 @@ public class ProductController {
 	@RequestMapping(value = "/product/questions", method = RequestMethod.POST)
 	@ResponseBody
 	public Object productQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		MemberVo member = standService.getMemberId(request);
 		board.setBo_mb_id(member.getMb_id());
 		productService.setProductQuestions(board);
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 상품문의글 번호와 일치하는 상품문의글 가져오기
+		ProductQuestionsVo questions = productService.getProductQuestions(board.getBo_num());
+		System.out.println(questions);
+		map.put("bo_content", questions.getBo_content());
+		map.put("bo_mb_id", questions.getBo_mb_id());
+		map.put("bo_registerDate", questions.getBo_registerDate());
+		map.put("st_img", questions.getSt_img());
+		map.put("bo_num", questions.getBo_num());
 		return map;
 	}
 	// 상품문의에 등록된 글 수정하는 기능
@@ -153,7 +161,6 @@ public class ProductController {
 	@ResponseBody
 	public Object mondifyProductQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		System.out.println(board);
 		// 로그인 된 회원정보를 가져옴
 		MemberVo member = standService.getMemberId(request);
 		if(member == null) {
@@ -199,7 +206,6 @@ public class ProductController {
 	@ResponseBody
 	public Object modifyCommentPost(@RequestBody CommentVo comment) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		System.out.println(comment);
 		String result = productService.modifyComment(comment);
 		
 		map.put("result", result);

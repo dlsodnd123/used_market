@@ -44,4 +44,6 @@ public interface ProductService {
 
 	String modifyComment(CommentVo comment);
 
+	ProductQuestionsVo getProductQuestions(int bo_num);
+
 }

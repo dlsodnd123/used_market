@@ -51,4 +51,6 @@ public interface ProductDao {
 
 	void updateComment(@Param("comment")CommentVo comment);
 
+	ProductQuestionsVo selectgetProductQuestions(@Param("bo_num")int bo_num);
+
 }

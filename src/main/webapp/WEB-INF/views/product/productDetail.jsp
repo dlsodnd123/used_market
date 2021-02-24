@@ -114,6 +114,7 @@
         }
         .question .content-box:last-child{
             border-bottom: 1px solid #dae0e5;
+            margin-bottom: 10px;
         }
         .question .content-box .stand-img{
             width: 60px;
@@ -155,13 +156,19 @@
         .question .content-box .btn-box .btn:last-child{
         	margin-right: 0;
         }
-        .question .content-box .modify-btn-box{
+        .question .content-box .modify-btn-box{        	
         	float: right;
-        	margin-top: 10px;
+        	margin-top: 10px;        	
         }
         .question .register-box{
             padding: 25px 0;
-            border-bottom: 1px solid #dae0e5;
+            margin-bottom: 20px;
+            border-top: 1px solid #dae0e5;
+        }
+        .question .register-box .register-title{
+        	margin-bottom: 10px;
+        	font-size: 15px;
+        	font-weight: 700;
         }
         .question .register-box .btn-box{
            float: right;
@@ -420,27 +427,26 @@
 	                    	<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>
                     	</div>
                    	</div>
-                   	
                    	<c:if test="${product.pd_mb_id == member.mb_id}">
-                   	
 	                    <div class="btn-box reply after">
 	                   		<div>
 	                    		<button type="button" class="btn btn-light question-comment-btn">답글</button>
 	                   		</div>
 	                   	</div>
-	                   	
-                   	</c:if>
-                   	                	
+                   	</c:if>   	
                  	<input type="hidden" name="bo_num" value="${boardList.bo_num}">
                  </div>
              </c:forEach>
-                <div class="register-box after">
-                    <textarea class="form-control" rows="3" id="content" style="resize: none;"></textarea>
-                    <div class="btn-box">
-                        <button type="button" class="btn btn-light">등록</button>
-                        <input type="hidden" name="bo_type" value="4">
-                    </div>
-                </div>
+             	<c:if test="${product.pd_mb_id != member.mb_id}">
+	                <div class="register-box after">
+	                	<div class="register-title">문의글 남기기</div>
+	                    <textarea class="form-control register-content" rows="3" id="content" style="resize: none;"></textarea>
+	                    <div class="btn-box">
+	                        <button type="button" class="btn btn-light">등록</button>
+	                        <input type="hidden" name="bo_type" value="4">
+	                    </div>
+	                </div>
+                </c:if>
             </div>
           </div>
           <div id="menu2" class="container tab-pane fade"><br>
@@ -498,6 +504,11 @@
      	}
 	    // 상품문의 탭에서 등록버튼 클릭시
 	    $('.register-box .btn').click(function(){
+	    	var textLength = $('.register-content').val();
+	    	if(textLength == ''){
+	    		alert('1글자 이상 입력해야 합니다.')
+	    		return false;
+	    	}	    	
 	    	var bo_pd_num = ${product.pd_num}
 	     	var bo_content = $('#content').val();
 	     	var bo_type = $('input[name=bo_type]').val();
@@ -510,76 +521,72 @@
 				dataType:"json",
 		        contentType:"application/json; charset=UTF-8",
 				success : function(data){
-					
+					// 상품문의 글 등록 성공시 문의등록창의 내용을 지워주고 등록된 글 화면에 나타내기
+					$('.register-content').val('');
+					console.log(data.bo_content);
+					console.log(data.bo_mb_id);
+					console.log(data.bo_registerDate);
+					console.log(data.st_img);					
+					$('.register-box').before('<div class="content-box after"></div>');
+					$('.content-box').last().append('<img src="/usedmarket/resources/stand_img/' + data.st_img +'" alt="" class="stand-img">');
+					$('.content-box').last().append('<div class="info-box"></div');
+					$('.content-box').last().find('.info-box').append('<div class="stand_name">' + data.bo_mb_id  + '</div>');
+					$('.content-box').last().find('.info-box').append('<div class="question-regTime">' + data.bo_registerDate + '</div>')
+					$('.content-box').last().find('.info-box').append('<textarea class="content" rows="2" style="resize: none;" readonly="">'+ data.bo_content +'</textarea>')
+					$('.content-box').last().find('.info-box').append('<div class="modify-box"></div>');
+					$('.content-box').last().find('.modify-box').append('<textarea class="form-control" rows="2" id="modify-content" style="resize: none;">' + data.bo_content + '</textarea>');
+					$('.content-box').last().find('.modify-box').append('<div class="modify-btn-box"></div>');
+					$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light confirm-btn">확인</button>');
+					$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light cancel-btn">취소</button>');
+					$('.content-box').last().append('<div class="btn-box after"></div>');
+					$('.content-box').last().find('.btn-box').append('<div></div>');
+					$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-del-btn">삭제</button>');
+					$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-modify-btn">수정</button>');
+					$('.content-box').last().append('<div class="comment-rigister-box"></div>');
+					$('.content-box').last().find('.comment-rigister-box').append('<textarea class="form-control comment-register-content" rows="2" style="resize: none;"></textarea>');
+					$('.content-box').last().find('.comment-rigister-box').append('<div class="comment-regBtn-box"></div>');
+					$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-register-btn">등록</button>');
+					$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>');
+					$('.content-box').last().append('<input type="hidden" name="bo_num" value="' + data.bo_num + '">');
+					eventQuestionsDelBtn($('.content-box').last().find('.question-del-btn'));  
+					eventQuestionsModifyBtn($('.content-box').last().find('.question-modify-btn'));
+               	
 				},
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');
 	   	    	}
 			})
 	    })
-	    // 상품문의 탭의 등록된 문의글에 수정버튼 클릭시
-   	    $('.question-modify-btn').click(function(){  	    		
-   	    	// 내용수정 박스 보여주고, 내용이랑 수정버튼 박스 숨기기
-			$(this).parents('.btn-box').siblings('.info-box').children('.modify-box').show();
-   	    	$(this).parents('.btn-box').siblings('.info-box').children('.content').hide();
-			$(this).parents('.btn-box').hide();
-   	    	//취소버튼 클릭시 내용수정 숨기고, 내용이랑 수정버튼 박스 보여주기
-   	    	$('.modify-btn-box .cancel-btn').click(function(){
-   	    		$(this).parents('.modify-box').hide();
-   	    		$(this).parents('.info-box').children('.content').show();
-   	    		$(this).parents('.info-box').siblings('.btn-box').show();
-   	    	})
-   	    	//확인버튼 클릭시
-   	    	$('.modify-btn-box .confirm-btn').click(function(){
-   	    		// 문의번호, 작성자, 상품번호, 게시글타입, 내용을 ajax로 서버에 전달
-   	    		var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
-   	    		var bo_mb_id = $(this).parents('.info-box').children('.stand_name').text();
-   	    		var bo_pd_num = ${product.pd_num}
-   	    		var bo_type = $('input[name=bo_type]').val();
-   	    		var bo_content = $(this).parents('.modify-box').find('textarea[id=modify-content]').val();
-   	    		var bo_isDel = 'N'
-   	    		var sendData = {'bo_num' : bo_num, 'bo_mb_id' : bo_mb_id, 'bo_pd_num' : bo_pd_num, 
-   	    						'bo_type' : bo_type, 'bo_content' : bo_content, 'bo_isDel' : bo_isDel}
-   	    		var clickPoint = $(this);
-   	    		$.ajax({
-    				url : '<%=request.getContextPath()%>/modify/product/questions',
-    				async:false,
-    				type : 'post',
-    				data : JSON.stringify(sendData),
-    				dataType:"json",
-    		        contentType:"application/json; charset=UTF-8",
-    				success : function(data){
-    					if(data.result == 'memberDifferent' || data.result == 'notLogin')
-    						alert('수정 권한이 없습니다.');
-    					else if(data.result == 'notInfo')
-    						alert('존재하지 않는 상품문의 글입니다.');
-    					else{
-    						// var bo_content에 있는 내용을 contnet에 넣어주고, modify-box는 숨기고, btn-box는 보여주기 
-    						$(clickPoint).parents('.info-box').find('.content').html(bo_content);
-    						$(clickPoint).parents('.info-box').find('.modify-box').hide();
-    						$(clickPoint).parents('.info-box').find('.content').show();
-    						$('.question .btn-box').show();
-    					}
-    				},
-    	   	     	error: function(error) {
-    	   	        	console.log('에러발생');
-    	   	    	}
-    			})
-   	    	})
-   	    })
-   	    // 상품문의 탭의 등록된 문의글에 삭제 버튼 클릭시
-   	    $('.question-del-btn').click(function(){
-   	    	var deltmp = confirm('상품문의글이 삭제 됩니다. 삭제 하시겠습니까?')
-   	    	if(deltmp){   	    		
+	    // 상품문의글 수정 버튼 클릭시
+	    eventQuestionsModifyBtn($('.question-modify-btn'));
+	    // 상품문의글 수정 버튼 함수
+	    function eventQuestionsModifyBtn(obj){	    	
+		    // 상품문의 탭의 등록된 문의글에 수정버튼 클릭시
+	   	    obj.click(function(){  	    		
+	   	    	// 내용수정 박스 보여주고, 내용이랑 수정버튼 박스 숨기기
+				$(this).parents('.btn-box').siblings('.info-box').children('.modify-box').show();
+	   	    	$(this).parents('.btn-box').siblings('.info-box').children('.content').hide();
+				$(this).parents('.btn-box').hide();   	    	
+	   	    })
+	   	    //문의글 수정의 취소버튼 클릭시 내용수정 숨기고, 내용이랑 수정버튼 박스 보여주기
+	   	    $('.modify-btn-box .cancel-btn').click(function(){
+	   	    		$(this).parents('.modify-box').hide();
+	   	    		$(this).parents('.info-box').children('.content').show();
+	   	    		$(this).parents('.info-box').siblings('.btn-box').show();
+	   	    })	
+	   	    //문의글 수정의 확인버튼 클릭시
+	   	    $('.modify-btn-box .confirm-btn').click(function(){
+	   	  		// 문의번호, 작성자, 상품번호, 게시글타입, 내용을 ajax로 서버에 전달
 	   	    	var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
-		    	var bo_mb_id = $(this).parents('.btn-box').siblings('.info-box').children('.stand_name').text();
-		    	var bo_pd_num = ${product.pd_num}
-		    	var bo_type = $('input[name=bo_type]').val();
-		    	var bo_content = $(this).parents('.btn-box').siblings('.info-box').children('.content').text();
-		    	var bo_isDel = 'Y'
-		    	var sendData = {'bo_num' : bo_num, 'bo_mb_id' : bo_mb_id, 'bo_pd_num' : bo_pd_num, 
-   	    						'bo_type' : bo_type, 'bo_content' : bo_content, 'bo_isDel' : bo_isDel}
-		    	$.ajax({
+	    		var bo_mb_id = $(this).parents('.info-box').children('.stand_name').text();
+	    		var bo_pd_num = ${product.pd_num}
+	    		var bo_type = $('input[name=bo_type]').val();
+	    		var bo_content = $(this).parents('.modify-box').find('textarea[id=modify-content]').val();
+	    		var bo_isDel = 'N'
+	    		var sendData = {'bo_num' : bo_num, 'bo_mb_id' : bo_mb_id, 'bo_pd_num' : bo_pd_num, 
+	    						'bo_type' : bo_type, 'bo_content' : bo_content, 'bo_isDel' : bo_isDel}
+	    		var clickPoint = $(this);
+	    		$.ajax({
 					url : '<%=request.getContextPath()%>/modify/product/questions',
 					async:false,
 					type : 'post',
@@ -588,31 +595,77 @@
 			        contentType:"application/json; charset=UTF-8",
 					success : function(data){
 						if(data.result == 'memberDifferent' || data.result == 'notLogin')
-							alert('삭제 권한이 없습니다.');
+							alert('수정 권한이 없습니다.');
 						else if(data.result == 'notInfo')
 							alert('존재하지 않는 상품문의 글입니다.');
-						else{							
-							alert('삭제 처리 되었습니다.');
+						else{
+							// var bo_content에 있는 내용을 contnet에 넣어주고, modify-box는 숨기고, btn-box는 보여주기 
+							$(clickPoint).parents('.info-box').find('.content').html(bo_content);
+							$(clickPoint).parents('.info-box').find('.modify-box').hide();
+							$(clickPoint).parents('.info-box').find('.content').show();
+							$('.question .btn-box').show();
 						}
 					},
 		   	     	error: function(error) {
 		   	        	console.log('에러발생');
 		   	    	}
 				})
-   	    	}
-   	    })
+	    	})
+	    }
+	    
+    	// 상품문의글 삭제 버튼 클릭시
+    	eventQuestionsDelBtn($('.question-del-btn'));
+   	    // 상품문의글 삭제 버튼 함수
+    	function eventQuestionsDelBtn(obj){
+	    	obj.click(function(){
+	   	    	var deltmp = confirm('상품문의글이 삭제 됩니다. 삭제 하시겠습니까?')
+	   	    	if(deltmp){   	    		
+		   	    	var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+			    	var bo_mb_id = $(this).parents('.btn-box').siblings('.info-box').children('.stand_name').text();
+			    	var bo_pd_num = ${product.pd_num}
+			    	var bo_type = $('input[name=bo_type]').val();
+			    	var bo_content = $(this).parents('.btn-box').siblings('.info-box').children('.content').text();
+			    	var bo_isDel = 'Y'
+			    	var sendData = {'bo_num' : bo_num, 'bo_mb_id' : bo_mb_id, 'bo_pd_num' : bo_pd_num, 
+	   	    						'bo_type' : bo_type, 'bo_content' : bo_content, 'bo_isDel' : bo_isDel}
+			    	var clickPoint = $(this);
+			    	$.ajax({
+						url : '<%=request.getContextPath()%>/modify/product/questions',
+						async:false,
+						type : 'post',
+						data : JSON.stringify(sendData),
+						dataType:"json",
+				        contentType:"application/json; charset=UTF-8",
+						success : function(data){
+							if(data.result == 'memberDifferent' || data.result == 'notLogin')
+								alert('삭제 권한이 없습니다.');
+							else if(data.result == 'notInfo')
+								alert('존재하지 않는 상품문의 글입니다.');
+							else{							
+								alert('삭제 처리 되었습니다.');
+								$(clickPoint).parents('.content-box').remove();
+							}
+						},
+			   	     	error: function(error) {
+			   	        	console.log('에러발생');
+			   	    	}
+					})
+	   	    	}
+	   	    })
+	    }
    	    // 답글 버튼 클릭시 
    	    // 답글 입력창이 나타나고 답글 버튼은 숨긴다
    	    $('.question-comment-btn').click(function(){
    	    	$(this).parents('.btn-box').siblings('.comment-rigister-box').show();
    	    	$(this).parents('.btn-box').hide();
-   	    	// 취소버튼 클릭시 원래대로 돌아가기
-   	    	$('.comment-regCancel-btn').click(function(){  
+   	    })
+   	    // 답글에 있는 취소버튼 클릭시 원래대로 돌아가기
+   	    $('.comment-regCancel-btn').click(function(){  
 	   	    	$(this).parents('.comment-rigister-box').hide();
 	   	    	$(this).parents('.comment-rigister-box').siblings('.reply').show();
-   	    	})
-   	    	// 등록버튼 클릭시 ajax를 이용해 서버로 데이터 전송하기
-   	    	$('.comment-register-btn').click(function(){
+   	    })
+   	    // 등록버튼 클릭시 ajax를 이용해 서버로 데이터 전송하기
+   	    $('.comment-register-btn').click(function(){
    	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
    	    		var cmt_pd_num = ${product.pd_num}
    	    		var cmt_content = $(this).parents('.comment-rigister-box').find('.comment-register-content').val();   	    		
@@ -634,6 +687,7 @@
 							alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
 						else if(data.result == 'success'){
 							// 등록 성공시 답글 등록창은 숨기고, 등록한 답글을 나타내는 html코드 삽입
+							$(clickPoint).parents('.comment-rigister-box').find('.comment-register-content').val('')
 							$(clickPoint).parents('.comment-rigister-box').hide();
 							$(clickPoint).parents('.comment-rigister-box').before('<div class="comment after"></div>');
 							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').append('<div class="comment-info-box after"></div>');
@@ -645,94 +699,107 @@
 							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-info-box').append('<div class="comment-content-box"></div>');
 							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-content-box').append('<textarea class="comment-content" rows="2" style="resize: none;" readonly>'+ data.cmt_content +'</textarea>');
 							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-content-box').append('<div class="comment-modify-box"></div>');
-							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-box').append('<textarea class="comment-content comment-modify-content" rows="2" style="resize: none;">'+ data.cmt_content +'</textarea>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-box').append('<textarea class="form-control comment-modify-content" rows="2" style="resize: none;">'+ data.cmt_content +'</textarea>');
 							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-box').append('<div class="comment-modiBtn-box"><div>');					
-							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light confirm-btn">확인</button>');
-							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light cancel-btn">취소</button>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light comment-modify-send-btn">수정</button>');
+							$(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modiBtn-box').append('<button type="button" class="btn btn-light comment-modiCancel-btn">취소</button>');
+							
+							eventRegModifyBtn($(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-modify-btn'));
+							eventDelBtn($(clickPoint).parents('.comment-rigister-box').siblings('.comment').find('.comment-del-btn'));
 						}
 					},
 		   	     	error: function(error) {
 		   	        	console.log('에러발생');
 		   	    	}
 				})   	    		
-   	    	})
-   	    })
-   	    // 답글에 삭제 버튼 클릭시
-   	    $('.comment-del-btn').click(function(){
-   	    	var isDel = confirm('해당답글이 삭제 됩니다. 삭제 하시겠습니까?')
-   	    	if(isDel == false)
-   	    		return false;
-   	    	var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
-   	    	var cmt_content = $(this).parent().siblings('.comment-content-box').find('.comment-content').val();
-   	    	var cmt_isDel = 'Y';
-   	    	var clickPoint = $(this);
-   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
-   	    	$.ajax({
-				url : '<%=request.getContextPath()%>/modify/comment',
-				async:false,
-				type : 'post',
-				data : JSON.stringify(sendData),
-				dataType:"json",
-		        contentType:"application/json; charset=UTF-8",
-				success : function(data){
-					if(data.result == 'notComment')
-						alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
-					else if(data.result == 'success'){
-						alert('삭제 처리 되었습니다.')
-						$(clickPoint).parents('.comment').siblings('.reply').show();
-						$(clickPoint).parents('.comment').remove();
-					}
-				},
-	   	     	error: function(error) {
-	   	        	console.log('에러발생');
-	   	    	}
-			})
-   	    	
-   	    })
-   	    // 답글에 수정 버튼 클릭시   	    
-   	    $('.comment-modify-btn').click(function(){
-   	    	// 답글 수정창은 나태내고, 답글내용창과 답글버튼창은 숨기기
-   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-modify-box').show();
-   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-content').hide();
-   	    	$(this).parents('.comment-btn-box').hide();
-   	    	// 취소버튼 클릭시 원래대로 되돌리기
-   	    	$('.comment-modiCancel-btn').click(function(){
-   	    		$(this).parents('.comment-content-box').siblings('.comment-btn-box').show();
-   	    		$(this).parents('.comment-content-box').find('.comment-content').show();
-   	    		$(this).parents('.comment-modify-box').hide();
-   	    	})
-   	    	// 수정버튼 클릭시 ajax를 이용하여 내용처리
-   	    	$('.comment-modify-send-btn').click(function(){
-   	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
-   	    		var cmt_content = $(this).parents('.comment-modify-box').find('.comment-modify-content').val();
-   	    		var cmt_isDel = 'N'
-   	    		var clickPoint = $(this);
-   	   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
-   	   	    	$.ajax({
-   					url : '<%=request.getContextPath()%>/modify/comment',
-   					async:false,
-   					type : 'post',
-   					data : JSON.stringify(sendData),
-   					dataType:"json",
-   			        contentType:"application/json; charset=UTF-8",
-   					success : function(data){
-   						if(data.result == 'notComment')
-   							alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
-   						else if(data.result == 'success'){
-   							$(clickPoint).parents('.comment-content-box').find('.comment-content').text(cmt_content);
-   							$(clickPoint).parents('.comment-content-box').find('.comment-content').show();
-   							$(clickPoint).parents('.comment-content-box').siblings('.comment-btn-box').show();
-   							$(clickPoint).parents('.comment-modify-box').hide();
-   						}
-   					},
-   		   	     	error: function(error) {
-   		   	        	console.log('에러발생');
-   		   	    	}
-   				})
-   	    	})
-   	    })
+   	    	})	
    	    
+   	    // 답글 삭제 버튼 클릭시
+   	    eventDelBtn($('.comment-del-btn'));
    	    
+   	    // 답글 삭제 함수
+   	    function eventDelBtn(obj){
+	    	obj.click(function(){
+	   	    	console.log(123);
+	   	    	var isDel = confirm('해당답글이 삭제 됩니다. 삭제 하시겠습니까?')
+	   	    	if(isDel == false)
+	   	    		return false;
+	   	    	var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+	   	    	var cmt_content = $(this).parent().siblings('.comment-content-box').find('.comment-content').val();
+	   	    	var cmt_isDel = 'Y';
+	   	    	var clickPoint = $(this);
+	   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+	   	    	$.ajax({
+					url : '<%=request.getContextPath()%>/modify/comment',
+					async:false,
+					type : 'post',
+					data : JSON.stringify(sendData),
+					dataType:"json",
+			        contentType:"application/json; charset=UTF-8",
+					success : function(data){
+						if(data.result == 'notComment')
+							alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+						else if(data.result == 'success'){
+							alert('삭제 처리 되었습니다.')
+							$(clickPoint).parents('.comment').siblings('.reply').show();
+							$(clickPoint).parents('.comment').remove();
+						}
+					},
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
+				})
+	   	    	
+	   	    })
+	    }
+   	    
+   	 	eventRegModifyBtn($('.comment-modify-btn'));
+	    // 답글 수정 함수
+   	    function eventRegModifyBtn(obj){
+	    	// 답글에 수정 버튼 클릭시   	    
+	   	    obj.click(function(){
+	   	    	// 답글 수정창은 나태내고, 답글내용창과 답글버튼창은 숨기기
+	   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-modify-box').show();
+	   	    	$(this).parents('.comment-btn-box').siblings('.comment-content-box').find('.comment-content').hide();
+	   	    	$(this).parents('.comment-btn-box').hide();	   	    	
+	   	    })
+	   	    // 취소버튼 클릭시 원래대로 되돌리기
+	   	    $('.comment-modiCancel-btn').click(function(){
+	   	    		$(this).parents('.comment-content-box').siblings('.comment-btn-box').show();
+	   	    		$(this).parents('.comment-content-box').find('.comment-content').show();
+	   	    		$(this).parents('.comment-modify-box').hide();
+	   	    })	
+	   	    // 수정버튼 클릭시 ajax를 이용하여 내용처리
+	   		$('.comment-modify-send-btn').click(function(){
+	    		var cmt_bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
+	    		var cmt_content = $(this).parents('.comment-modify-box').find('.comment-modify-content').val();
+	    		var cmt_isDel = 'N'
+	    		var clickPoint = $(this);
+	   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+	   	    	$.ajax({
+					url : '<%=request.getContextPath()%>/modify/comment',
+					async:false,
+					type : 'post',
+					data : JSON.stringify(sendData),
+					dataType:"json",
+			        contentType:"application/json; charset=UTF-8",
+					success : function(data){
+						if(data.result == 'notComment')
+							alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+						else if(data.result == 'success'){
+							$(clickPoint).parents('.comment-content-box').find('.comment-content').text(cmt_content);
+							$(clickPoint).parents('.comment-content-box').find('.comment-content').show();
+							$(clickPoint).parents('.comment-content-box').siblings('.comment-btn-box').show();
+							$(clickPoint).parents('.comment-modify-box').hide();
+						}
+					},
+		   	     	error: function(error) {
+		   	        	console.log('에러발생');
+		   	    	}
+				})
+	    	})		
+	    }
+	    
    	    // 답글 버튼 숨기기
    	    $('.content-box').each(function(){
    	    	var tmp = $(this).find('.comment-content').text();
