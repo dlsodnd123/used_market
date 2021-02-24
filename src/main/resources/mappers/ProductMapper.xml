@@ -102,4 +102,22 @@
 	<select id="selectgetProductQuestions" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
 		select * from board where bo_num = #{bo_num}
 	</select>
+<!-- 조회수를 증가시키는 쿼리문 -->
+	<update id="updateViews">
+		update product set pd_views = pd_views + 1 where pd_num = #{pd_num}
+	</update>
+<!-- 관심수의 갯수를 구하는 쿼리문 -->
+	<select id="selectInterestCnt" resultType="int">
+		select count(*) from interest_product where itpd_pd_num = #{pd_num} and itpd_selected = 1
+	</select>
+<!-- 관심수를 업데이트하는 쿼리문 -->
+	<update id="updateIntersetCnt">
+		update product set pd_interestCnt = #{interestCnt} where pd_num = #{pd_num}
+	</update>
+
+
+
+
+
+
 </mapper>

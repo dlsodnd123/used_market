@@ -102,6 +102,8 @@ public class ProductController {
 		MemberVo member = standService.getMemberId(request);
 		// 상품번호와 일치하는 상품이미지들 가져오기
 		String [] productImgList = productService.getImgList(pd_num);
+		// 상품번호와 일치하는 상품의 조회수를 증가시키기
+		productService.setViews(pd_num);
 		// 상품번호와 일치하는 상품 가져오기
 		ProductVo product = standService.getProduct(pd_num);
 		// 상품등록한 ID와 일치하는 상품정보 가져오기
@@ -148,7 +150,6 @@ public class ProductController {
 		productService.setProductQuestions(board);
 		// 상품문의글 번호와 일치하는 상품문의글 가져오기
 		ProductQuestionsVo questions = productService.getProductQuestions(board.getBo_num());
-		System.out.println(questions);
 		map.put("bo_content", questions.getBo_content());
 		map.put("bo_mb_id", questions.getBo_mb_id());
 		map.put("bo_registerDate", questions.getBo_registerDate());
@@ -214,16 +215,23 @@ public class ProductController {
 	// 찜하기 기능
 	@RequestMapping(value = "/product/interest", method = RequestMethod.POST)
 	@ResponseBody
-	public String productInterestPost(int pd_num, HttpServletRequest request) {
+	public Object productInterestPost(@RequestBody ProductVo productNum, HttpServletRequest request) {
+		System.out.println(productNum);
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		// 로그인 정보가 없으면 화면에 'Not login' 이라고 전송
 		if(member == null) {
-			return "notLogin";
+			map.put("result", "notLogin");
+			return map;
 		}
 		// 로그인 정보가 있으면 회원정보와 상품번호로 찜하기 기능실행
-		String result = productService.setProductInterest(member, pd_num);
-		return result;
+		String result = productService.setProductInterest(member, productNum.getPd_num());
+		map.put("result", result);
+		// 상품번호와 일치하는 상품 가져오기와서 관심수 화면으로 보내주기
+		ProductVo product = standService.getProduct(productNum.getPd_num());
+		map.put("pd_interestCnt", product.getpd_interestCnt());
+		return map;
 	}
 	// 판매여부를 변경하는 기능
 	@RequestMapping(value = "/modify/detail/isSale", method = RequestMethod.POST)

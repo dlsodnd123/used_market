@@ -53,4 +53,12 @@ public interface ProductDao {
 
 	ProductQuestionsVo selectgetProductQuestions(@Param("bo_num")int bo_num);
 
+	void updateViews(@Param("pd_num")int pd_num);
+
+	int selectInterestCnt(@Param("pd_num")int pd_num);
+
+	void updateIntersetCnt(@Param("interestCnt")int interestCnt);
+
+	void updateIntersetCnt(@Param("interestCnt")int interestCnt, @Param("pd_num")int pd_num);
+
 }

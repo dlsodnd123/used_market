@@ -313,7 +313,7 @@
             </div>
             <div class="middle-box">
                 <div class="info-box">
-                    <div class="info interest">관심 ${product.pd_count}</div>
+                    <div class="info interest">관심 ${product.pd_interestCnt}</div>
                     <div class="info views">조회 ${product.pd_views}</div>
                     <div class="info registerDate">등록일 ${product.pd_registerDate}</div>
                 </div>
@@ -820,25 +820,30 @@
 	      		return false;
 	     	}
 	     	var pd_num = ${product.pd_num}
-	     	var data = {'pd_num' : pd_num }
+	     	var sendData = {'pd_num' : pd_num}
 	     	$.ajax({
-    	        type:'post',
-    	        data:data,
-    	        url:'<%=request.getContextPath()%>/product/interest',
-    	        success : function(data){
-    	        	if(data == 'notLogin'){
+	     		url : '<%=request.getContextPath()%>/product/interest',
+				async:false,
+				type : 'post',
+				data : JSON.stringify(sendData),
+				dataType:"json",
+		        contentType:"application/json; charset=UTF-8",
+				success : function(data){
+    	        	if(data.result == 'notLogin'){
     	        		var login = confirm('로그인 후 이용가능 합니다. 로그인 하시겠습니까?')
     	        		if(login)
     	        			location.href = '<%=request.getContextPath()%>/login'
-    	        	}else if(data == 'interest'){
+    	        	}else if(data.result == 'interest'){
     	        		alert('찜하였습니다.')
     	        		$('.middle-box .btn-box .selected-btn>i').removeClass('far').addClass('fas')
     	        		interest = 1
-    	        	}else if(data == 'cancelInterest'){
+    	        	}else if(data.result == 'cancelInterest'){
     	        		alert('찜을 취소하였습니다.')
     	        		$('.middle-box .btn-box .selected-btn>i').removeClass('fas').addClass('far')
     	        		interest = 0
     	        	}
+    	        	$('.interest').remove();
+    	        	$('.views').before('<div class="info interest">관심 ' + data.pd_interestCnt + '</div>')
     	        },
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');

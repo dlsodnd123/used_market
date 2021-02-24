@@ -95,6 +95,9 @@ public class ProductServiceImp implements ProductService {
 				result = "cancelInterest";
 			}
 		}
+		int interestCnt = productDao.selectInterestCnt(pd_num);
+		System.out.println(interestCnt);
+		productDao.updateIntersetCnt(interestCnt, pd_num);
 		return result;
 	}
 	// 유저 정보와 일치하는 찜정보 가져오기
@@ -160,5 +163,10 @@ public class ProductServiceImp implements ProductService {
 		ProductQuestionsVo questions = productDao.selectgetProductQuestions(bo_num);
 		questions.setSt_img(productDao.selectProductQuestionsImg(questions.getBo_mb_id()));
 		return questions;
+	}
+	// 상품번호와 일치하는 상품의 조회수를 증가시키기 
+	@Override
+	public void setViews(int pd_num) {
+		productDao.updateViews(pd_num);		
 	}
 }

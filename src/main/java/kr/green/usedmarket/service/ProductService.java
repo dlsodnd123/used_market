@@ -46,4 +46,6 @@ public interface ProductService {
 
 	ProductQuestionsVo getProductQuestions(int bo_num);
 
+	void setViews(int pd_num);
+
 }
