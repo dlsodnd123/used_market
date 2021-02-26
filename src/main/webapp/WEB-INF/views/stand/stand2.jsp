@@ -221,13 +221,13 @@
     <div class="container stand-middle">
        	<!-- Nav tabs -->
        	<ul class="nav nav-tabs" role="tablist">
-         	<li class="nav-item mgtPd">
+         	<li class="nav-item">
            		<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록/관리(${productCount})</a>
          	</li>
-         	<li class="nav-item sale">
+         	<li class="nav-item">
            		<a class="nav-link salePd-tab" data-toggle="tab" href="#menu1">판매한상품(${saleProductCount})</a>
          	</li>
-         	<li class="nav-item dibs">
+         	<li class="nav-item">
            		<a class="nav-link dibsPd-tab" data-toggle="tab" href="#menu2">찜한상품(${dibsPdCnt})</a>
          	</li>
          	<li class="nav-item">
@@ -468,8 +468,9 @@
    	    		if(checkSelect){
    	    			pd_num.push($('input[name=dibspd-num]').eq(i).val());
    	    		}
-   	    	}
+   	   	    }
    	    	var sendData = {'pd_num' : pd_num}
+   	    	console.log(sendData);
    	    	$.ajax({
 	     		url : '<%=request.getContextPath()%>/del/dbisProduct',
 				async:false,
@@ -481,31 +482,27 @@
 				success : function(data){
 					console.log(data)
     	        	if(data.result == 'nonInfo')
-    	        		alert('이미 찜이 취소되었거나 해당 정보가 없습니다.')  
-    	        		
+    	        		alert('이미 찜이 취소되었거나 해당 정보가 없습니다.')
     	        	$('.dibsPd-tab').remove();
+    	        	$('.nav-item').eq(2).append('<a class="nav-link dibsPd-tab active" data-toggle="tab" href="#menu2">찜한상품(' + data.dibsPdCnt + ')</a>');
+  	      
     	        	$('.dibs-info-box').remove();
-    	        	$('.dibs').append('<a class="nav-link dibsPd-tab active" data-toggle="tab" href="#menu2">찜한상품(' + data.dibsPdCnt + ')</a>');
-    	        	for(var i=0; i<data.dibsList.length; i++) {
-	    	        	var str = '';
-	    	        	str += '<div class="dibs-info-box">'
-	           			str += '<div class="dibs-check-box">'
-	           			str += '<i class="fas fa-check-circle"></i>'
-	           			str += '</div>'
-	           			str += '<div class="dibs-img-box">'
-	           			str += '<a href="#"><img alt="" src="/usedmarket/resources/product_img/'+ data.dibsList[i].st_img+'"></a>'
-	           			str += '</div>'
-	           			str += '<div class="dibs-content-box">'
-	           			str += '<div class="dibs-title"><a href="#">' + data.dibsList[i].pd_title + '</a></div>'
-	           			str += '<div class="dibs-price">' + data.dibsList[i].pd_price + '원</div>'
-	           			str += '<div class="dibs-regTime">' + data.dibsList[i].pd_registerDate + '</div>'
-	           			str += '<div class="dibs-deal">거래방법 ' + data.dibsList[i].pd_deal + '</div>'
-		           		str += '</div>'
-			           	str += '<input type="hidden" name="dibspd-num" value="'+ data.dibsList[i].pd_num + '">'
-		           		str += '</div>'
-	           			$('#menu2').append(str);
-    	        	}
-				},
+    	        	$('.dibs-selectBtn-box').after('<c:forEach items="' + ${data.dibsList} + '" var="dibsList">');  
+    	        	$('.dibs-selectBtn-box').after('<div class="dibs-info-box"></div>');
+    	        	$('.dibs-info-box').after('.<div class="dibs-check-box"></div>');
+    	        	$('.dibs-check-box').after('<i class="fas fa-check-circle"></i>');
+    	        	$('.dibs-info-box').after('<div class="dibs-img-box"></div>');
+    	        	$('.dibs-img-box').after('<a href="#"></a>');
+    	        	$('.dibs-img-box>a').after('<img alt="" src="/usedmarket/resources/product_img/resources/product_img/$' + {dibsList.st_img} + '">');
+    	        	$('.dibs-info-box').after('<div class="dibs-content-box"></div>');
+    	        	$('.dibs-content-box').after('<div class="dibs-title"><a href="#"> ' + ${dibsList.pd_title} + '</a></div>');
+    	        	$('.dibs-content-box').after('<div class="dibs-price">' + ${dibsList.pd_price} + '원</div>');
+    	        	$('.dibs-content-box').after('<div class="dibs-regTime">' + ${dibsList.pd_registerDate} + '</div>');
+    	        	$('.dibs-content-box').after('<div class="dibs-deal">거래방법 ' + ${dibsList.pd_deal} + '</div>');
+    	        	$('.dibs-info-box').after('<input type="hidden" name="dibspd-num" value="' + ${dibsList.pd_num} + '">');
+    	        	$('.dibs-info-box').after('</c:forEach>');
+    	        	
+    	        },
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');
 	   	    	}

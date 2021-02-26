@@ -436,9 +436,9 @@
                    	</c:if>   	
                  	<input type="hidden" name="bo_num" value="${boardList.bo_num}">
                  </div>
-             </c:forEach>
-             	<c:if test="${product.pd_mb_id != member.mb_id}">
-	                <div class="register-box after">
+             </c:forEach>             	
+                <c:if test="${product.pd_mb_id != member.mb_id}">
+                	<div class="register-box after">
 	                	<div class="register-title">문의글 남기기</div>
 	                    <textarea class="form-control register-content" rows="3" id="content" style="resize: none;"></textarea>
 	                    <div class="btn-box">
@@ -502,7 +502,7 @@
 	       	}
 	       	x[slideIndex-1].style.display = "inline-block";  
      	}
-	    // 상품문의 탭에서 등록버튼 클릭시
+	    // 상품문의 탭에서 문의글남기기 등록버튼 클릭시
 	    $('.register-box .btn').click(function(){
 	    	var textLength = $('.register-content').val();
 	    	if(textLength == ''){
@@ -521,36 +521,38 @@
 				dataType:"json",
 		        contentType:"application/json; charset=UTF-8",
 				success : function(data){
-					// 상품문의 글 등록 성공시 문의등록창의 내용을 지워주고 등록된 글 화면에 나타내기
-					$('.register-content').val('');
-					console.log(data.bo_content);
-					console.log(data.bo_mb_id);
-					console.log(data.bo_registerDate);
-					console.log(data.st_img);					
-					$('.register-box').before('<div class="content-box after"></div>');
-					$('.content-box').last().append('<img src="/usedmarket/resources/stand_img/' + data.st_img +'" alt="" class="stand-img">');
-					$('.content-box').last().append('<div class="info-box"></div');
-					$('.content-box').last().find('.info-box').append('<div class="stand_name">' + data.bo_mb_id  + '</div>');
-					$('.content-box').last().find('.info-box').append('<div class="question-regTime">' + data.bo_registerDate + '</div>')
-					$('.content-box').last().find('.info-box').append('<textarea class="content" rows="2" style="resize: none;" readonly="">'+ data.bo_content +'</textarea>')
-					$('.content-box').last().find('.info-box').append('<div class="modify-box"></div>');
-					$('.content-box').last().find('.modify-box').append('<textarea class="form-control" rows="2" id="modify-content" style="resize: none;">' + data.bo_content + '</textarea>');
-					$('.content-box').last().find('.modify-box').append('<div class="modify-btn-box"></div>');
-					$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light confirm-btn">확인</button>');
-					$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light cancel-btn">취소</button>');
-					$('.content-box').last().append('<div class="btn-box after"></div>');
-					$('.content-box').last().find('.btn-box').append('<div></div>');
-					$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-del-btn">삭제</button>');
-					$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-modify-btn">수정</button>');
-					$('.content-box').last().append('<div class="comment-rigister-box"></div>');
-					$('.content-box').last().find('.comment-rigister-box').append('<textarea class="form-control comment-register-content" rows="2" style="resize: none;"></textarea>');
-					$('.content-box').last().find('.comment-rigister-box').append('<div class="comment-regBtn-box"></div>');
-					$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-register-btn">등록</button>');
-					$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>');
-					$('.content-box').last().append('<input type="hidden" name="bo_num" value="' + data.bo_num + '">');
-					eventQuestionsDelBtn($('.content-box').last().find('.question-del-btn'));  
-					eventQuestionsModifyBtn($('.content-box').last().find('.question-modify-btn'));
-               	
+					console.log(data.result)
+					if(data.result == 'notLogin'){						
+						var isLogin = confirm('로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?')
+						if(isLogin)
+							location.href = '<%=request.getContextPath()%>/login'
+					}else{						
+						// 상품문의 글 등록 성공시 문의등록창의 내용을 지워주고 등록된 글 화면에 나타내기
+						$('.register-content').val('');									
+						$('.register-box').before('<div class="content-box after"></div>');
+						$('.content-box').last().append('<img src="/usedmarket/resources/stand_img/' + data.st_img +'" alt="" class="stand-img">');
+						$('.content-box').last().append('<div class="info-box"></div');
+						$('.content-box').last().find('.info-box').append('<div class="stand_name">' + data.bo_mb_id  + '</div>');
+						$('.content-box').last().find('.info-box').append('<div class="question-regTime">' + data.bo_registerDate + '</div>')
+						$('.content-box').last().find('.info-box').append('<textarea class="content" rows="2" style="resize: none;" readonly="">'+ data.bo_content +'</textarea>')
+						$('.content-box').last().find('.info-box').append('<div class="modify-box"></div>');
+						$('.content-box').last().find('.modify-box').append('<textarea class="form-control" rows="2" id="modify-content" style="resize: none;">' + data.bo_content + '</textarea>');
+						$('.content-box').last().find('.modify-box').append('<div class="modify-btn-box"></div>');
+						$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light confirm-btn">확인</button>');
+						$('.content-box').last().find('.modify-btn-box').append('<button type="button" class="btn btn-light cancel-btn">취소</button>');
+						$('.content-box').last().append('<div class="btn-box after"></div>');
+						$('.content-box').last().find('.btn-box').append('<div></div>');
+						$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-del-btn">삭제</button>');
+						$('.content-box').last().find('.btn-box>div').append('<button type="button" class="btn btn-light question-modify-btn">수정</button>');
+						$('.content-box').last().append('<div class="comment-rigister-box"></div>');
+						$('.content-box').last().find('.comment-rigister-box').append('<textarea class="form-control comment-register-content" rows="2" style="resize: none;"></textarea>');
+						$('.content-box').last().find('.comment-rigister-box').append('<div class="comment-regBtn-box"></div>');
+						$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-register-btn">등록</button>');
+						$('.content-box').last().find('.comment-regBtn-box').append('<button type="button" class="btn btn-light comment-regCancel-btn">취소</button>');
+						$('.content-box').last().append('<input type="hidden" name="bo_num" value="' + data.bo_num + '">');
+						eventQuestionsDelBtn($('.content-box').last().find('.question-del-btn'));  
+						eventQuestionsModifyBtn($('.content-box').last().find('.question-modify-btn'));
+					}               	
 				},
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');

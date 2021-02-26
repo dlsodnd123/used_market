@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.green.usedmarket.vo.DibsVo;
+import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
@@ -34,4 +36,13 @@ public interface StandDao {
 	ArrayList<ProductVo> selectSaleProductList(@Param("mb_id")String mb_id);
 
 	int selectSaleProductCount(@Param("mb_id")String mb_id);
+
+	ArrayList<DibsVo> selectDibsPdNnm(@Param("mb_id")String mb_id);
+
+	int selectDibsPdCnt(@Param("mb_id")String mb_id);
+
+	InterestPdVo selectInterestPd(@Param("tmpPdNum")int tmpPdNum, @Param("mb_id")String mb_id);
+
+	void deleteInterestPd(@Param("tmpPdNum")int tmpPdNum, @Param("mb_id")String mb_id);
+
 }

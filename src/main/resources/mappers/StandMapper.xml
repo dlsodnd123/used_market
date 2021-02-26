@@ -55,11 +55,29 @@
 	<select id="selectSaleProductCount" resultType="int">
 		select count(*) from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N' 
 	</select>
-	
-	
-	
-	
-	
-	
-	
+<!-- 멤버 아이디와 일치하는 찜한 상품번호 가져오는 쿼리문 -->
+	<select id="selectDibsPdNnm" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from interest_product
+			join product on interest_product.itpd_pd_num = product.pd_num
+		 	where itpd_mb_id = #{mb_id};
+	</select>	
+<!-- 찜한 상품의 갯수를 가져오는 쿼리문 -->
+	<select id="selectDibsPdCnt" resultType="int">
+		select count(*) from interest_product where itpd_mb_id = #{mb_id}
+	</select>
+<!-- 상품번호와 맴버 아이디가 일치하는 찜한상품정보를 가져오는 쿼리문 -->
+	<select id="selectInterestPd" resultType="kr.green.usedmarket.vo.InterestPdVo">
+		select * from interest_product where itpd_pd_num = #{tmpPdNum} and itpd_mb_id = #{mb_id}
+	</select>
+<!-- 상품번호와 맴버 아이디가 일치하는 찜한상품정보를 삭제하는 쿼리문 -->
+	<delete id="deleteInterestPd">
+		delete from interest_product where itpd_pd_num = #{tmpPdNum} and itpd_mb_id = #{mb_id}
+	</delete>
+
+
+
+
+
+
+
 </mapper>

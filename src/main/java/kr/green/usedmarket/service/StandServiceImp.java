@@ -3,13 +3,17 @@ package kr.green.usedmarket.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.dao.StandDao;
+import kr.green.usedmarket.vo.DibsVo;
+import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
@@ -19,6 +23,9 @@ public class StandServiceImp implements StandService{
 	
 	@Autowired
 	StandDao standDao;
+	
+	@Autowired
+	ProductDao productDao;
 
 	@Override
 	public MemberVo getMemberId(HttpServletRequest request) {
@@ -105,5 +112,34 @@ public class StandServiceImp implements StandService{
 	@Override
 	public int getSaleProductCount(String mb_id) {
 		return standDao.selectSaleProductCount(mb_id);
+	}
+	// 멤버 아이디와 일치하는 찜한 상품목록 가져오기
+	@Override
+	public ArrayList<DibsVo> getDibsList(String mb_id) {
+		ArrayList<DibsVo> DibsList = standDao.selectDibsPdNnm(mb_id);
+		for(DibsVo tmp : DibsList) {
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		}
+		return DibsList;
+	}
+	// 찜한 상품의 갯수 가져오기
+	@Override
+	public int getDibsPdCnt(String mb_id) {
+		return standDao.selectDibsPdCnt(mb_id);
+	}
+	// 찜한상품 목록에서 제거하기
+	@Override
+	public String delDbisProduct(List<Integer> pd_num, String mb_id) {
+		ArrayList<InterestPdVo> interestPd = new ArrayList<InterestPdVo>();
+		// 상품번호와 회원아이디를 주면 정보를 가져오기
+		for(int tmpPdNum : pd_num)
+			interestPd.add(standDao.selectInterestPd(tmpPdNum, mb_id));
+		// 해당하는 정보가 없거나 삭제하려는 상품의 수보다 작으면 "notInfo"반환하기
+		if(interestPd == null || interestPd.size() < pd_num.size())
+			return "notInfo";
+		// 정보가 있으면 해당정보 삭제시킴
+		for(int tmpPdNum : pd_num)
+			standDao.deleteInterestPd(tmpPdNum, mb_id);
+		return "Success";
 	}
 }

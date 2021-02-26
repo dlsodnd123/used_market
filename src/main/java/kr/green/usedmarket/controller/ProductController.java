@@ -146,6 +146,10 @@ public class ProductController {
 	public Object productQuestionsPost(@RequestBody BoardVo board, HttpServletRequest request) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		MemberVo member = standService.getMemberId(request);
+			if(member == null) {			
+				map.put("result", "notLogin");
+				return map;
+			}				
 		board.setBo_mb_id(member.getMb_id());
 		productService.setProductQuestions(board);
 		// 상품문의글 번호와 일치하는 상품문의글 가져오기
@@ -216,7 +220,6 @@ public class ProductController {
 	@RequestMapping(value = "/product/interest", method = RequestMethod.POST)
 	@ResponseBody
 	public Object productInterestPost(@RequestBody ProductVo productNum, HttpServletRequest request) {
-		System.out.println(productNum);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);

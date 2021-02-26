@@ -1,9 +1,11 @@
 package kr.green.usedmarket.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
@@ -37,5 +39,11 @@ public interface StandService {
 	ArrayList<ProductVo> getSaleProductList(String mb_id);
 
 	int getSaleProductCount(String mb_id);
+
+	ArrayList<DibsVo> getDibsList(String mb_id);
+                                                 
+	int getDibsPdCnt(String mb_id);
+
+	String delDbisProduct(List<Integer> pd_num, String mb_id);
 
 }

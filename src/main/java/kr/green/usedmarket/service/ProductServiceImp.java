@@ -96,7 +96,6 @@ public class ProductServiceImp implements ProductService {
 			}
 		}
 		int interestCnt = productDao.selectInterestCnt(pd_num);
-		System.out.println(interestCnt);
 		productDao.updateIntersetCnt(interestCnt, pd_num);
 		return result;
 	}
@@ -125,7 +124,6 @@ public class ProductServiceImp implements ProductService {
 	public String registerComment(CommentVo comment) {
 		// 해당 글의 등록되어있는 답글이 있는지 확인
 		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
-		System.out.println(checkComment);
 		// 등록되어 있는 답글이 있으면 "sameComment"를 반환
 		if(checkComment != null) {
 			return "sameComment";
@@ -150,7 +148,6 @@ public class ProductServiceImp implements ProductService {
 		CommentVo checkComment = productDao.selectComment(comment.getCmt_bo_num());
 		// 일치하는 답글정보가 없으면 "notComment" 반환하고 있으면 업데이트 시키기
 		if(checkComment == null) {
-			System.out.println("notComment");
 			return "notComment";
 		}		
 		productDao.updateComment(comment);
