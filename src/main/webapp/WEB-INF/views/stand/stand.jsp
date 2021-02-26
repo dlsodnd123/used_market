@@ -254,9 +254,9 @@
 	                        <th></th>
 	                    </tr>
                 	</thead>
-                	<tbody>
+                	<tbody class="productList-tbody">
 	                	<c:forEach items="${productList}" var="product">                
-		                    <tr>
+		                    <tr class="productList-tr">
 		                     	<td>${product.pd_num}</td>
 		                        <td>${product.pd_title}</td>
 		                        <td>${product.pd_price}</td>
@@ -394,8 +394,29 @@
 		  	        success : function(data){
 		  	        	if(data.result == 'memberDifferent')
 				      		alert('수정 권한이 없습니다.')
-				      	else
-				      		alert('처리되었습니다.')
+				    	alert('처리되었습니다.')
+				    	console.log(data);
+		  	        	// 기존에 있던 판매목록은 지우고 새로 나타내기
+		  	        	$('.productList-tr').remove();
+		  	        	$('.mgtPd-tab').remove();
+		  	        	$('.mgtPd').append('<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록/관리(' + data.productCount + ')</a>');		  	        
+				    	for(var i = 0; i<data.productList.length; i++){
+				    		var str = '';				    		
+					    	str += '<tr>'
+	                     	str += '<td>' + data.productList[i].pd_num + '</td>'
+	                        str += '<td>' + data.productList[i].pd_title + '</td>'
+	                        str += '<td>' + data.productList[i].pd_price + '</td>'
+	                        str += '<td>' + data.productList[i].pd_deal + '</td>'
+	                        str += '<td>' + data.productList[i].pd_registerDate + '</td>'
+	                        str += '<td>'
+		                    str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>'
+		                    str += '<a href="/usedmarket/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>'
+		                    str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>'
+		                    str += '<a href="/usedmarket/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>'
+	                        str += '</td>'
+	                     	str += '</tr>'
+				    		$('.productList-tbody').append(str);
+				    	}
 		   	        },
 		   	     	error: function(error) {
 		   	        	console.log('에러발생');

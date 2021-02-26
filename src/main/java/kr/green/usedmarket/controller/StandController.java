@@ -110,7 +110,18 @@ public class StandController {
 		standService.updateProductisSale(product);
 
 		// ID와 일치하는 상품목록 가져오기
-//		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
+		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
+		// ID와 일치하는 상품 개수 가져오기
+		int productCount = standService.getProductCount(member.getMb_id());
+		// ID와 일치하면서 판매완료된 상품목록 가져오기
+		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(member.getMb_id());
+		// ID와 일치하는 판매완료한 상품 개수 가져오기
+		int saleProductCount = standService.getSaleProductCount(member.getMb_id());
+		
+		map.put("productList", productList);
+		map.put("productCount", productCount);
+		map.put("saleProductList", saleProductList);
+		map.put("saleProductCount", saleProductCount);
 		return map;
 	}
 	// 상품목록/관리에서 삭제여부를 변경하는 기능
