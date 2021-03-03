@@ -275,6 +275,11 @@
 		    margin-top: 10px;
 		    float: right;
         }
+        #menu4 .stQuestion-reply-register-box,
+        #menu4 .stQuestion-reply-modify-box,
+        #menu4 .stQuestion-reply-btn-box{
+        	display: none;
+        }
 </style>
 </head>
 <body>
@@ -502,13 +507,14 @@
            					</div>
            				</div>
            			</div>
+           			<input type="hidden" class="stQuestion_bo_num" value="${stQuestions.bo_num}">
            		</div>
            		</c:forEach>
            		<div class="stQuestion-register-box after">
            			<div class="stQuestion-register-title">문의글 남기기</div>
            			<textarea class="form-control stQuestion-register-content" rows="3" id="content" style="resize: none;"></textarea>
            			<button type="button" class="btn btn-light stQuestion-register-btn">등록</button>
-           			<input type="hidden" class="bo_type" value="5"> 
+           			<input type="hidden" class="stQuestion_bo_type" value="5">
            		</div>
 			</div>
 		</div>
@@ -669,7 +675,7 @@
    	    		return false;
    	    	}
    	    	var bo_content = $('.stQuestion-register-content').val();
-   	    	var bo_type = $('.bo_type').val()
+   	    	var bo_type = $('.stQuestion_bo_type').val()
    	    	var bo_st_name = $('.stand-title').val();
    	    	var sendData = {"bo_content" : bo_content, "bo_type" : bo_type, "bo_st_name" : bo_st_name}
    	    	$.ajax({
@@ -693,92 +699,134 @@
 	   	    	}
    	    	})
    	    })
-   	    
-   	    
-   	    
-   	    
-   	    
-   	    
-   	    
-   	    
+   	    // 문의사항 탭의 문의글 수정기능
+   	 	eventStQuestionsModifyBtn($('.stQuestion-modify-btn'));
    	    
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
-   	 	obj.click(function(){
-   	  		var state = $(this).parents('#home').find('.tabTitle').text();   	  		
-   	  		var tmp = $(this).text();
-   	  		var isSale = false;
-   	  		if(tmp == '판매처리'){
-   	  			isSale = confirm('판매완료처리 하시겠습니까?');
-   	  		}else{
-   	  			isSale = confirm('판매완료처리를 취소 하시겠습니까?');
-   	  		}
-   	  		if(isSale == true){
-   	  			var pd_num = $(this).parent().siblings().first().text();
-   	  			var sendData = {'pd_num' : pd_num}
-		   	  	$.ajax({		  	        
-		  	        url:'<%=request.getContextPath()%>/modify/isSale',
-		  	      	async:false,
-					type : 'post',
-					data : JSON.stringify(sendData),
-					dataType:"json",
-			        contentType:"application/json; charset=UTF-8",
-		  	        success : function(data){
-		  	        	if(data.result == 'memberDifferent')
-				      		alert('수정 권한이 없습니다.')
-				    	alert('처리되었습니다.')
-				    	console.log(data);
-		  	        	// 기존에 있던 상품목록/관리와 판매한상품 지우고 새로 나타내기		  	        	
-		  	        	$('.productList-tr').remove();
-		  	        	$('.mgtPd-tab').remove();
-		  	        	$('.saleProductList-tr').remove();
-				    	$('.salePd-tab').remove();		  	        	
-						if(state != '상품목록/관리'){
-							$('.mgtPd').append('<a class="nav-link mgtPd-tab " data-toggle="tab" href="#home">상품목록/관리(' + data.productCount + ')</a>');
-							$('.sale').append('<a class="nav-link salePd-tab active" data-toggle="tab" href="#menu1">판매한상품(' + data.saleProductCount + ')</a>');
-						}
-				    	else{
-		  	        		$('.mgtPd').append('<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록/관리(' + data.productCount + ')</a>');
-							$('.sale').append('<a class="nav-link salePd-tab " data-toggle="tab" href="#menu1">판매한상품(' + data.saleProductCount + ')</a>');
-				    	}
-						var str = '';	
-				    	for(var i = 0; i<data.productList.length; i++){				    					    		
-					    	str += '<tr>'
-	                     	str += '<td>' + data.productList[i].pd_num + '</td>'
-	                        str += '<td>' + data.productList[i].pd_title + '</td>'
-	                        str += '<td>' + data.productList[i].pd_price + '</td>'
-	                        str += '<td>' + data.productList[i].pd_deal + '</td>'
-	                        str += '<td>' + data.productList[i].pd_registerDate + '</td>'
-	                        str += '<td>'
-		                    str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>'
-		                    str += '<a href="/usedmarket/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>'
-		                    str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>'
-		                    str += '<a href="/usedmarket/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>'
-	                        str += '</td>'
-	                     	str += '</tr>'				    		
-				    	}		
-				    	$('.productList-tbody').html(str);
-				    	var str = '';
-				    	for(var i = 0; i<data.saleProductList.length; i++){				    		
-				    		str += '<tr>';
-			            	str += '<td>' + data.saleProductList[i].pd_num + '</td>'
-			                str += '<td>' + data.saleProductList[i].pd_title + '</td>'
-			                str += '<td>' + data.saleProductList[i].pd_price + '</td>'
-			                str += '<td>' + data.saleProductList[i].pd_deal + '</td>'
-			                str += '<td>' + data.saleProductList[i].pd_saleDate + '</td>'
-			                str += '<td><button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button></td>'
-							str += '</tr>'							
-				    	}	
-				    	$('.saleProductList-tbody').html(str);
-				    	eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn'));
-		   	        },
-		   	     	error: function(error) {
-		   	        	console.log('에러발생');
-		   	    	}
-		    	})   
-   	  		}   	  			    
-   	    })
+   	 		obj.click(function(){
+	   	  		var state = $(this).parents('#home').find('.tabTitle').text();   	  		
+	   	  		var tmp = $(this).text();
+	   	  		var isSale = false;
+	   	  		if(tmp == '판매처리'){
+	   	  			isSale = confirm('판매완료처리 하시겠습니까?');
+	   	  		}else{
+	   	  			isSale = confirm('판매완료처리를 취소 하시겠습니까?');
+	   	  		}
+	   	  		if(isSale == true){
+	   	  			var pd_num = $(this).parent().siblings().first().text();
+	   	  			var sendData = {'pd_num' : pd_num}
+			   	  	$.ajax({		  	        
+			  	        url:'<%=request.getContextPath()%>/modify/isSale',
+			  	      	async:false,
+						type : 'post',
+						data : JSON.stringify(sendData),
+						dataType:"json",
+				        contentType:"application/json; charset=UTF-8",
+			  	        success : function(data){
+			  	        	if(data.result == 'memberDifferent')
+					      		alert('수정 권한이 없습니다.')
+					    	alert('처리되었습니다.')
+					    	console.log(data);
+			  	        	// 기존에 있던 상품목록/관리와 판매한상품 지우고 새로 나타내기		  	        	
+			  	        	$('.productList-tr').remove();
+			  	        	$('.mgtPd-tab').remove();
+			  	        	$('.saleProductList-tr').remove();
+					    	$('.salePd-tab').remove();		  	        	
+							if(state != '상품목록/관리'){
+								$('.mgtPd').append('<a class="nav-link mgtPd-tab " data-toggle="tab" href="#home">상품목록/관리(' + data.productCount + ')</a>');
+								$('.sale').append('<a class="nav-link salePd-tab active" data-toggle="tab" href="#menu1">판매한상품(' + data.saleProductCount + ')</a>');
+							}
+					    	else{
+			  	        		$('.mgtPd').append('<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록/관리(' + data.productCount + ')</a>');
+								$('.sale').append('<a class="nav-link salePd-tab " data-toggle="tab" href="#menu1">판매한상품(' + data.saleProductCount + ')</a>');
+					    	}
+							var str = '';	
+					    	for(var i = 0; i<data.productList.length; i++){				    					    		
+						    	str += '<tr>'
+		                     	str += '<td>' + data.productList[i].pd_num + '</td>'
+		                        str += '<td>' + data.productList[i].pd_title + '</td>'
+		                        str += '<td>' + data.productList[i].pd_price + '</td>'
+		                        str += '<td>' + data.productList[i].pd_deal + '</td>'
+		                        str += '<td>' + data.productList[i].pd_registerDate + '</td>'
+		                        str += '<td>'
+			                    str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>'
+			                    str += '<a href="/usedmarket/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>'
+			                    str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>'
+			                    str += '<a href="/usedmarket/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>'
+		                        str += '</td>'
+		                     	str += '</tr>'				    		
+					    	}		
+					    	$('.productList-tbody').html(str);
+					    	var str = '';
+					    	for(var i = 0; i<data.saleProductList.length; i++){				    		
+					    		str += '<tr>';
+				            	str += '<td>' + data.saleProductList[i].pd_num + '</td>'
+				                str += '<td>' + data.saleProductList[i].pd_title + '</td>'
+				                str += '<td>' + data.saleProductList[i].pd_price + '</td>'
+				                str += '<td>' + data.saleProductList[i].pd_deal + '</td>'
+				                str += '<td>' + data.saleProductList[i].pd_saleDate + '</td>'
+				                str += '<td><button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button></td>'
+								str += '</tr>'							
+					    	}	
+					    	$('.saleProductList-tbody').html(str);
+					    	eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn'));
+			   	        },
+			   	     	error: function(error) {
+			   	        	console.log('에러발생');
+			   	    	}
+			    	})   
+	   	  		}   	  			    
+	   	    })
    		}
+   		// 문의사항 탭의 문의글 수정 함수
+   	    function eventStQuestionsModifyBtn(obj){
+	   	    // 문의사항 탭의 문의글 수정 버튼 클릭시 수정 박스 나타내고, 내용이랑 버튼 숨기기
+	   	    obj.click(function(){
+	   	    	$(this).parents('.stQuestion-content-box').find('.stQuestion-modify-box').show();
+	   	    	$(this).parents('.stQuestion-content-box').find('.stQuestion-contnet').hide();
+	   	    	$(this).parents('.stQuestion-info-btn-box').hide();
+	   	    })
+	   	    // 문의글 수정에 취소 버튼 클릭시 원래대로 돌아가기
+	   	    $('.stQuestion-cancel-btn').click(function(){
+	   	    	$(this).parents('.stQuestion-info-box').find('.stQuestion-contnet').show()
+	   	    	$(this).parents('.stQuestion-content-box').find('.stQuestion-info-btn-box').show()
+	   	    	$(this).parents('.stQuestion-modify-box').hide();
+	   	    })
+	   	    // 문의글 수정에 확인 버튼 클릭시 ajax로 수정 처리하기
+	   	    $('.stQuestion-confirm-btn').click(function(){
+	   	    	var clickPoint = $(this);
+	   	    	var bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val();
+	    		var bo_mb_id = $(this).parents('.stQuestion-info-box').find('.stQuestion-writer').text();
+	    		var bo_type = $('.stQuestion_bo_type').val()
+	    		var bo_content = $(this).parents('.stQuestion-modify-box').find('.stQuestion-modify-contnet').val();
+	    		var bo_isDel = 'N'
+	    		var sendData = {"bo_num" : bo_num, "bo_mb_id" : bo_mb_id, "bo_type" : bo_type, "bo_content" : bo_content, "bo_isDel" : bo_isDel}
+	   			$.ajax({
+	   	     		url : '<%=request.getContextPath()%>/modify/product/questions',
+	   				async:false,
+	   				type : 'post',
+	    			data : JSON.stringify(sendData),
+	   				dataType:"json",
+	   				contentType:"application/json; charset=UTF-8",
+	   				success : function(data){
+	   					if(data.result == 'memberDifferent' || data.result == 'notLogin')
+							alert('수정 권한이 없습니다.');
+						else if(data.result == 'notInfo')
+							alert('존재하지 않는 상품문의 글입니다.');
+						else{
+							clickPoint.parents('.stQuestion-info-box').find('.stQuestion-contnet').val(bo_content);
+							clickPoint.parents('.stQuestion-info-box').find('.stQuestion-contnet').show();
+							clickPoint.parents('.stQuestion-content-box').find('.stQuestion-info-btn-box').show();
+							clickPoint.parents('.stQuestion-modify-box').hide();
+						}
+	   				},
+	   	   	     	error: function(error) {
+	   	   	        	console.log('에러발생');
+	   	   	    	}
+	      	    })
+	   	    })   	 		
+   	 	}
   	</script>
 </body>
 </html>

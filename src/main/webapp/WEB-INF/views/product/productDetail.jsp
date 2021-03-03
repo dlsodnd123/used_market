@@ -578,7 +578,7 @@
 	   	    })	
 	   	    //문의글 수정의 확인버튼 클릭시
 	   	    $('.modify-btn-box .confirm-btn').click(function(){
-	   	  		// 문의번호, 작성자, 상품번호, 게시글타입, 내용을 ajax로 서버에 전달
+	   	  		// 문의번호, 작성자, 상품번호, 게시글타입, 내용, 삭제여부를 ajax로 서버에 전달
 	   	    	var bo_num = $(this).parents('.content-box').find('input[name=bo_num]').val();
 	    		var bo_mb_id = $(this).parents('.info-box').children('.stand_name').text();
 	    		var bo_pd_num = ${product.pd_num}

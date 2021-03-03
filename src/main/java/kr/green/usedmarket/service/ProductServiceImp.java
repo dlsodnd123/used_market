@@ -104,7 +104,7 @@ public class ProductServiceImp implements ProductService {
 	public InterestPdVo setInterestPd(MemberVo member, int pd_num) {
 		return productDao.selectInterestPd(member.getMb_id(), pd_num);
 	}
-	// 상품문의 게시글의 정보를 변경하기
+	// 게시글의 정보를 변경하기
 	@Override
 	public String modifyPdQuestions(BoardVo board) {
 		// 상품번호와 일치하는 상품문의 게시글을 가져오기
