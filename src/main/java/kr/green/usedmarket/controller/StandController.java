@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
+import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductQuestionsVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
@@ -37,22 +39,30 @@ public class StandController {
 	private String uploadPath = "D:\\JAVA_LRW\\git\\used_market\\src\\main\\webapp\\resources\\stand_img";
 
 	@RequestMapping(value = "/stand", method = RequestMethod.GET)
-	public ModelAndView standGet(ModelAndView mv, String mb_id, HttpServletRequest request) {		
+	public ModelAndView standGet(ModelAndView mv, String mb_id, HttpServletRequest request) {
+		// 로그인 정보 가져오기
 		MemberVo member = standService.getMemberId(request);
-		StandVo stand = standService.getStand(member.getMb_id());
+		// 아이디와 일치하는 가판대 정보 가져오기
+		StandVo stand = standService.getStand(mb_id);
 		// ID와 일치하는 상품목록 가져오기
-		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
+		ArrayList<ProductVo> productList = standService.getProductList(mb_id);
 		// ID와 일치하는 상품 개수 가져오기
-		int productCount = standService.getProductCount(member.getMb_id());
+		int productCount = standService.getProductCount(mb_id);
 		// ID와 일치하면서 판매완료된 상품목록 가져오기
-		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(member.getMb_id());
+		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(mb_id);
 		// ID와 일치하는 판매완료한 상품 개수 가져오기
-		int saleProductCount = standService.getSaleProductCount(member.getMb_id());
+		int saleProductCount = standService.getSaleProductCount(mb_id);
 		// ID와 일치하는 찜한 상품 가져오기
 		ArrayList<DibsVo> dibsList = standService.getDibsList(mb_id);
 		// 찜한 상품의 갯수 가져오기
 		int dibsPdCnt = standService.getDibsPdCnt(mb_id);
+		// 가판대명과 일치하는 문의사항 게시글들 가져오기
+		ArrayList<ProductQuestionsVo> stQuestionsList = standService.getstQuestionsList(stand.getSt_name());
 		
+		for(ProductQuestionsVo tmp : stQuestionsList)
+			System.out.println(tmp);
+		
+		mv.addObject("member", member);
 		mv.addObject("productCount", productCount);
 		mv.addObject("productList", productList);
 		mv.addObject("stand", stand);
@@ -60,6 +70,7 @@ public class StandController {
 		mv.addObject("saleProductCount", saleProductCount);
 		mv.addObject("dibsList", dibsList);
 		mv.addObject("dibsPdCnt", dibsPdCnt);
+		mv.addObject("stQuestionsList", stQuestionsList);
 		
 		mv.setViewName("/stand/stand");
 		return mv;
@@ -101,7 +112,7 @@ public class StandController {
 	public Object modifyisSale(@RequestBody ProductVo pd_num, HttpServletRequest request) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
-		MemberVo member = standService.getMemberId(request);
+		MemberVo member = standService.getMemberId(request);		
 		ProductVo product = standService.getProduct(pd_num.getPd_num());
 		if(!product.getPd_mb_id().equals(member.getMb_id())) {
 			map.put("result", "memberDifferent");
@@ -154,6 +165,21 @@ public class StandController {
 		
 		map.put("dibsList", dibsList);
 		map.put("dibsPdCnt", dibsPdCnt);
+		return map;
+	}
+	// 상품목록/관리에서 판매여부를 변경하는 기능
+	@RequestMapping(value = "/stand/question", method = RequestMethod.POST)
+	@ResponseBody
+	public Object standQuestionPost(@RequestBody BoardVo board, HttpServletRequest request) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		System.out.println(board);
+		MemberVo member = standService.getMemberId(request);
+		if(member == null) {
+			map.put("result", "notLogin");
+			return map;
+		}
+		board.setBo_mb_id(member.getMb_id());
+		productService.setProductQuestions(board);
 		return map;
 	}
 }

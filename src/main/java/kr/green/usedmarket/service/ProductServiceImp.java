@@ -62,7 +62,7 @@ public class ProductServiceImp implements ProductService {
 	public void setProductQuestions(BoardVo board) {
 		productDao.insertProductQuestions(board);
 	}
-	// 상품문의 게시글의 상품번호와 일치하는 게시글을의 작성자와 내용을가져오고 작성자와 일치하는 가판대이미지, 답글정보 가져오기
+	// 상품문의 게시글의 상품번호와 일치하는 게시글의 작성자와 내용을가져오고 작성자와 일치하는 가판대이미지 가져오기
 	@Override
 	public ArrayList<ProductQuestionsVo> getProductQuestionsList(int pd_num) {
 		ArrayList<ProductQuestionsVo> getProductQuestionsList = productDao.selectgetProductQuestionsList(pd_num);

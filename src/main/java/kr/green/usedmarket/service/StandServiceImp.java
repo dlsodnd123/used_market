@@ -15,6 +15,7 @@ import kr.green.usedmarket.dao.StandDao;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.ProductQuestionsVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
 
@@ -141,5 +142,14 @@ public class StandServiceImp implements StandService{
 		for(int tmpPdNum : pd_num)
 			standDao.deleteInterestPd(tmpPdNum, mb_id);
 		return "Success";
+	}
+	// 가판대 문의글들 가져오기
+	@Override
+	public ArrayList<ProductQuestionsVo> getstQuestionsList(String st_name) {
+		ArrayList<ProductQuestionsVo> stQuestionsList = standDao.selectStQustionsList(st_name);
+		for(ProductQuestionsVo tmp : stQuestionsList) {
+			tmp.setSt_img(productDao.selectProductQuestionsImg(tmp.getBo_mb_id()));
+		}			
+		return stQuestionsList;
 	}
 }

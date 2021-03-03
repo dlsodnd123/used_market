@@ -6,6 +6,7 @@ import java.util.Date;
 public class ProductQuestionsVo {
 	private int bo_num;
 	private int bo_pd_num;
+	private String bo_st_name;
 	private String bo_content;
 	private String bo_mb_id;
 	private Date bo_registerDate;
@@ -21,6 +22,12 @@ public class ProductQuestionsVo {
 	}
 	public void setBo_pd_num(int bo_pd_num) {
 		this.bo_pd_num = bo_pd_num;
+	}	
+	public String getBo_st_name() {
+		return bo_st_name;
+	}
+	public void setBo_st_name(String bo_st_name) {
+		this.bo_st_name = bo_st_name;
 	}
 	public String getBo_content() {
 		return bo_content;
@@ -50,8 +57,8 @@ public class ProductQuestionsVo {
 	}
 	@Override
 	public String toString() {
-		return "ProductQuestionsVo [bo_num=" + bo_num + ", bo_pd_num=" + bo_pd_num + ", bo_content=" + bo_content
-				+ ", bo_mb_id=" + bo_mb_id + ", bo_registerDate=" + bo_registerDate + ", st_img=" + st_img + "]";
+		return "ProductQuestionsVo [bo_num=" + bo_num + ", bo_pd_num=" + bo_pd_num + ", bo_st_name=" + bo_st_name
+				+ ", bo_content=" + bo_content + ", bo_mb_id=" + bo_mb_id + ", bo_registerDate=" + bo_registerDate
+				+ ", st_img=" + st_img + "]";
 	}
-	
 }

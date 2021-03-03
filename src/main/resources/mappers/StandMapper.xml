@@ -73,8 +73,10 @@
 	<delete id="deleteInterestPd">
 		delete from interest_product where itpd_pd_num = #{tmpPdNum} and itpd_mb_id = #{mb_id}
 	</delete>
-
-
+<!-- 가판대명과 일치하는 문의글 가져오기 -->
+	<select id="selectStQustionsList" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
+		select * from board where bo_st_name = #{st_name}
+	</select>
 
 
 

@@ -40,11 +40,11 @@
 	<select id="selectPreviewImg" resultType="String">
 		select pdimg_name from product_image where pdimg_pd_num = #{pd_num} limit 0,1
 	</select>
-<!-- 상품문의 등록하는 쿼리문 -->
+<!-- 문의글 등록하는 쿼리문 -->
 	<insert id="insertProductQuestions" useGeneratedKeys="true" keyProperty="board.bo_num">
 		insert into
-			board(bo_mb_id, bo_pd_num, bo_type, bo_title, bo_content)
-			values(#{board.bo_mb_id}, #{board.bo_pd_num}, #{board.bo_type}, #{board.bo_title}, #{board.bo_content})
+			board(bo_mb_id, bo_pd_num, bo_st_name, bo_type, bo_title, bo_content)
+			values(#{board.bo_mb_id}, #{board.bo_pd_num}, #{board.bo_st_name}, #{board.bo_type}, #{board.bo_title}, #{board.bo_content})
 	</insert>
 <!-- 상품번호와 일치하는 상품문의 게시글들을 가져오는 쿼리문 -->
 	<select id="selectgetProductQuestionsList" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">

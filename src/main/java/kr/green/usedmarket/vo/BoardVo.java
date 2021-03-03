@@ -7,6 +7,7 @@ public class BoardVo {
 	private int bo_num;
 	private String bo_mb_id;
 	private int bo_pd_num;
+	private String bo_st_name;
 	private int bo_type;
 	private String bo_title;
 	private String bo_content;
@@ -34,6 +35,12 @@ public class BoardVo {
 	}
 	public void setBo_pd_num(int bo_pd_num) {
 		this.bo_pd_num = bo_pd_num;
+	}	
+	public String getBo_st_name() {
+		return bo_st_name;
+	}
+	public void setBo_st_name(String bo_st_name) {
+		this.bo_st_name = bo_st_name;
 	}
 	public int getBo_type() {
 		return bo_type;
@@ -91,13 +98,12 @@ public class BoardVo {
 	public void setBo_gorupLayer(int bo_gorupLayer) {
 		this.bo_gorupLayer = bo_gorupLayer;
 	}
-	
 	@Override
 	public String toString() {
-		return "BoardVo [bo_num=" + bo_num + ", bo_mb_id=" + bo_mb_id + ", bo_pd_num=" + bo_pd_num + ", bo_type="
-				+ bo_type + ", bo_title=" + bo_title + ", bo_content=" + bo_content + ", bo_registerDate="
-				+ bo_registerDate + ", bo_isDel=" + bo_isDel + ", bo_views=" + bo_views + ", bo_orignNum=" + bo_orignNum
-				+ ", bo_gorupOrd=" + bo_gorupOrd + ", bo_gorupLayer=" + bo_gorupLayer + "]";
+		return "BoardVo [bo_num=" + bo_num + ", bo_mb_id=" + bo_mb_id + ", bo_pd_num=" + bo_pd_num + ", bo_st_name="
+				+ bo_st_name + ", bo_type=" + bo_type + ", bo_title=" + bo_title + ", bo_content=" + bo_content
+				+ ", bo_registerDate=" + bo_registerDate + ", bo_isDel=" + bo_isDel + ", bo_views=" + bo_views
+				+ ", bo_orignNum=" + bo_orignNum + ", bo_gorupOrd=" + bo_gorupOrd + ", bo_gorupLayer=" + bo_gorupLayer
+				+ "]";
 	}
-	
 }
