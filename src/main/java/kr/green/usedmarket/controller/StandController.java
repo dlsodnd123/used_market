@@ -59,8 +59,6 @@ public class StandController {
 		// 가판대명과 일치하는 문의사항 게시글들 가져오기
 		ArrayList<ProductQuestionsVo> stQuestionsList = standService.getstQuestionsList(stand.getSt_name());
 		
-		for(ProductQuestionsVo tmp : stQuestionsList)
-			System.out.println(tmp);
 		
 		mv.addObject("member", member);
 		mv.addObject("productCount", productCount);

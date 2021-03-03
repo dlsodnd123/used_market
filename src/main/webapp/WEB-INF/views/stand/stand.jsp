@@ -276,8 +276,7 @@
 		    float: right;
         }
         #menu4 .stQuestion-reply-register-box,
-        #menu4 .stQuestion-reply-modify-box,
-        #menu4 .stQuestion-reply-btn-box{
+        #menu4 .stQuestion-reply-modify-box{
         	display: none;
         }
 </style>
@@ -490,14 +489,7 @@
            						<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>
            						<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>
            					</div>
-           					<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" >답변 내용</textarea>
-           					<div class="stQuestion-reply-register-box after">
-           						<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >등록할 내용</textarea>
-           						<div class="stQuestion-reply-regBtn-box">
-           							<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>
-           							<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>
-           						</div>
-           					</div>
+           					<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" >답변 내용</textarea>           					
            					<div class="stQuestion-reply-modify-box after">
            						<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >등록할 내용</textarea>
            						<div class="stQuestion-reply-modifyBtn-box">
@@ -506,6 +498,13 @@
            						</div>
            					</div>
            				</div>
+	           			<div class="stQuestion-reply-register-box after">
+							<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >등록할 내용</textarea>
+							<div class="stQuestion-reply-regBtn-box">
+								<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>
+								<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>
+							</div>
+						</div>
            			</div>
            			<input type="hidden" class="stQuestion_bo_num" value="${stQuestions.bo_num}">
            		</div>
@@ -699,9 +698,57 @@
 	   	    	}
    	    	})
    	    })
+   	    
    	    // 문의사항 탭의 문의글 수정기능
    	 	eventStQuestionsModifyBtn($('.stQuestion-modify-btn'));
    	    
+   	    // 문의사항 글 삭제하는 기능
+   	    eventStQuestionsDelBtn($('.stQuestion-del-btn'));
+   	    
+   	    // 문의사항 글에 답글을 등록하는 기능
+   	    // 문의사항 글에 답글 버튼 클릭시 등록창을 띄우고, 버튼과 내용 숨기기
+   	    $('.stQuestion-reply-btn').click(function(){
+   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-register-box').show();
+   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn-box').hide();
+   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-contnet').hide();
+   	    })
+   	 	// 답글 등록창에 취소 버튼 클리시 원래대로
+   	 	$('.stQuestion-reply-regCancel-btn').click(function(){
+   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-btn-box').show();
+   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').show();
+   	 		$(this).parents('.stQuestion-reply-register-box').hide();
+   	 	})
+   	 	// 답글 등록창에 등록 버튼 클릭시 ajax로 답글 등록 처리
+   	 	$('.stQuestion-replyDel-reg-btn').click(function(){
+   	 		var clickPoint = $(this);
+	    	var cmt_bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val(); 
+	   		var cmt_content = $(this).parents('.stQuestion-reply-register-box').find('.stQuestion-reply-register-contnet').val();
+	   		if(cmt_content == ''){
+	   			alert('최소 1글자 이상 입력해야 합니다.');
+	   			return false;
+	   		}
+	   		var sendData = {"cmt_bo_num" : cmt_bo_num, "cmt_content" : cmt_content}
+	   		$.ajax({
+   	     		url : '<%=request.getContextPath()%>/register/comment',
+   				async:false,
+   				type : 'post',
+    			data : JSON.stringify(sendData),
+   				dataType:"json",
+   				contentType:"application/json; charset=UTF-8",
+   				success : function(data){
+   					if(data.result == 'sameComment')
+						alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
+					else if(data.result == 'success'){
+						console.log('성공')
+					}
+   				},
+   	   	     	error: function(error) {
+   	   	        	console.log('에러발생');
+   	   	    	}
+      	    })
+   	 	})
+   	 	
+   	 	
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
    	 		obj.click(function(){
@@ -827,6 +874,44 @@
 	      	    })
 	   	    })   	 		
    	 	}
+   		
+   		// 문의글 수정 함수
+   		function eventStQuestionsDelBtn(obj){   			
+	   		// 문의사항 탭의 문의글 삭제 버튼 클릭시
+	   	    obj.click(function(){
+	   	    	var isDelete = confirm('문의글이 삭제 됩니다. 삭제 하시겠습니까?')
+	   	    	if(isDelete){
+	   	    		var clickPoint = $(this);
+	   	    		var bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val();
+		    		var bo_mb_id = $(this).parents('.stQuestion-content-box').find('.stQuestion-writer').text();
+		    		var bo_type = $('.stQuestion_bo_type').val()
+		    		var bo_content =  $(this).parents('.stQuestion-content-box').find('.stQuestion-contnet').val();
+		    		var bo_isDel = 'Y'
+		    		var sendData = {"bo_num" : bo_num, "bo_mb_id" : bo_mb_id, "bo_type" : bo_type, "bo_content" : bo_content, "bo_isDel" : bo_isDel}
+	    			$.ajax({
+		   	     		url : '<%=request.getContextPath()%>/modify/product/questions',
+		   				async:false,
+		   				type : 'post',
+		    			data : JSON.stringify(sendData),
+		   				dataType:"json",
+		   				contentType:"application/json; charset=UTF-8",
+		   				success : function(data){
+		   					if(data.result == 'memberDifferent' || data.result == 'notLogin')
+								alert('삭제 권한이 없습니다.');
+							else if(data.result == 'notInfo')
+								alert('존재하지 않는 상품문의 글입니다.');
+							else{							
+								alert('삭제 처리 되었습니다.');
+								clickPoint.parents('.stQuestion-box').remove();
+							}
+		   				},
+		   	   	     	error: function(error) {
+		   	   	        	console.log('에러발생');
+		   	   	    	}
+		      	    })
+	   	    	}
+	   	    })
+   		}
   	</script>
 </body>
 </html>

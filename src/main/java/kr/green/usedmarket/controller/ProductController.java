@@ -192,7 +192,8 @@ public class ProductController {
 	// 답글 등록 기능
 	@RequestMapping(value = "/register/comment", method = RequestMethod.POST)
 	@ResponseBody
-	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {		
+	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {
+		System.out.println(comment);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
