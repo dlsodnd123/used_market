@@ -61,4 +61,6 @@ public interface ProductDao {
 
 	void updateIntersetCnt(@Param("interestCnt")int interestCnt, @Param("pd_num")int pd_num);
 
+	CommentVo selectNewComment(@Param("mb_id")String mb_id);
+
 }

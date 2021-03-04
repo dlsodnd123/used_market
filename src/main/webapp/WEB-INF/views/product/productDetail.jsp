@@ -373,9 +373,11 @@
             <div class="container question">
                 <c:forEach items="${productQuestionsList}" var="boardList">
                  <div class="content-box after">
-                   	<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
+                   	<a href="<%=request.getContextPath()%>/stand?mb_id=${boardList.bo_mb_id}">
+                   		<img src="<%=request.getContextPath()%>/resources/stand_img/${boardList.st_img}" alt="" class="stand-img">
+                   	</a>
                    	<div class="info-box">
-                        <div class="stand_name">${boardList.bo_mb_id}</div>
+                        <div class="stand_name"><a href="<%=request.getContextPath()%>/stand?mb_id=${boardList.bo_mb_id}">${boardList.bo_mb_id}</a></div>
                         <div class="question-regTime">${boardList.bo_registerDate}</div>                        
                         <textarea class="content" rows="2" style="resize: none;" readonly>${boardList.bo_content}</textarea>
                     	<div class="modify-box">
@@ -453,9 +455,11 @@
             <h3>가판대정보</h3>
             <div class="container stand-info after">
                 <div class="stand-info-box">
-                    <img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" alt="" class="stand-img">
-                    <div class="info-box">
-                        <div class="stand_name">${stand.st_name}</div>
+                	<a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}">
+                    	<img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" alt="" class="stand-img">
+                    </a>
+                    <div class="info-box">                    	
+                        <div class="stand_name"><a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}">${stand.st_name}</a></div>
                         <div class="product-count">판매중상품 ${productCount}</div>
                         <div class="product-sale-count">판매완료상품 ${productSaleCount}</div>
                     </div>
@@ -722,7 +726,6 @@
    	    // 답글 삭제 함수
    	    function eventDelBtn(obj){
 	    	obj.click(function(){
-	   	    	console.log(123);
 	   	    	var isDel = confirm('해당답글이 삭제 됩니다. 삭제 하시겠습니까?')
 	   	    	if(isDel == false)
 	   	    		return false;

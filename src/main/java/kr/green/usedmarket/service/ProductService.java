@@ -48,4 +48,6 @@ public interface ProductService {
 
 	void setViews(int pd_num);
 
+	CommentVo getNewComment(String mb_id);
+
 }

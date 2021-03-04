@@ -166,4 +166,9 @@ public class ProductServiceImp implements ProductService {
 	public void setViews(int pd_num) {
 		productDao.updateViews(pd_num);		
 	}
+	// 아이디와 일치하는 마지막에 등록된 답글정보 가져오기
+	@Override
+	public CommentVo getNewComment(String mb_id) {
+		return productDao.selectNewComment(mb_id);
+	}
 }

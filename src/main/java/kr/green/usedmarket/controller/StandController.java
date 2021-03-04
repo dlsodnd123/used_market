@@ -21,6 +21,7 @@ import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.BoardVo;
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
@@ -58,8 +59,11 @@ public class StandController {
 		int dibsPdCnt = standService.getDibsPdCnt(mb_id);
 		// 가판대명과 일치하는 문의사항 게시글들 가져오기
 		ArrayList<ProductQuestionsVo> stQuestionsList = standService.getstQuestionsList(stand.getSt_name());
-		
-		
+		// 문의사항 게시글 갯수 가져오기
+		int stQuestionsCount = standService.getStQuestionsCount(stand.getSt_name());
+		// 가판대 아이디와 일치하는 문의사항 게시글에 달린 답변들 가져오기
+		ArrayList<CommentVo> commentList = standService.getCommentList(stand.getSt_mb_id());
+			
 		mv.addObject("member", member);
 		mv.addObject("productCount", productCount);
 		mv.addObject("productList", productList);
@@ -69,6 +73,8 @@ public class StandController {
 		mv.addObject("dibsList", dibsList);
 		mv.addObject("dibsPdCnt", dibsPdCnt);
 		mv.addObject("stQuestionsList", stQuestionsList);
+		mv.addObject("stQuestionsCount", stQuestionsCount);
+		mv.addObject("commentList", commentList);
 		
 		mv.setViewName("/stand/stand");
 		return mv;
@@ -165,19 +171,22 @@ public class StandController {
 		map.put("dibsPdCnt", dibsPdCnt);
 		return map;
 	}
-	// 상품목록/관리에서 판매여부를 변경하는 기능
+	// 가판대 문의글 등록하는 기능
 	@RequestMapping(value = "/stand/question", method = RequestMethod.POST)
 	@ResponseBody
 	public Object standQuestionPost(@RequestBody BoardVo board, HttpServletRequest request) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		System.out.println(board);
 		MemberVo member = standService.getMemberId(request);
 		if(member == null) {
 			map.put("result", "notLogin");
 			return map;
 		}
 		board.setBo_mb_id(member.getMb_id());
+		// 문의글 등록하기
 		productService.setProductQuestions(board);
+		// 문의글 번호와 일치하는 문의글 정보 가져오기
+		ProductQuestionsVo stQuestions = standService.getStQuestions(board.getBo_num());
+		map.put("stQuestions", stQuestions);
 		return map;
 	}
 }

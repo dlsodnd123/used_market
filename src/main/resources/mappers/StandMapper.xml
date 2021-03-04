@@ -73,7 +73,22 @@
 	<delete id="deleteInterestPd">
 		delete from interest_product where itpd_pd_num = #{tmpPdNum} and itpd_mb_id = #{mb_id}
 	</delete>
-
+<!-- 가판대명과 일치하는 문의글 가져오는 쿼리문 -->
+	<select id="selectStQustionsList" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
+		select * from board where bo_st_name = #{st_name} and bo_isDel = 'N'
+	</select>
+<!-- 가판대명과 일치하는 문의글의 개수 자져오는 쿼리문 -->
+	<select id="selectStQuestionsCount" resultType="int">
+		select count(*) from board where bo_st_name = #{st_name} and bo_isDel = 'N'
+	</select>
+<!-- 가판대 아이디와 일치하는 문의글의 답글을 가져오는 쿼리문 -->
+	<select id="selectCommentList" resultType="kr.green.usedmarket.vo.CommentVo">
+		select * from comment where cmt_mb_id = #{st_mb_id} and cmt_isDel = 'N'
+	</select>
+<!-- 문의글 번호와 일치하는 문의글 조회하는 쿼리문 -->
+	<select id="selectStQuestions" resultType="kr.green.usedmarket.vo.ProductQuestionsVo">
+		select * from board where bo_num = #{bo_num}
+	</select>
 
 
 

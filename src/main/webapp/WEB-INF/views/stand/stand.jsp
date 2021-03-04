@@ -187,11 +187,10 @@
         }
         /* 문의사항 css */
         #menu4 .stQuestion-box{
-        	border-top: 1px solid black;
+        	border-top: 1px solid #909090;
         	padding: 10px 0;
-        	margin-bottom: 15px;  
         }
-        #menu4 .stQuestion-content-box>img{
+        #menu4 .stQuestion-content-box>a>img{
             width: 60px;
 		    height: 60px;
 		    border-radius: 50%;
@@ -218,7 +217,6 @@
         	width: 100%;
 		    border: none;
 		    outline: none;
-		    margin-bottom: 15px;
         }
         #menu4 .stQuestion-modify-contnet{
         	margin-bottom: 15px;
@@ -236,7 +234,7 @@
         	display: none;
         }
         #menu4 .stQuestion-reply-box{
-        	padding-left: 80px;
+        	padding-left: 110px;
         	margin-top: 15px;
         }
         #menu4 .stQuestion-replyInfo-box{
@@ -267,7 +265,7 @@
         }
         #menu4 .stQuestion-register-box{
         	padding-top: 15px;
-        	border-top: 1px solid black;
+        	border-top: 1px solid #909090;
         }
         #menu4 .stQuestion-register-btn{
        	    width: 65px;
@@ -351,7 +349,7 @@
            		<a class="nav-link" data-toggle="tab" href="#menu3">거래후기</a>
          	</li>
          	<li class="nav-item">
-           		<a class="nav-link" data-toggle="tab" href="#menu4">문의사항</a>
+           		<a class="nav-link" data-toggle="tab" href="#menu4">문의사항(${stQuestionsCount})</a>
          	</li>
        	</ul>
      	
@@ -462,9 +460,11 @@
            		<c:forEach items="${stQuestionsList}" var="stQuestions">
            		<div class="stQuestion-box">
            			<div class="stQuestion-content-box after">
-           				<img alt="" src="<%=request.getContextPath()%>/resources/stand_img/${stQuestions.st_img}"> 
+           				<a href="<%=request.getContextPath()%>/stand?mb_id=${stQuestions.bo_mb_id}">
+           					<img alt="" src="<%=request.getContextPath()%>/resources/stand_img/${stQuestions.st_img}">
+           				</a> 
 	           			<div class="stQuestion-info-box">
-	           				<div class="stQuestion-writer">${stQuestions.bo_mb_id}</div>
+	           				<div class="stQuestion-writer"><a href="<%=request.getContextPath()%>/stand?mb_id=${stQuestions.bo_mb_id}">${stQuestions.bo_mb_id}</a></div>
 	           				<div class="stQuestion-regTime">${stQuestions.bo_registerDate}</div>
 	           				<textarea class="stQuestion-contnet" rows="2" style="resize: none;" readonly>${stQuestions.bo_content}</textarea>
 	           				<div class="stQuestion-modify-box">
@@ -476,45 +476,58 @@
            					</div>
            				</div>
            				<div class="stQuestion-info-btn-box">
-           					<button type="button" class="btn btn-light stQuestion-reply-btn">답글</button>
-           					<button type="button" class="btn btn-light stQuestion-del-btn">삭제</button>
-           					<button type="button" class="btn btn-light stQuestion-modify-btn">수정</button>
+           					<c:if test="${stand.st_mb_id == member.mb_id}">
+           						<button type="button" class="btn btn-light stQuestion-reply-btn">답글</button>
+           					</c:if>
+           					<c:if test="${stQuestions.bo_mb_id == member.mb_id}">
+	           					<button type="button" class="btn btn-light stQuestion-del-btn">삭제</button>
+	           					<button type="button" class="btn btn-light stQuestion-modify-btn">수정</button>
+           					</c:if>
            				</div>
            			</div>
            			<div class="stQuestion-reply-box">
-           				<div class="stQuestion-replyInfo-box">
-           					<div class="stQuestion-answerer">답변자 ID</div>
-           					<div class="stQuestion-reply-regTime">등록 시간</div>
-           					<div class="stQuestion-reply-btn-box">
-           						<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>
-           						<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>
-           					</div>
-           					<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" >답변 내용</textarea>           					
-           					<div class="stQuestion-reply-modify-box after">
-           						<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >등록할 내용</textarea>
-           						<div class="stQuestion-reply-modifyBtn-box">
-           							<button type="button" class="btn btn-light stQuestion-reply-Modify-btn">수정</button>
-           							<button type="button" class="btn btn-light stQuestion-reply-modifyCancel-btn">취소</button>
-           						</div>
-           					</div>
-           				</div>
+           				<c:forEach items="${commentList}" var="comment">
+	           				<c:if test="${comment.cmt_bo_num == stQuestions.bo_num}">
+		           				<div class="stQuestion-replyInfo-box">
+		           					<div class="stQuestion-answerer">${comment.cmt_mb_id}</div>
+		           					<div class="stQuestion-reply-regTime">${comment.cmt_registerDate}</div>
+		           					<c:if test="${stand.st_mb_id == member.mb_id }">
+			           					<div class="stQuestion-reply-btn-box">
+			           						<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>
+			           						<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>
+			           					</div>
+		           					</c:if>
+		           					<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" readonly>${comment.cmt_content}</textarea>           					
+		           					<div class="stQuestion-reply-modify-box after">
+		           						<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >${comment.cmt_content}</textarea>
+		           						<div class="stQuestion-reply-modifyBtn-box">
+		           							<button type="button" class="btn btn-light stQuestion-reply-Modify-btn">수정</button>
+		           							<button type="button" class="btn btn-light stQuestion-reply-modifyCancel-btn">취소</button> 
+		           						</div>
+		           					</div>
+		           					<input type="hidden" class="stQuestion_cmt_bo_num" value="${comment.cmt_bo_num}">
+		           				</div>
+		           			</c:if>
+           				</c:forEach>
 	           			<div class="stQuestion-reply-register-box after">
-							<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >등록할 내용</textarea>
+							<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >${comment.cmt_content}</textarea>
 							<div class="stQuestion-reply-regBtn-box">
 								<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>
 								<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>
 							</div>
-						</div>
+						</div>						
            			</div>
            			<input type="hidden" class="stQuestion_bo_num" value="${stQuestions.bo_num}">
            		</div>
            		</c:forEach>
-           		<div class="stQuestion-register-box after">
-           			<div class="stQuestion-register-title">문의글 남기기</div>
-           			<textarea class="form-control stQuestion-register-content" rows="3" id="content" style="resize: none;"></textarea>
-           			<button type="button" class="btn btn-light stQuestion-register-btn">등록</button>
-           			<input type="hidden" class="stQuestion_bo_type" value="5">
-           		</div>
+           		<c:if test="${stand.st_mb_id != member.mb_id }">
+	           		<div class="stQuestion-register-box after">
+	           			<div class="stQuestion-register-title">문의글 남기기</div>
+	           			<textarea class="form-control stQuestion-register-content" rows="3" id="content" style="resize: none;"></textarea>
+	           			<button type="button" class="btn btn-light stQuestion-register-btn">등록</button>
+	           			<input type="hidden" class="stQuestion_bo_type" value="5">
+	           		</div>
+           		</c:if>
 			</div>
 		</div>
 	</div>
@@ -691,6 +704,34 @@
 							location.href = '<%=request.getContextPath()%>/login'
 					}else{
 						$('.stQuestion-register-content').val('');
+						var str = '';
+						str += '<div class="stQuestion-box">'
+	           			str += '<div class="stQuestion-content-box after">'
+	           			str += '<a href="usedmarket/stand?mb_id=$' + data.stQuestions.bo_mb_id + '">'
+	           			str += '<img alt="" src="/usedmarket/resources/stand_img/' + data.stQuestions.st_img + '">'
+	           			str += '</a>' 
+		           		str += '<div class="stQuestion-info-box">'
+		           		str += '<div class="stQuestion-writer"><a href="usedmarket/stand?mb_id=' + data.stQuestions.bo_mb_id + '">' + data.stQuestions.bo_mb_id + '</a></div>'
+		           		str += '<div class="stQuestion-regTime">' + data.stQuestions.bo_registerDate + '</div>'
+		           		str += '<textarea class="stQuestion-contnet" rows="2" style="resize: none;" readonly>' + data.stQuestions.bo_content + '</textarea>'
+		           		str += '<div class="stQuestion-modify-box">'
+		           		str += '<textarea class="form-control stQuestion-modify-contnet" rows="2" style="resize: none;" >' + data.stQuestions.bo_content + '</textarea>'
+		           		str += '<div class="stQuestion-modify-btn-box after">'
+		           		str += '<button type="button" class="btn btn-light stQuestion-confirm-btn">확인</button>'
+		           		str += '<button type="button" class="btn btn-light stQuestion-cancel-btn">취소</button>'
+		           		str += '</div>'
+	           			str += '</div>'
+	           			str += '</div>'
+	           			str += '<div class="stQuestion-info-btn-box">'
+	           			str += '<button type="button" class="btn btn-light stQuestion-del-btn">삭제</button>'
+		           		str += '<button type="button" class="btn btn-light stQuestion-modify-btn">수정</button>'
+	           			str += '</div>'
+	           			str += '</div>'	           			
+	           			str += '<input type="hidden" class="stQuestion_bo_num" value="' + data.stQuestions.bo_num + '">'
+	           			str += '</div>'
+	           			$('.stQuestion-register-box').before(str);
+						eventStQuestionsModifyBtn($('.stQuestion-modify-btn'));
+						eventStQuestionsDelBtn($('.stQuestion-del-btn'));
 					}						
 				},
 	   	     	error: function(error) {
@@ -711,11 +752,13 @@
    	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-register-box').show();
    	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn-box').hide();
    	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-contnet').hide();
+   	    	$(this).parents('.stQuestion-info-btn-box').hide();   	    	
    	    })
    	 	// 답글 등록창에 취소 버튼 클리시 원래대로
    	 	$('.stQuestion-reply-regCancel-btn').click(function(){
    	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-btn-box').show();
    	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').show();
+   	 		$(this).parents('.stQuestion-box').find('.stQuestion-info-btn-box').show();
    	 		$(this).parents('.stQuestion-reply-register-box').hide();
    	 	})
    	 	// 답글 등록창에 등록 버튼 클릭시 ajax로 답글 등록 처리
@@ -739,7 +782,38 @@
    					if(data.result == 'sameComment')
 						alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
 					else if(data.result == 'success'){
-						console.log('성공')
+						var str = '';
+						str += '<div class="stQuestion-reply-box">'
+		           		str += '<div class="stQuestion-replyInfo-box">'
+		           		str += '<div class="stQuestion-answerer">' + data.newComment.cmt_mb_id + '</div>'
+		           		str += '<div class="stQuestion-reply-regTime">' + data.newComment.cmt_registerDate + '</div>'
+			           	str += '<div class="stQuestion-reply-btn-box">'
+			           	str += '<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>'
+			           	str += '<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>'
+			           	str += '</div>'
+		           		str += '<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" readonly>' + data.newComment.cmt_content + '</textarea>'           					
+		           		str += '<div class="stQuestion-reply-modify-box after">'
+		           		str += '<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
+		           		str += '<div class="stQuestion-reply-modifyBtn-box">'
+		           		str += '<button type="button" class="btn btn-light stQuestion-reply-Modify-btn">수정</button>'
+		           		str += '<button type="button" class="btn btn-light stQuestion-reply-modifyCancel-btn">취소</button>' 
+		           		str += '</div>'
+		           		str += '</div>'
+		           		str += '<input type="hidden" class="stQuestion_cmt_bo_num" value="' + data.newComment.cmt_bo_num + '">'
+		           		str += '</div>'
+	           			str += '<div class="stQuestion-reply-register-box after">'
+						str += '<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
+						str += '<div class="stQuestion-reply-regBtn-box">'
+						str += '<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>'
+						str += '<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>'
+						str += '</div>'
+						str += '</div>'						
+						str += '</div>'
+						clickPoint.parents('.stQuestion-box').find('.stQuestion-content-box').after(str);
+						clickPoint.parents('.stQuestion-box').find('.stQuestion-reply-box').last().remove();								
+						eventStQuestionsCommentModifyBtn($('.stQuestion-replyModify-btn'));
+						eventStQuestionsCommentDelBtn($('.stQuestion-replyDel-btn'));
+						
 					}
    				},
    	   	     	error: function(error) {
@@ -748,7 +822,19 @@
       	    })
    	 	})
    	 	
-   	 	
+   	 	// 답글 내용 수정하는 기능
+   	 	eventStQuestionsCommentModifyBtn($('.stQuestion-replyModify-btn'));
+   	    // 답글 삭제하는 기능
+   	    eventStQuestionsCommentDelBtn($('.stQuestion-replyDel-btn'));
+   	    
+   	    // 답글이 있는 문의글에 답글 버튼 숨기기
+   	    $('.stQuestion-replyInfo-box').each(function(){
+   	    	var tmp = $(this).find('.stQuestion-reply-contnet').text();
+   	    	if(tmp != ''){
+   	    		$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn').css('display', 'none')
+   	    	}
+   	    })
+   	    
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
    	 		obj.click(function(){
@@ -827,9 +913,9 @@
 	   	    })
    		}
    		// 문의사항 탭의 문의글 수정 함수
-   	    function eventStQuestionsModifyBtn(obj){
+   	    function eventStQuestionsModifyBtn(obj){ 
 	   	    // 문의사항 탭의 문의글 수정 버튼 클릭시 수정 박스 나타내고, 내용이랑 버튼 숨기기
-	   	    obj.click(function(){
+	   	    obj.click(function(){ 
 	   	    	$(this).parents('.stQuestion-content-box').find('.stQuestion-modify-box').show();
 	   	    	$(this).parents('.stQuestion-content-box').find('.stQuestion-contnet').hide();
 	   	    	$(this).parents('.stQuestion-info-btn-box').hide();
@@ -875,7 +961,7 @@
 	   	    })   	 		
    	 	}
    		
-   		// 문의글 수정 함수
+   		// 문의글 삭제 함수
    		function eventStQuestionsDelBtn(obj){   			
 	   		// 문의사항 탭의 문의글 삭제 버튼 클릭시
 	   	    obj.click(function(){
@@ -911,6 +997,84 @@
 		      	    })
 	   	    	}
 	   	    })
+   		}
+   		// 답글 내용 수정 함수
+   		function eventStQuestionsCommentModifyBtn(obj){
+   			// 답글 내용 수정 버튼 클릭시 답글 내용과 수정 삭제 버튼은 숨기고, 수정 박스 보여주기
+   	   	 	obj.click(function(){
+   	   	 		$(this).parents('.stQuestion-reply-box').find('.stQuestion-reply-contnet').hide();
+   	   	 		$(this).parents('.stQuestion-reply-box').find('.stQuestion-reply-btn-box').hide();
+   	   	 		$(this).parents('.stQuestion-box').find('.stQuestion-reply-modify-box').show();
+   	   	 	})
+   	   	 	// 답글 수정 박스에 취소 버튼 클릭시 원래대로
+   	   	 	$('.stQuestion-reply-modifyCancel-btn').click(function(){
+   	   	 		$(this).parents('.stQuestion-reply-box').find('.stQuestion-reply-contnet').show();
+   	   			$(this).parents('.stQuestion-reply-box').find('.stQuestion-reply-btn-box').show();
+   	   			$(this).parents('.stQuestion-reply-modify-box').hide();   			 
+   	   	 	})
+   	   	 	// 답글 수정 박스에 수정 버튼 클릭시 ajax로 수정 처리
+   	   	 	$('.stQuestion-reply-Modify-btn').click(function(){ 
+   		   	 	var cmt_bo_num = $(this).parents('.stQuestion-reply-box').find('.stQuestion_cmt_bo_num').val();
+   				var cmt_content = $(this).parents('.stQuestion-reply-box').find('.stQuestion-reply-modify-contnet').val();
+   				var cmt_isDel = 'N'
+   				var clickPoint = $(this);
+   		    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+   		    	$.ajax({
+   					url : '<%=request.getContextPath()%>/modify/comment',
+   					async:false,
+   					type : 'post',
+   					data : JSON.stringify(sendData),
+   					dataType:"json",
+   			        contentType:"application/json; charset=UTF-8",
+   					success : function(data){
+   						if(data.result == 'notComment')
+   							alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+   						else if(data.result == 'success'){
+   							clickPoint.parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').val(cmt_content);
+   							clickPoint.parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').show();
+   							clickPoint.parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-btn-box').show();
+   							clickPoint.parents('.stQuestion-reply-modify-box').hide();
+   						}
+   					},
+   		   	     	error: function(error) {
+   		   	        	console.log('에러발생');
+   		   	    	}
+   				})
+   	   	 	})
+   		}
+   		function eventStQuestionsCommentDelBtn(obj){
+   		// 답글 창에 삭제 버튼 클릭시
+   	   	   obj.click(function(){
+   	   	    	var isDelete = confirm('해당 답글이 삭제 됩니다. 삭제 하시겠습니까?')
+   	   	    	if(isDelete){
+   	   	    		var cmt_bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val();
+   		   	    	var cmt_content = $(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').val();
+   		   	    	var cmt_isDel = 'Y';
+   		   	    	var clickPoint = $(this);
+   		   	    	var sendData = {'cmt_bo_num' : cmt_bo_num, 'cmt_content' : cmt_content, 'cmt_isDel' : cmt_isDel}
+   		   	    	$.ajax({
+   						url : '<%=request.getContextPath()%>/modify/comment',
+   						async:false,
+   						type : 'post',
+   						data : JSON.stringify(sendData),
+   						dataType:"json",
+   				        contentType:"application/json; charset=UTF-8",
+   						success : function(data){
+   							if(data.result == 'notComment')
+   								alert('이미 삭제 되었거나 존재하지 않는 답글입니다.')
+   							else if(data.result == 'success'){
+   								alert('삭제 처리 되었습니다.')
+   								clickPoint.parents('.stQuestion-box').find('.stQuestion-info-btn-box').show();
+   								clickPoint.parents('.stQuestion-box').find('.stQuestion-reply-register-contnet').text('')
+   								clickPoint.parents('.stQuestion-replyInfo-box').remove();
+   							}
+   						},
+   			   	     	error: function(error) {
+   			   	        	console.log('에러발생');
+   			   	    	}
+   					})
+   	   	    	}
+   	   	    })
    		}
   	</script>
 </body>

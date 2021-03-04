@@ -82,7 +82,7 @@
 	<select id="selectComment" resultType="kr.green.usedmarket.vo.CommentVo">
 		select * from comment where cmt_bo_num = #{cmt_bo_num} and cmt_isDel = 'N'
 	</select>
-<!-- 상품문의글에 답글을 등록하는 쿼리문 -->
+<!-- 답글을 등록하는 쿼리문 -->
 	<insert id="insertComment" parameterType="kr.green.usedmarket.vo.CommentVo">
 	 	insert into
 	 		comment(cmt_bo_num, cmt_pd_num, cmt_mb_id, cmt_content)
@@ -114,8 +114,10 @@
 	<update id="updateIntersetCnt">
 		update product set pd_interestCnt = #{interestCnt} where pd_num = #{pd_num}
 	</update>
-
-
+<!-- 아이디와 일치하는 마지막에 등록된 댓글 정보를 가져오는 쿼리문-->
+	<select id="selectNewComment" resultType="kr.green.usedmarket.vo.CommentVo">
+		select * from comment where cmt_isDel = 'N' and cmt_mb_id = #{mb_id} order by cmt_bo_num DESC limit 0, 1;
+	</select>
 
 
 

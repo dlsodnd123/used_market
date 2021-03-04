@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.dao.StandDao;
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
@@ -151,5 +152,23 @@ public class StandServiceImp implements StandService{
 			tmp.setSt_img(productDao.selectProductQuestionsImg(tmp.getBo_mb_id()));
 		}			
 		return stQuestionsList;
+	}
+	// 가판대 문의글 개수 가져오기
+	@Override
+	public int getStQuestionsCount(String st_name) {	
+		return standDao.selectStQuestionsCount(st_name);
+	}
+	// 가판대 문의글 답글 가져오기
+	@Override
+	public ArrayList<CommentVo> getCommentList(String st_mb_id) {
+		ArrayList<CommentVo> commentList = standDao.selectCommentList(st_mb_id);
+		return commentList;
+	}
+	// 가판대 문의글 정보 가져오기
+	@Override
+	public ProductQuestionsVo getStQuestions(int bo_num) {
+		ProductQuestionsVo stQuestions = standDao.selectStQuestions(bo_num);
+		stQuestions.setSt_img(productDao.selectProductQuestionsImg(stQuestions.getBo_mb_id()));
+		return stQuestions;
 	}
 }

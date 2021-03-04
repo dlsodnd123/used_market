@@ -158,7 +158,8 @@ public class ProductController {
 		map.put("bo_mb_id", questions.getBo_mb_id());
 		map.put("bo_registerDate", questions.getBo_registerDate());
 		map.put("st_img", questions.getSt_img());
-		map.put("bo_num", questions.getBo_num());
+		map.put("bo_num", questions.getBo_num());	
+		
 		return map;
 	}
 	// 상품문의에 등록된 글 수정하는 기능
@@ -193,18 +194,23 @@ public class ProductController {
 	@RequestMapping(value = "/register/comment", method = RequestMethod.POST)
 	@ResponseBody
 	public Object registerPost(@RequestBody CommentVo comment, HttpServletRequest request) {
-		System.out.println(comment);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
+		// 로그인된 회원아디를 답글 정보에 넣기
 		comment.setCmt_mb_id(member.getMb_id());
+		// 답글 정보 등록
 		String result = productService.registerComment(comment);
 		map.put("result", result);
+		// 상품상세페이지 화면에 보내줄 테이터 가져와서 화면에 전달하기 
 		CommentVo getComment = productService.getComment(comment.getCmt_bo_num());
 		map.put("cmt_mb_id", getComment.getCmt_mb_id());
 		map.put("cmt_registerDate", getComment.getCmt_registerDate());
 		map.put("cmt_content", getComment.getCmt_content());
-		
+		// 가판대페이지 화면에 보내줄 테이터 가져와서 화면에 전달하기
+		// 답글 등록자중에 마직에 등록된 답글 정보 가져오기
+		CommentVo newComment = productService.getNewComment(member.getMb_id());
+		map.put("newComment", newComment);
 		return map;
 	}
 	// 답글 내용 수정하는 기능(삭제, 수정)

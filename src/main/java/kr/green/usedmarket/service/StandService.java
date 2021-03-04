@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
@@ -48,5 +49,11 @@ public interface StandService {
 	String delDbisProduct(List<Integer> pd_num, String mb_id);
 
 	ArrayList<ProductQuestionsVo> getstQuestionsList(String st_name);
+
+	int getStQuestionsCount(String st_name);
+
+	ArrayList<CommentVo> getCommentList(String st_mb_id);
+
+	ProductQuestionsVo getStQuestions(int bo_num);
 
 }
