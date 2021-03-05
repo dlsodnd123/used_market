@@ -127,7 +127,10 @@
         	          		alert('사용중인 아이디 입니다.');
         	          		idCheck = false;
         	          	}      	          			
-        	        }
+        	        },
+	   	   	     	error: function(error) {
+	   	   	        	console.log('에러발생');
+	   	   	    	}
         	    })
         	})
         	$('input[name=id]').change(function(){

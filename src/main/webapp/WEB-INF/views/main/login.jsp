@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
 <style>
         .login-top{
             text-align: center;
@@ -74,7 +74,6 @@
     	   	        	console.log('에러발생');
     	   	    	}
     			})
-    			console.log(check);
     			return check;
     		})
     	})

@@ -11,15 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import kr.green.usedmarket.service.MemberService;
+import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.vo.MemberVo;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
-	private MemberService memberService; 
+	MemberService memberService; 
+	
+	@Autowired
+	StandService standService; 
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView homeGet(ModelAndView mv) {
@@ -89,11 +98,40 @@ public class HomeController {
 		mv.setViewName("redirect:/");
 		return mv;
 	}
-	// 회원정보수정 전 비밀번호 확인 확면
+	// 회원정보수정 전 비밀번호 확인 화면
 	@RequestMapping(value = "/memberConfirm", method = RequestMethod.GET)
-	public ModelAndView MemberConfirmGet(ModelAndView mv) {
+	public ModelAndView memberConfirmGet(ModelAndView mv) {
 
 		mv.setViewName("/main/memberConfirm");
 		return mv;
 	}
+	// 회원정보수정 전 비밀번호 확인 후 회원정보수정 화면으로 넘어가는 담당
+	@RequestMapping(value = "/memberConfirm", method = RequestMethod.POST)
+	public ModelAndView memberConfirmPost(ModelAndView mv) {
+
+		mv.setViewName("redirect:/memberInfoChange");
+		return mv;
+	}
+	// 비밀번호 확인 하는 기능
+	@RequestMapping(value = "/pw/check", method = RequestMethod.POST)
+	@ResponseBody
+	public String pwCheckPost(String mb_pw, HttpServletRequest request) {
+		System.out.println(mb_pw);
+		// 로그인 된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		// 로그인 된 정보가 없다면 "notLogin", 비밀번호가 일치하지 않는다면 "notSame", 같으면 "same" 전송
+		if(member == null)
+			return "notLogin";
+		if(!passwordEncoder.matches(mb_pw, member.getMb_pw()))
+			return "notSame";		
+		return "same";
+	}
+	// 회원정보수정 화면
+	@RequestMapping(value = "/memberInfoChange", method = RequestMethod.GET)
+	public ModelAndView memberInfoChangeGet(ModelAndView mv) {
+
+		mv.setViewName("/main/memberInfoChange");
+		return mv;
+	}
+	
 }

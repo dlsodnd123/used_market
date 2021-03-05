@@ -124,7 +124,7 @@
 		              마이페이지
 		            </a>
 		            <div class="dropdown-menu">
-		                <a class="dropdown-item" href="#">회원정보수정</a>
+		                <a class="dropdown-item" href="<%=request.getContextPath()%>/memberConfirm">회원정보수정</a>
 		                <a class="dropdown-item" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#menu2">찜한상품</a>
 		            </div>
 		          </li>
