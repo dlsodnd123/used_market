@@ -113,7 +113,7 @@
 		          </li>
 	          
 		          <li class="nav-item">
-		            <a class="nav-link" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}">내가판대</a>
+		            <a class="nav-link" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#home">내가판대</a>
 		          </li>
 		          <li class="nav-item">
 		            <a class="nav-link" href="#">채팅</a>
@@ -125,7 +125,6 @@
 		            </a>
 		            <div class="dropdown-menu">
 		                <a class="dropdown-item" href="#">회원정보수정</a>
-		                <a class="dropdown-item" href="#">구매/판매 내역</a>
 		                <a class="dropdown-item" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#menu2">찜한상품</a>
 		            </div>
 		          </li>

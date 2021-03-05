@@ -89,4 +89,11 @@ public class HomeController {
 		mv.setViewName("redirect:/");
 		return mv;
 	}
+	// 회원정보수정 전 비밀번호 확인 확면
+	@RequestMapping(value = "/memberConfirm", method = RequestMethod.GET)
+	public ModelAndView MemberConfirmGet(ModelAndView mv) {
+
+		mv.setViewName("/main/memberConfirm");
+		return mv;
+	}
 }

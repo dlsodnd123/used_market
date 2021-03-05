@@ -326,36 +326,36 @@
        	<!-- Nav tabs -->
        	<ul class="nav nav-tabs" role="tablist">
        		<c:if test="${stand.st_mb_id == member.mb_id}">
-	         	<li class="nav-item mgtPd">
-	           		<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록/관리(${productCount})</a>
+	         	<li class="select nav-item mgtPd">
+	           		<a class="nav-link mgtPd-tab home" data-toggle="tab" href="#home">상품목록/관리(${productCount})</a>
 	         	</li>
          	</c:if>
          	<c:if test="${stand.st_mb_id != member.mb_id}">         	
-	         	<li class="nav-item mgtPd">
-	           		<a class="nav-link mgtPd-tab active" data-toggle="tab" href="#home">상품목록(${productCount})</a>
+	         	<li class="select nav-item mgtPd">
+	           		<a class="nav-link mgtPd-tab home active" data-toggle="tab" href="#home">상품목록(${productCount})</a>
 	         	</li>
          	</c:if>
          	<c:if test="${stand.st_mb_id == member.mb_id}">
-	         	<li class="nav-item sale">
-	           		<a class="nav-link salePd-tab" data-toggle="tab" href="#menu1">판매한상품(${saleProductCount})</a>
+	         	<li class="select nav-item sale">
+	           		<a class="nav-link salePd-tab menu1" data-toggle="tab" href="#menu1">판매한상품(${saleProductCount})</a>
 	         	</li>
 	        </c:if>
 	        <c:if test="${stand.st_mb_id == member.mb_id}">
-	         	<li class="nav-item dibs">
-	           		<a class="nav-link dibsPd-tab" data-toggle="tab" href="#menu2">찜한상품(${dibsPdCnt})</a>
+	         	<li class="select nav-item dibs">
+	           		<a class="nav-link dibsPd-tab active menu2" data-toggle="tab" href="#menu2">찜한상품(${dibsPdCnt})</a>
 	         	</li>
          	</c:if>
-         	<li class="nav-item">
-           		<a class="nav-link" data-toggle="tab" href="#menu3">거래후기</a>
+         	<li class="select nav-item">
+           		<a class="nav-link menu3" data-toggle="tab" href="#menu3">거래후기</a>
          	</li>
-         	<li class="nav-item">
-           		<a class="nav-link" data-toggle="tab" href="#menu4">문의사항(${stQuestionsCount})</a>
+         	<li class="select nav-item">
+           		<a class=" nav-link menu4" data-toggle="tab" href="#menu4">문의사항(${stQuestionsCount})</a>
          	</li>
        	</ul>
      	
        	<!-- Tab panes -->
        	<div class="tab-content">
-         	<div id="home" class="container tab-pane active"><br>
+         	<div id="home" class="container tab-pane"><br>
          	<c:if test="${stand.st_mb_id == member.mb_id}">        	
             	<h4 class="tabTitle">상품목록/관리</h4>
             </c:if>
@@ -426,7 +426,7 @@
 				</div>
 			</c:if>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
-	         	<div id="menu2" class="container tab-pane fade after"><br>         	
+	         	<div id="menu2" class="container tab-pane fade after active show"><br>         	
 	           		<h3>찜한상품</h3>
 	           		<div class="dibs-selectBtn-box">
 		           		<button type="button" class="btn btn-light all-select-btn">전체선택</button>
@@ -747,83 +747,11 @@
    	    eventStQuestionsDelBtn($('.stQuestion-del-btn'));
    	    
    	    // 문의사항 글에 답글을 등록하는 기능
-   	    // 문의사항 글에 답글 버튼 클릭시 등록창을 띄우고, 버튼과 내용 숨기기
-   	    $('.stQuestion-reply-btn').click(function(){
-   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-register-box').show();
-   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn-box').hide();
-   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-contnet').hide();
-   	    	$(this).parents('.stQuestion-info-btn-box').hide();   	    	
-   	    })
-   	 	// 답글 등록창에 취소 버튼 클리시 원래대로
-   	 	$('.stQuestion-reply-regCancel-btn').click(function(){
-   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-btn-box').show();
-   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').show();
-   	 		$(this).parents('.stQuestion-box').find('.stQuestion-info-btn-box').show();
-   	 		$(this).parents('.stQuestion-reply-register-box').hide();
-   	 	})
-   	 	// 답글 등록창에 등록 버튼 클릭시 ajax로 답글 등록 처리
-   	 	$('.stQuestion-replyDel-reg-btn').click(function(){
-   	 		var clickPoint = $(this);
-	    	var cmt_bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val(); 
-	   		var cmt_content = $(this).parents('.stQuestion-reply-register-box').find('.stQuestion-reply-register-contnet').val();
-	   		if(cmt_content == ''){
-	   			alert('최소 1글자 이상 입력해야 합니다.');
-	   			return false;
-	   		}
-	   		var sendData = {"cmt_bo_num" : cmt_bo_num, "cmt_content" : cmt_content}
-	   		$.ajax({
-   	     		url : '<%=request.getContextPath()%>/register/comment',
-   				async:false,
-   				type : 'post',
-    			data : JSON.stringify(sendData),
-   				dataType:"json",
-   				contentType:"application/json; charset=UTF-8",
-   				success : function(data){
-   					if(data.result == 'sameComment')
-						alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
-					else if(data.result == 'success'){
-						var str = '';
-						str += '<div class="stQuestion-reply-box">'
-		           		str += '<div class="stQuestion-replyInfo-box">'
-		           		str += '<div class="stQuestion-answerer">' + data.newComment.cmt_mb_id + '</div>'
-		           		str += '<div class="stQuestion-reply-regTime">' + data.newComment.cmt_registerDate + '</div>'
-			           	str += '<div class="stQuestion-reply-btn-box">'
-			           	str += '<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>'
-			           	str += '<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>'
-			           	str += '</div>'
-		           		str += '<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" readonly>' + data.newComment.cmt_content + '</textarea>'           					
-		           		str += '<div class="stQuestion-reply-modify-box after">'
-		           		str += '<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
-		           		str += '<div class="stQuestion-reply-modifyBtn-box">'
-		           		str += '<button type="button" class="btn btn-light stQuestion-reply-Modify-btn">수정</button>'
-		           		str += '<button type="button" class="btn btn-light stQuestion-reply-modifyCancel-btn">취소</button>' 
-		           		str += '</div>'
-		           		str += '</div>'
-		           		str += '<input type="hidden" class="stQuestion_cmt_bo_num" value="' + data.newComment.cmt_bo_num + '">'
-		           		str += '</div>'
-	           			str += '<div class="stQuestion-reply-register-box after">'
-						str += '<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
-						str += '<div class="stQuestion-reply-regBtn-box">'
-						str += '<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>'
-						str += '<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>'
-						str += '</div>'
-						str += '</div>'						
-						str += '</div>'
-						clickPoint.parents('.stQuestion-box').find('.stQuestion-content-box').after(str);
-						clickPoint.parents('.stQuestion-box').find('.stQuestion-reply-box').last().remove();								
-						eventStQuestionsCommentModifyBtn($('.stQuestion-replyModify-btn'));
-						eventStQuestionsCommentDelBtn($('.stQuestion-replyDel-btn'));
-						
-					}
-   				},
-   	   	     	error: function(error) {
-   	   	        	console.log('에러발생');
-   	   	    	}
-      	    })
-   	 	})
+   	    eventStQuestionsRegComment($('.stQuestion-reply-btn'));   	    
    	 	
    	 	// 답글 내용 수정하는 기능
    	 	eventStQuestionsCommentModifyBtn($('.stQuestion-replyModify-btn'));
+   	 	
    	    // 답글 삭제하는 기능
    	    eventStQuestionsCommentDelBtn($('.stQuestion-replyDel-btn'));
    	    
@@ -834,6 +762,14 @@
    	    		$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn').css('display', 'none')
    	    	}
    	    })
+   	    
+   		// 상단메뉴에 내가판대, 마이페이지의 찜한상품 페이지 클릭했을 때 해당페이지로 가능 기능
+   		selectTab();
+   		// 상단메뉴에 내가판대, 마이페이지의 찜한상품 페이지내에서 실행되었을 때 작동하게 해주는 기능
+   		$(window).on('hashchange', function(e){
+   			selectTab();
+		});
+   	    
    	    
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
@@ -1042,6 +978,7 @@
    				})
    	   	 	})
    		}
+   		// 답글 삭제 함수
    		function eventStQuestionsCommentDelBtn(obj){
    		// 답글 창에 삭제 버튼 클릭시
    	   	   obj.click(function(){
@@ -1076,6 +1013,95 @@
    	   	    	}
    	   	    })
    		}
+   		// 답글 등록 함수
+   		function eventStQuestionsRegComment(obj){
+   			// 문의사항 글에 답글 버튼 클릭시 등록창을 띄우고, 버튼과 내용 숨기기
+   	   	    obj.click(function(){
+   	   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-register-box').show();
+   	   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-btn-box').hide();
+   	   	    	$(this).parents('.stQuestion-box').find('.stQuestion-reply-contnet').hide();
+   	   	    	$(this).parents('.stQuestion-info-btn-box').hide();   	    	
+   	   	    })
+   	   	 	// 답글 등록창에 취소 버튼 클리시 원래대로
+   	   	 	$('.stQuestion-reply-regCancel-btn').click(function(){
+   	   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-btn-box').show();
+   	   	 		$(this).parents('.stQuestion-replyInfo-box').find('.stQuestion-reply-contnet').show();
+   	   	 		$(this).parents('.stQuestion-box').find('.stQuestion-info-btn-box').show();
+   	   	 		$(this).parents('.stQuestion-reply-register-box').hide();
+   	   	 	})
+   	   	 	// 답글 등록창에 등록 버튼 클릭시 ajax로 답글 등록 처리
+   	   	 	$('.stQuestion-replyDel-reg-btn').click(function(){
+   	   	 		var clickPoint = $(this);
+   		    	var cmt_bo_num = $(this).parents('.stQuestion-box').find('.stQuestion_bo_num').val(); 
+   		   		var cmt_content = $(this).parents('.stQuestion-reply-register-box').find('.stQuestion-reply-register-contnet').val();
+   		   		if(cmt_content == ''){
+   		   			alert('최소 1글자 이상 입력해야 합니다.');
+   		   			return false;
+   		   		}
+   		   		var sendData = {"cmt_bo_num" : cmt_bo_num, "cmt_content" : cmt_content}
+   		   		$.ajax({
+   	   	     		url : '<%=request.getContextPath()%>/register/comment',
+   	   				async:false,
+   	   				type : 'post',
+   	    			data : JSON.stringify(sendData),
+   	   				dataType:"json",
+   	   				contentType:"application/json; charset=UTF-8",
+   	   				success : function(data){
+   	   					if(data.result == 'sameComment')
+   							alert('이미 등록된 답변이 있습니다. 답변은 1개만 작성 가능합이다.')
+   						else if(data.result == 'success'){
+   							var str = '';
+   							str += '<div class="stQuestion-reply-box">'
+   			           		str += '<div class="stQuestion-replyInfo-box">'
+   			           		str += '<div class="stQuestion-answerer">' + data.newComment.cmt_mb_id + '</div>'
+   			           		str += '<div class="stQuestion-reply-regTime">' + data.newComment.cmt_registerDate + '</div>'
+   				           	str += '<div class="stQuestion-reply-btn-box">'
+   				           	str += '<button type="button" class="btn btn-light stQuestion-replyDel-btn">삭제</button>'
+   				           	str += '<button type="button" class="btn btn-light stQuestion-replyModify-btn">수정</button>'
+   				           	str += '</div>'
+   			           		str += '<textarea class="stQuestion-reply-contnet" rows="2" style="resize: none;" readonly>' + data.newComment.cmt_content + '</textarea>'           					
+   			           		str += '<div class="stQuestion-reply-modify-box after">'
+   			           		str += '<textarea class="form-control stQuestion-reply-modify-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
+   			           		str += '<div class="stQuestion-reply-modifyBtn-box">'
+   			           		str += '<button type="button" class="btn btn-light stQuestion-reply-Modify-btn">수정</button>'
+   			           		str += '<button type="button" class="btn btn-light stQuestion-reply-modifyCancel-btn">취소</button>' 
+   			           		str += '</div>'
+   			           		str += '</div>'
+   			           		str += '<input type="hidden" class="stQuestion_cmt_bo_num" value="' + data.newComment.cmt_bo_num + '">'
+   			           		str += '</div>'
+   		           			str += '<div class="stQuestion-reply-register-box after">'
+   							str += '<textarea class="form-control stQuestion-reply-register-contnet" rows="2" style="resize: none;" >' + data.newComment.cmt_content + '</textarea>'
+   							str += '<div class="stQuestion-reply-regBtn-box">'
+   							str += '<button type="button" class="btn btn-light stQuestion-replyDel-reg-btn">등록</button>'
+   							str += '<button type="button" class="btn btn-light stQuestion-reply-regCancel-btn">취소</button>'
+   							str += '</div>'
+   							str += '</div>'						
+   							str += '</div>'
+   							clickPoint.parents('.stQuestion-box').find('.stQuestion-content-box').after(str);
+   							clickPoint.parents('.stQuestion-box').find('.stQuestion-reply-box').last().remove();
+   							eventStQuestionsRegComment($('.stQuestion-reply-btn'))
+   							eventStQuestionsCommentModifyBtn($('.stQuestion-replyModify-btn'));
+   							eventStQuestionsCommentDelBtn($('.stQuestion-replyDel-btn'));
+   							
+   						}
+   	   				},
+   	   	   	     	error: function(error) {
+   	   	   	        	console.log('에러발생');
+   	   	   	    	}
+   	      	    })
+   	   	 	})
+   		}
+   		// 상단메뉴에 내가판대, 마이페이지의 찜한상품 페이지 클릭했을 때 해당페이지로 가는 함수
+   		function selectTab(){ 
+	   		var loc = location.href;
+	   		var arr = loc.split('#')
+	   		var target = '#'+arr[1];
+	   		$('.tab-pane').removeClass('active show');
+	   		$(target).addClass('active show')
+	   		$('.select').find('a').removeClass('active');
+	   		$('.select').find('a.'+arr[1]).addClass('active')
+
+   		}   		
   	</script>
 </body>
 </html>
