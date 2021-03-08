@@ -91,7 +91,7 @@
             </div>
             <div class="form-group">
                 <h5>연락처</h5>
-                <input type="number" class="form-control col-8" id="phone" name="mb_phone" placeholder="'-' 빼고 입력">
+                <input type="text" class="form-control col-8" id="phone" name="mb_phone" placeholder="'-' 빼고 입력">
                 <label for="phone" class="error" id="phone-error"></label>
             </div>
             <div class="form-group">
@@ -160,7 +160,8 @@
                         required : true,
                     },
                     mb_phone : {
-                        required : true
+                        required : true,
+                        regex : /^[0-9]*$/
                     },
                     mb_email : {
                         email : true
@@ -184,7 +185,7 @@
                     },
                     mb_phone : {
                         required : '필수 입력사항 입니다.',
-                        digits : '숫자만 입력 가능합니다.'
+                        regex : '숫자만 입력 가능합니다.'
                     },
                     mb_email : {
                         email : '이메일 형식에 맞지 않습니다.'

@@ -3,20 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.green.usedmarket.dao.MemberDao">
+<!-- 아이디와 일치하는 회원정보를 가져오는 쿼리문 -->
 	<select id="getMember" resultType="kr.green.usedmarket.vo.MemberVo">
 		select * from member where mb_id = #{id}
 	</select>
-	
+<!-- 회원을 등록하는 쿼리문 -->	
 	<insert id="insertMember">
 		insert into 
 			member(mb_id, mb_pw, mb_name, mb_gender, mb_postcode, mb_roadAddress, mb_jibunAddress, mb_detailAddress, mb_phone, mb_email, mb_division)
 			values(#{member.mb_id}, #{member.mb_pw}, #{member.mb_name}, #{member.mb_gender}, #{member.mb_postcode}, 
 					#{member.mb_roadAddress}, #{member.mb_jibunAddress}, #{member.mb_detailAddress}, #{member.mb_phone}, #{member.mb_email}, #{member.mb_division})
 	</insert>
+<!-- 회원가입시 기본 가판대를 생성하는 쿼리문 -->
 	<insert id="insertStand">
 		insert into
 			stand(st_name, st_mb_id)
 			values(#{stand.st_name}, #{stand.st_mb_id})
 	</insert>
-
+<!-- 회원정보를 수정하는 쿼리문 -->
+	<update id="updateInfoIncludePw" parameterType="kr.green.usedmarket.vo.MemberVo">
+		update member 
+			set mb_pw = #{oriMember.mb_pw}, mb_postcode = #{oriMember.mb_postcode}, mb_roadAddress = #{oriMember.mb_roadAddress}, mb_jibunAddress = #{oriMember.mb_jibunAddress},
+				mb_detailAddress = #{oriMember.mb_detailAddress}, mb_phone = #{oriMember.mb_phone}, mb_email = #{oriMember.mb_email}
+			where mb_id = #{oriMember.mb_id}
+	</update>
 </mapper>

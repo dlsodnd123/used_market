@@ -19,12 +19,12 @@
 </head>
 <body>
 	<div class="container">
-        <form action="" class="container" method="post" id="form">
+        <form action="<%=request.getContextPath()%>/memberInfoChange" class="container" method="post" id="form">
         	<h3>회원정보수정</h3>
             <div class="form-group">         
                 <h6>아이디</h6>
                 <div>
-                    <input type="text" class="form-control col-6 check" id="id" name="mb_id" readonly>
+                    <input type="text" class="form-control col-6 check" id="id" name="mb_id" readonly value="${member.mb_id}">
                 </div>
             </div>
             <div class="form-group">
@@ -39,53 +39,55 @@
             </div>
             <div class="form-group">
                 <h6>이름</h6>
-                <input type="text" class="form-control col-8" id="name" name="mb_name" readonly>
+                <input type="text" class="form-control col-8" id="name" name="mb_name" readonly value="${member.mb_name}">
             </div>
             <div class="form-group">
                 <h6>성별</h6>
-                <input type="text" class="form-control col-8" id="mb_gender" name="mb_gender" readonly>
+                <input type="text" class="form-control col-1" id="mb_gender" name="mb_gender" readonly value="${member.mb_gender}">
             </div>
             <div class="form-group">
                 <h6>주소(선택)</h6>
-                <input type="text"  class="form-control col-3 address" id="sample4_postcode" placeholder="우편번호" name="mb_postcode">
+                <input type="text"  class="form-control col-3 address" id="sample4_postcode" placeholder="우편번호" name="mb_postcode" value="${member.mb_postcode}">
                 <input type="button" class="btn btn-secondary col-2 address" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-                <input type="text" class="form-control col-8" id="sample4_roadAddress" placeholder="도로명주소" name="mb_roadAddress" style="margin-bottom: 5px;">
-                <input type="text" class="form-control col-8" id="sample4_jibunAddress" placeholder="지번주소" name="mb_jibunAddress" style="margin-bottom: 5px;">
+                <input type="text" class="form-control col-8" id="sample4_roadAddress" placeholder="도로명주소" name="mb_roadAddress" style="margin-bottom: 5px;" value="${member.mb_roadAddress}">
+                <input type="text" class="form-control col-8" id="sample4_jibunAddress" placeholder="지번주소" name="mb_jibunAddress" style="margin-bottom: 5px;" value="${member.mb_jibunAddress}">
                 <span id="guide" style="color:#999;display:none"></span>
-                <input type="text" class="form-control col-3 address" id="sample4_detailAddress" placeholder="상세주소" name="mb_detailAddress">
+                <input type="text" class="form-control col-3 address" id="sample4_detailAddress" placeholder="상세주소" name="mb_detailAddress" value="${member.mb_detailAddress}">
                 <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
             </div>
             <div class="form-group">
                 <h6>연락처</h6>
-                <input type="number" class="form-control col-8" id="phone" name="mb_phone" placeholder="'-' 빼고 입력">
+                <input type="text" class="form-control col-8" id="phone" name="mb_phone" placeholder="'-' 빼고 입력" value="${member.mb_phone}">
                 <label for="phone" class="error" id="phone-error"></label>
             </div>
             <div class="form-group">
                 <h6>이메일(선택)</h6>
-                <input type="email" class="form-control col-8" id="email" name="mb_email">
+                <input type="email" class="form-control col-8" id="email" name="mb_email" value="${member.mb_email}">
                 <label for="email" class="error" id="email-error"></label>
             </div>
-            <input type="hidden" name="mb_division" value="normal">
             <div class="form-group">
             	<button type="submit" class="btn btn-success mb-infoChange-btn">수정</button>
             	<button type="button" class="btn btn-secondary mb-infoChangeCancel-btn">취소</button>
             </div>
-            <div class="form-group">
-            	<button type="button" class="btn btn-dark mb-withdrawal-btn">회원탈퇴</button>            	
-            </div>
         </form>
     </div>
 <script type="text/javascript">
+	// 취소 버튼 클릭시
+	$('.mb-infoChangeCancel-btn').click(function(){
+		location.href = '<%=request.getContextPath()%>/'
+	})
 	$(function(){		
 		$('#form').validate({
 		    rules : {
 		        mb_pw : {
-		            required : true,
 		            regex : /^[a-zA-Z0-9]{8,}$/
 		        },
 		        mb_pw2 : {
-                    required : true,
                     equalTo : pw
+                },
+                mb_phone : {
+                    required : true,
+                    regex : /^[0-9]*$/
                 },
 		        mb_email : {
 		            email : true
@@ -100,6 +102,10 @@
 		            required : '필수 입력사항 입니다.',
 		            equalTo : '비밀번호가 일치하지 않습니다.'
 		        },
+		        mb_phone : {
+                    required : '필수 입력사항 입니다.',
+                    regex : '숫자만 입력 가능합니다.'
+                },
 		        mb_email : {
 		            email : '이메일 형식에 맞지 않습니다.'
 		        }

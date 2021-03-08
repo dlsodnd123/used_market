@@ -105,13 +105,6 @@ public class HomeController {
 		mv.setViewName("/main/memberConfirm");
 		return mv;
 	}
-	// 회원정보수정 전 비밀번호 확인 후 회원정보수정 화면으로 넘어가는 담당
-	@RequestMapping(value = "/memberConfirm", method = RequestMethod.POST)
-	public ModelAndView memberConfirmPost(ModelAndView mv) {
-
-		mv.setViewName("redirect:/memberInfoChange");
-		return mv;
-	}
 	// 비밀번호 확인 하는 기능
 	@RequestMapping(value = "/pw/check", method = RequestMethod.POST)
 	@ResponseBody
@@ -128,10 +121,37 @@ public class HomeController {
 	}
 	// 회원정보수정 화면
 	@RequestMapping(value = "/memberInfoChange", method = RequestMethod.GET)
-	public ModelAndView memberInfoChangeGet(ModelAndView mv) {
-
+	public ModelAndView memberInfoChangeGet(ModelAndView mv, HttpServletRequest request) {		
+		MemberVo member = standService.getMemberId(request);
+		mv.addObject("member", member);
 		mv.setViewName("/main/memberInfoChange");
 		return mv;
 	}
-	
+	// 회원정보수정 하는 기능
+	@RequestMapping(value = "/memberInfoChange", method = RequestMethod.POST)
+	public ModelAndView memberInfoChangePost(ModelAndView mv, MemberVo member) {
+		// 회원정보 수정하는 기능
+		memberService.memberInfoChange(member);
+		
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	// 회원탈퇴 화면
+	@RequestMapping(value = "/withdrawal", method = RequestMethod.GET)
+	public ModelAndView withdrawalGet(ModelAndView mv, HttpServletRequest request) {		
+		MemberVo member = standService.getMemberId(request);
+		mv.addObject("member", member);
+		mv.setViewName("/main/withdrawal");
+		return mv;
+	}
+	// 회원탈퇴 기능
+	@RequestMapping(value = "/member/withdrawal", method = RequestMethod.POST)
+	@ResponseBody
+	public String memberWithdrawalPost(String mb_id, HttpServletRequest request) {
+		MemberVo member = memberService.getMember(mb_id);
+		if(member == null)
+			return "memberNull";
+		
+		return "";
+	}
 }

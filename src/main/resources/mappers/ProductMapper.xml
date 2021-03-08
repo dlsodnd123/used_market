@@ -76,7 +76,7 @@
 	<update id="updatePdQuestions" parameterType="kr.green.usedmarket.vo.BoardVo">
 		update board
 			set bo_title = #{originalBoard.bo_title}, bo_content = #{originalBoard.bo_content}, bo_isDel = #{originalBoard.bo_isDel}
-			where bo_num = #{originalBoard.bo_num}
+			where bo_num = #{originalBoard.bo_num}, mb_phone = #{originalBoard.mb_phone}, mb_email = #{originalBoard.mb_email}
 	</update>
 <!-- 게시글 번호와 일치하는 답글을 가져오는 쿼리문 -->
 	<select id="selectComment" resultType="kr.green.usedmarket.vo.CommentVo">

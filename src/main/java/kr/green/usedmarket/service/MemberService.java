@@ -9,4 +9,6 @@ public interface MemberService {
 	void signupMember(MemberVo member);
 
 	String idpwCheck(MemberVo member);
+
+	void memberInfoChange(MemberVo member);
 }

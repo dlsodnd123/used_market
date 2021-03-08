@@ -13,6 +13,8 @@ public interface MemberDao {
 
 	void insertStand(@Param("stand")StandVo stand);
 
+	void updateInfoIncludePw(@Param("oriMember")MemberVo oriMember);
+
 
 
 }
