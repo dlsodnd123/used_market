@@ -53,10 +53,10 @@
 	</delete>	
 <!-- 채팅방을 삭제하는 쿼리문 -->
 	<delete id="deleteChatRomm">
-		delete from chat_room where chro_mb_id = #{mb_id}
+		delete from chat_room where chro_buyer_mb_id = #{mb_id} or chro_seller_mb_id2 = #{mb_id}
 	</delete>
 <!-- 채팅메시지를 삭제하는 쿼리문 -->
 	<delete id="deleteChatMessage">
-		delete from chat_message where chmg_mb_id #{mb_id}
+		delete from chat_message where chmg_mb_id = #{mb_id}
 	</delete>	
 </mapper>
