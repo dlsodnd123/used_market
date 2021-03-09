@@ -148,10 +148,13 @@ public class HomeController {
 	@RequestMapping(value = "/member/withdrawal", method = RequestMethod.POST)
 	@ResponseBody
 	public String memberWithdrawalPost(String mb_id, HttpServletRequest request) {
+		// 화면에서 전달받은 아이디와 일치하는 회원이 있는지 조회
 		MemberVo member = memberService.getMember(mb_id);
+		// 일치하는 회원이 없으면 'memberNull' 반환
 		if(member == null)
 			return "memberNull";
-		
-		return "";
+		// 일치하는 회원이 있으면 회원탈퇴 진행 후 'success' 반환
+		memberService.memberWithdrawal(mb_id);
+		return "success";
 	}
 }

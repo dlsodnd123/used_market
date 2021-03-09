@@ -11,4 +11,6 @@ public interface MemberService {
 	String idpwCheck(MemberVo member);
 
 	void memberInfoChange(MemberVo member);
+
+	void memberWithdrawal(String mb_id);
 }

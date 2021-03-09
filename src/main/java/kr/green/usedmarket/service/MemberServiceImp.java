@@ -66,4 +66,24 @@ public class MemberServiceImp implements MemberService {
 		// 회원정보를 업데이드 시킴
 		memberDao.updateInfoIncludePw(oriMember);
 	}
+	// 회원탈퇴 하는 기능
+	@Override
+	public void memberWithdrawal(String mb_id) {
+		// 회원탈퇴 여부 'Y'로 변경
+		memberDao.updateWithdrawal(mb_id);
+		// 등록된 상품 삭제여부 'Y'로 변경
+		memberDao.updateProductisDel(mb_id);
+		// 등록된 게시글 삭제여부 'Y'로 변경
+		memberDao.updateBoradDel(mb_id);
+		// 등록된 댓글 삭제여부 'Y'로 변경
+		memberDao.updateCommentDel(mb_id);
+		// 해당 가판대 삭제
+		memberDao.deleteStand(mb_id);
+		// 관심상품 삭제
+		memberDao.deleteInterestPd(mb_id);
+		// 채팅방 삭제
+		memberDao.deleteChatRomm(mb_id);
+		// 채팅메시지 삭제
+		memberDao.deleteChatMessage(mb_id);
+	}
 }

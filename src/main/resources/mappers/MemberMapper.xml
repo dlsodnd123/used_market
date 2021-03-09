@@ -5,7 +5,7 @@
 <mapper namespace="kr.green.usedmarket.dao.MemberDao">
 <!-- 아이디와 일치하는 회원정보를 가져오는 쿼리문 -->
 	<select id="getMember" resultType="kr.green.usedmarket.vo.MemberVo">
-		select * from member where mb_id = #{id}
+		select * from member where mb_id = #{id} and mb_isWithdrawal = 'N'
 	</select>
 <!-- 회원을 등록하는 쿼리문 -->	
 	<insert id="insertMember">
@@ -27,4 +27,36 @@
 				mb_detailAddress = #{oriMember.mb_detailAddress}, mb_phone = #{oriMember.mb_phone}, mb_email = #{oriMember.mb_email}
 			where mb_id = #{oriMember.mb_id}
 	</update>
+<!-- 회원탈퇴하는(탈퇴여부 = 'Y', 탈퇴시간 = now()) 쿼리문 -->
+	<update id="updateWithdrawal">
+		update member set mb_isWithdrawal = 'Y', mb_withdrawalDate = now() where mb_id = #{mb_id}
+	</update>
+<!-- 등록된 상품 삭제여부 'Y'로 변경하는 쿼리문 -->
+	<update id="updateProductisDel">
+		update product set pd_isDel = 'Y' where pd_mb_id = #{mb_id}
+	</update>
+<!-- 등록된 게시글 삭제여부 'Y'로 변경하는 쿼리문 -->
+	<update id="updateBoradDel">
+		update board set bo_isDel = 'Y' where bo_mb_id = #{mb_id}
+	</update>
+<!-- 등록된 댓글 삭제여부 'Y'로 변경하는 쿼리문 -->	
+	<update id="updateCommentDel">
+		update comment set cmt_isDel = 'Y' where cmt_mb_id = #{mb_id}
+	</update>
+<!-- 가판대를 삭제하는 쿼리문 -->	
+	<delete id="deleteStand">
+		delete from stand where st_mb_id = #{mb_id}
+	</delete>
+<!-- 관심상품을 삭제하는 쿼리문 -->
+	<delete id="deleteInterestPd">
+		delete from interest_product where itpd_mb_id = #{mb_id}
+	</delete>	
+<!-- 채팅방을 삭제하는 쿼리문 -->
+	<delete id="deleteChatRomm">
+		delete from chat_room where chro_mb_id = #{mb_id}
+	</delete>
+<!-- 채팅메시지를 삭제하는 쿼리문 -->
+	<delete id="deleteChatMessage">
+		delete from chat_message where chmg_mb_id #{mb_id}
+	</delete>	
 </mapper>

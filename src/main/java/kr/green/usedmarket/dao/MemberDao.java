@@ -15,6 +15,22 @@ public interface MemberDao {
 
 	void updateInfoIncludePw(@Param("oriMember")MemberVo oriMember);
 
+	void updateWithdrawal(@Param("mb_id")String mb_id);
+
+	void updateProductisDel(@Param("mb_id")String mb_id);
+
+	void updateBoradDel(@Param("mb_id")String mb_id);
+
+	void updateCommentDel(@Param("mb_id")String mb_id);
+
+	void deleteStand(@Param("mb_id")String mb_id);
+
+	void deleteInterestPd(@Param("mb_id")String mb_id);
+
+	void deleteChatRomm(@Param("mb_id")String mb_id);
+
+	void deleteChatMessage(@Param("mb_id")String mb_id);
+
 
 
 }
