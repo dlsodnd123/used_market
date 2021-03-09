@@ -33,6 +33,8 @@ public interface MemberDao {
 
 	MemberVo selectIdFind(@Param("mb_name")String mb_name, @Param("mb_email")String mb_email);
 
+	MemberVo selectPwFind(@Param("mb_id")String mb_id, @Param("mb_name")String mb_name, @Param("mb_email")String mb_email);
+
 
 
 }

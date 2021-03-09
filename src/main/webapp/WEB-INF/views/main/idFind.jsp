@@ -35,7 +35,7 @@
 	.idFind-email{
 		display: inline-block;		
 	}
-	.ifFind-btn{
+	.idFind-btn{
 		margin: 20px 0 15px 0;
 	}
 }
@@ -51,12 +51,12 @@
         <div class="form-group">
           <input type="email" class="form-control idFind-email col-4" name="idFind-email" placeholder="이메일">
         </div>
-        <button type="submit" class="btn btn-primary col-4 ifFind-btn">찾기</button>
-        <div class="pwFind">비밀번호를 찾으시나요? <a href="#">비밀번호 찾기</a></div>
+        <button type="submit" class="btn btn-primary col-4 idFind-btn">찾기</button>
+        <div class="pwFind">비밀번호를 찾으시나요? <a href="<%=request.getContextPath()%>/pwFind">비밀번호 찾기</a></div>
 	</div>
 <script>
 	// 찾기 버튼 클릭시 ajax로 처리하기
-	$('.ifFind-btn').click(function(){
+	$('.idFind-btn').click(function(){
 		var mb_name = $('input[name=idFind-name]').val();
 		var mb_email = $('input[name=idFind-email]').val();
 		var sendData = {'mb_name' : mb_name, 'mb_email' : mb_email};

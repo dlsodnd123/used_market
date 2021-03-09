@@ -41,7 +41,7 @@
         <button type="submit" class="btn btn-primary col-4">로그인</button>
         <div class="find-box">
           <a href="<%=request.getContextPath()%>/idFind" class="id-find">아이디 찾기</a>
-          <a href="#" class="pw-find">비밀번호 찾기</a>
+          <a href="<%=request.getContextPath()%>/pwFind" class="pw-find">비밀번호 찾기</a>
         </div>
       </form>
     </div>

@@ -343,6 +343,7 @@
                     	<button type="button" class="btn btn-secondary product-Sale-btn">판매처리</button>
                     	<a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-secondary product-modify-btn">내용수정</button></a>
                     	<button type="button" class="btn btn-secondary product-delete-btn">삭제</button>
+                    	<input type="hidden" name="pd_mb_id" value="${product.pd_mb_id}">
                     </c:if>
                 </div>
             </div>
@@ -870,8 +871,11 @@
 				      		alert('수정 권한이 없습니다.')
 				      	else
 				      		var move = confirm('처리가 완료 되었습니다. 내가판대로 가시겠습니까?(취소버튼 클릭시 메인홈으로 이동합니다.)');
-					      	if(move)
-					      		location.href = '<%=request.getContextPath()%>/stand'
+					      	if(move){
+						      	var id = $('input[name=pd_mb_id]').val()
+						      	console.log(id);
+					      		location.href = '<%=request.getContextPath()%>/stand?mb_id=' + id +'#home'
+					      	}
 					      	else
 					      		location.href = '<%=request.getContextPath()%>/'
 				    },

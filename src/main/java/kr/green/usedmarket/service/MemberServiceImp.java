@@ -91,4 +91,48 @@ public class MemberServiceImp implements MemberService {
 	public MemberVo getidFind(MemberVo idFind) {		
 		return memberDao.selectIdFind(idFind.getMb_name(), idFind.getMb_email());
 	}
+	// 아이디, 이름, 이메일과 일치하는 회원정보 가져오기
+	@Override
+	public MemberVo getpwFind(MemberVo pwFind) {
+		return memberDao.selectPwFind(pwFind.getMb_id(), pwFind.getMb_name(), pwFind.getMb_email());
+	}
+	@Override
+	// size만큼의 새로운 비빌번호 만들기(Math.random()사용)
+	public String NewPassword(int size) {
+		/*
+			비밀번호는 0~9숫자(10), a-z소문자(26), A~Z대문자(26)
+			랜덤으로 0~61을 생성 => 62가지
+			랜덤 숫자가 0~9 => 숫자 0~9
+			랜덤 숫자가 10~35 => 소문자 a~z
+				ex) 10 => 'a' + 10 - 10
+			랜덤 숫자가 36~61 => 대문자 A~Z
+			ex) 37 => 'A' + 37 - 36
+		*/
+		String pw = "";
+		for(int i=0; i<size; i++) {
+			int r = (int)(Math.random() * 62);
+			if(r <= 9)
+				pw += (char)('0' + r);
+			else if(r <= 35)
+				pw += (char)('a' + r - 10);
+			else
+				pw += (char)('A' + r - 36);
+		}
+		return pw;
+	}
+	// 회원정보에 pw를 업데이트하기
+	@Override
+	public void setMember(MemberVo member) {
+		// 회원정보가 없다면 업데이트 하지 않고 종료
+		if(member == null)
+			return ;
+		String encodePw = passwordEncoder.encode(member.getMb_pw());
+		member.setMb_pw(encodePw);
+		memberDao.updateInfoIncludePw(member);
+	}
+	// 비밀번호 찾기 메일 보내기
+	@Override
+	public void sendMail(String title, String content, String mb_email) {
+		// TODO Auto-generated method stub		
+	}
 }

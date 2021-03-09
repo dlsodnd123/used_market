@@ -15,4 +15,12 @@ public interface MemberService {
 	void memberWithdrawal(String mb_id);
 
 	MemberVo getidFind(MemberVo idFind);
+
+	MemberVo getpwFind(MemberVo pwFind);
+
+	String NewPassword(int size);
+
+	void setMember(MemberVo member);
+
+	void sendMail(String title, String content, String mb_email);
 }

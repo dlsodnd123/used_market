@@ -181,4 +181,40 @@ public class HomeController {
 		map.put("result", result);
 		return map;
 	}
+	// 비밀번호 찾기 화면
+	@RequestMapping(value = "/pwFind", method = RequestMethod.GET)
+	public ModelAndView pwFindGet(ModelAndView mv) {	
+		
+		mv.setViewName("/main/pwFind");
+		return mv;
+	}
+	// 비밀번호 찾기(아이디, 이름, 이메일 이용)
+	@RequestMapping(value = "/pw/find", method = RequestMethod.POST)
+	@ResponseBody
+	public Object pdFindPost(@RequestBody MemberVo pwFind) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String result = "";
+		// 아이디, 이름, 이메일이 일치하는 회원조회하기
+		MemberVo member = memberService.getpwFind(pwFind);
+		// 화면에서 보내준 정보와 일치하는 회원정보가 없으면 "notInfo" 반환
+		if(member == null)
+			result = "notInfo";
+		// 일치하는 정보가 있으면 
+		else {
+			// 새로운 비밀번호 8자리를 만들어서 해당 회원에 비빌번호에 넣어준다
+			String pw = memberService.NewPassword(8);
+			member.setMb_pw(pw);
+			memberService.setMember(member);
+			System.out.println(pw);
+			// 메일제목과 내용을 입력
+			String title = "[중고시장] 비밀번호찾기 메일입니다.";
+			String content = "안녕하세요. 중고시장입니다. 새 비밀번호는 " + pw + " 입니다. 본인이 보낸것이 아니면 즉시 고객센터로 문의 바랍니다.";
+			System.out.println(content);
+			// 제목, 내용, 회원가입시 입력한 메일정보를 이용해서 메일 보내기
+			memberService.sendMail(title, content, member.getMb_email());
+		}
+		
+		map.put("result", result);
+		return map;
+	}
 }
