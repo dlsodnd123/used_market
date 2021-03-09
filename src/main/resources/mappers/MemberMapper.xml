@@ -58,5 +58,16 @@
 <!-- 채팅메시지를 삭제하는 쿼리문 -->
 	<delete id="deleteChatMessage">
 		delete from chat_message where chmg_mb_id = #{mb_id}
-	</delete>	
+	</delete>
+<!-- 이름과 이메일이 일치하는 회원정보를 조회하는 쿼리문 -->	
+	<select id="selectIdFind" resultType="kr.green.usedmarket.vo.MemberVo">
+		select * from member where mb_name = #{mb_name} and mb_email = #{mb_email}
+	</select>
+
+
+
+
+
+
+
 </mapper>

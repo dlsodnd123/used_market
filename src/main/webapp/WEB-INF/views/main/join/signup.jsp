@@ -95,7 +95,7 @@
                 <label for="phone" class="error" id="phone-error"></label>
             </div>
             <div class="form-group">
-                <h5>이메일(선택)</h5>
+                <h5>이메일</h5>
                 <input type="email" class="form-control col-8" id="email" name="mb_email">
                 <label for="email" class="error" id="email-error"></label>
             </div>
@@ -164,6 +164,7 @@
                         regex : /^[0-9]*$/
                     },
                     mb_email : {
+                    	required : true,
                         email : true
                     }
                 },
@@ -188,6 +189,7 @@
                         regex : '숫자만 입력 가능합니다.'
                     },
                     mb_email : {
+                    	required : '필수 입력사항 입니다.(아이디/비밀번호 찾기에 이용됩니다.)',
                         email : '이메일 형식에 맞지 않습니다.'
                     }
                 }

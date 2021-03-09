@@ -40,7 +40,7 @@
         </div>
         <button type="submit" class="btn btn-primary col-4">로그인</button>
         <div class="find-box">
-          <a href="#" class="id-find">아이디 찾기</a>
+          <a href="<%=request.getContextPath()%>/idFind" class="id-find">아이디 찾기</a>
           <a href="#" class="pw-find">비밀번호 찾기</a>
         </div>
       </form>
@@ -77,6 +77,12 @@
     			return check;
     		})
     	})
+    	// 아이디 찾기 페이지에서 아이디를 찾고 넘어왔을 때 아이디 칸에 찾은 아이디 넣어주기
+		var loc = location.href;
+		var arr = loc.split('?')
+		var id = arr[1];
+		console.log(id);
+		$('input[name=id]').val(id);
     </script>
 </body>
 </html>

@@ -86,4 +86,9 @@ public class MemberServiceImp implements MemberService {
 		// 채팅메시지 삭제
 		memberDao.deleteChatMessage(mb_id);
 	}
+	// 이름과 이메일이 일치하는 회원정보 가져오기
+	@Override
+	public MemberVo getidFind(MemberVo idFind) {		
+		return memberDao.selectIdFind(idFind.getMb_name(), idFind.getMb_email());
+	}
 }

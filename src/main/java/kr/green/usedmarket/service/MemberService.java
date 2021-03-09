@@ -13,4 +13,6 @@ public interface MemberService {
 	void memberInfoChange(MemberVo member);
 
 	void memberWithdrawal(String mb_id);
+
+	MemberVo getidFind(MemberVo idFind);
 }

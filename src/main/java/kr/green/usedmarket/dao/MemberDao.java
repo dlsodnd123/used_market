@@ -31,6 +31,8 @@ public interface MemberDao {
 
 	void deleteChatMessage(@Param("mb_id")String mb_id);
 
+	MemberVo selectIdFind(@Param("mb_name")String mb_name, @Param("mb_email")String mb_email);
+
 
 
 }

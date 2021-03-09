@@ -157,4 +157,28 @@ public class HomeController {
 		memberService.memberWithdrawal(mb_id);
 		return "success";
 	}
+	// 아이디 찾기 화면
+	@RequestMapping(value = "/idFind", method = RequestMethod.GET)
+	public ModelAndView idFindGet(ModelAndView mv) {	
+		
+		mv.setViewName("/main/idFind");
+		return mv;
+	}
+	// 아이디 찾기(이름과 이메일 이용)
+	@RequestMapping(value = "/id/find", method = RequestMethod.POST)
+	@ResponseBody
+	public Object idFindPost(@RequestBody MemberVo idFind) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String result = "";
+		// 이름과 이메일이 일치하는 회원조회하기
+		MemberVo member = memberService.getidFind(idFind);
+		// 화면에서 준 정보와 일치하는 회원이 없다면 "notInfo" 반환
+		if(member == null)
+			result = "notInfo";
+		// 일치한다면 아이디를 반환
+		else
+			result = member.getMb_id();
+		map.put("result", result);
+		return map;
+	}
 }
