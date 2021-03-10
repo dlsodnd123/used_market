@@ -100,6 +100,7 @@
                 <option value="스포츠">스포츠</option>
                 <option value="문화">문화</option>
                 <option value="차량/오토바이">차량/오토바이</option>
+                <option value="기타">기타</option>
                 <option value="무료나눔">무료나눔</option>
             </select>
           </div>
