@@ -1,21 +1,23 @@
 package kr.green.usedmarket.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import kr.green.usedmarket.service.MemberService;
+import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
+import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
 
 @Controller
@@ -28,11 +30,23 @@ public class HomeController {
 	StandService standService; 
 	
 	@Autowired
+	ProductService productService;
+	
+	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView homeGet(ModelAndView mv) {
-
+		// 메인화면에 나타낼 신규상품의 목록 가져오기
+		ArrayList<DibsVo> newProductList = productService.getNewProduct();		
+		// 메인화면에 나타낼 관심수가 많은 상품의 목록 가져오기
+		ArrayList<DibsVo> interestProductList = productService.getInterestProduct();
+		
+		for(DibsVo tmp : interestProductList)
+			System.out.println(tmp);
+			
+		mv.addObject("interestProductList", interestProductList);
+		mv.addObject("newProductList", newProductList);
 		mv.setViewName("/main/home");
 		return mv;
 	}

@@ -9,6 +9,7 @@ public class DibsVo {
 	private int pd_price;
 	private String pd_deal;
 	private Date pd_registerDate;
+	private int pd_interestCnt;
 	private String st_img;
 	
 	public int getPd_num() {
@@ -42,6 +43,12 @@ public class DibsVo {
 	}
 	public void setPd_registerDate(Date pd_registerDate) {
 		this.pd_registerDate = pd_registerDate;
+	}	
+	public int getPd_interestCnt() {
+		return pd_interestCnt;
+	}
+	public void setPd_interestCnt(int pd_interestCnt) {
+		this.pd_interestCnt = pd_interestCnt;
 	}
 	public String getSt_img() {
 		return st_img;
@@ -52,7 +59,7 @@ public class DibsVo {
 	@Override
 	public String toString() {
 		return "DibsVo [pd_num=" + pd_num + ", pd_title=" + pd_title + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
-				+ ", pd_registerDate=" + pd_registerDate + ", st_img=" + st_img + "]";
-	}
-	
+				+ ", pd_registerDate=" + pd_registerDate + ", pd_interestCnt=" + pd_interestCnt + ", st_img=" + st_img
+				+ "]";
+	}	
 }

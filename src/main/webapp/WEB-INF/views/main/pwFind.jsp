@@ -78,7 +78,8 @@
 					if(data.result == 'notInfo')
 						alert('일치하는 정보가 없습니다.')
 					else{
-						
+						alert('메일전송 완료되었습니다. 로그인 화면으로 이동합니다.')
+						location.href = '<%=request.getContextPath()%>/login'
 					}
 				},
 	   	     	error: function(error) {

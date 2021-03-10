@@ -151,6 +151,7 @@
         .dibs-info-box .dibs-img-box{
         	display: inline-block;
         	vertical-align: top;
+        	border-right: 1px solid #dae0e5;
         }
         .dibs-info-box .dibs-img-box img{
         	width: 180px;
@@ -768,8 +769,7 @@
    		// 상단메뉴에 내가판대, 마이페이지의 찜한상품 페이지내에서 실행되었을 때 작동하게 해주는 기능
    		$(window).on('hashchange', function(e){
    			selectTab();
-		});
-   	    
+		});   	    
    	    
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){

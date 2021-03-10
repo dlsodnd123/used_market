@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CommentVo;
+import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.PreviewVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
@@ -62,5 +63,9 @@ public interface ProductDao {
 	void updateIntersetCnt(@Param("interestCnt")int interestCnt, @Param("pd_num")int pd_num);
 
 	CommentVo selectNewComment(@Param("mb_id")String mb_id);
+
+	ArrayList<DibsVo> selectNewProductList();
+
+	ArrayList<DibsVo> selectInterestProduct();
 
 }

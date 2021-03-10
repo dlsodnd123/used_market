@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CommentVo;
+import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.PreviewVo;
@@ -49,5 +50,9 @@ public interface ProductService {
 	void setViews(int pd_num);
 
 	CommentVo getNewComment(String mb_id);
+
+	ArrayList<DibsVo> getNewProduct();
+
+	ArrayList<DibsVo> getInterestProduct();
 
 }

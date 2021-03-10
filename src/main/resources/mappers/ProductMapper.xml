@@ -116,10 +116,15 @@
 	</update>
 <!-- 아이디와 일치하는 마지막에 등록된 댓글 정보를 가져오는 쿼리문-->
 	<select id="selectNewComment" resultType="kr.green.usedmarket.vo.CommentVo">
-		select * from comment where cmt_isDel = 'N' and cmt_mb_id = #{mb_id} order by cmt_bo_num DESC limit 0, 1;
+		select * from comment where cmt_isDel = 'N' and cmt_mb_id = #{mb_id} order by cmt_bo_num DESC limit 0, 1
 	</select>
-
-
-
+<!-- 메인 화면에 나타낼 최신상품을 가져오는 쿼리문(최대 32개) -->
+	<select id="selectNewProductList" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_isDel = 'N' order by pd_registerDate DESC limit 0, 32
+	</select>
+<!-- 메인 화면에 나타낼 관심상품을 가져오는 쿼리문 -->
+	<select id="selectInterestProduct" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_isDel = 'N' and pd_interestCnt > 0 order by pd_interestCnt DESC limit 0, 32
+	</select>
 
 </mapper>

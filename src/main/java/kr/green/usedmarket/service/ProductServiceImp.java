@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CommentVo;
+import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
 import kr.green.usedmarket.vo.PreviewVo;
@@ -170,5 +171,21 @@ public class ProductServiceImp implements ProductService {
 	@Override
 	public CommentVo getNewComment(String mb_id) {
 		return productDao.selectNewComment(mb_id);
+	}
+	// 메인 화면에 나타낼 최신상품목록 가져오기
+	@Override
+	public ArrayList<DibsVo> getNewProduct() {
+		ArrayList<DibsVo> newProductList = productDao.selectNewProductList();
+		for(DibsVo tmp : newProductList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		return newProductList;
+	}
+	// 메인 화면에 나타낼 관심상품목록 가져오기
+	@Override
+	public ArrayList<DibsVo> getInterestProduct() {
+		ArrayList<DibsVo> interestProductList = productDao.selectInterestProduct();
+		for(DibsVo tmp : interestProductList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		return interestProductList;
 	}
 }
