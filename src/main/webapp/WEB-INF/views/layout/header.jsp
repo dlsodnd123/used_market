@@ -8,8 +8,7 @@
     .navbar{
       width: 100%;
       display: inline-block;
-      padding: 30px;
-      padding-bottom: 20px;
+      padding: 30px 30px 0 30px
     }
     .form-inline{
       display: block; 
@@ -54,6 +53,42 @@
       font-size: 20px;
       font-weight: bold;
     }
+    .barsMenu{
+    	margin-top: 10px;
+    	font-size: 24px;
+    }
+    .productCategory-box{
+    	position: relative;
+    }
+    .productCategory-content-box{
+    	position: absolute;
+    	width: 200px;
+    	height: 500px;
+    	background-color: white;
+    	z-index: 100;
+    	margin-left: 30px;
+    	font-size: 14px;
+    	border: 1px solid #dae0e5;
+    	box-shadow: 1px 1px 3px 0 rgb(0 0 0 / 12%);
+    	display: none;
+    }
+    .productCategory-title{
+    	font-weight: 700;
+    	padding: 10px 20px;
+    	margin-bottom: 10px;
+    	border-bottom: 1px solid #dae0e5;    	
+    }
+    .productCategory-content{
+    	padding: 5px 15px;
+    	cursor: pointer;   
+    }
+    .productCategory-content:hover{
+    	background-color: #dee2e6;
+    }
+    .fa-bars{
+    	cursor: pointer;
+    }
+}	
   </style>
 </head>
 <body>
@@ -65,7 +100,7 @@
         	<a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
 
 	        <div class="search-box">
-	          <input type="text" placeholder="상품명, 지역명 입력">
+	          <input type="text" placeholder="상품명, 검색할 내용 입력">
 	          <button class="btn btn-basic" type="submit"><i class="fas fa-search"></i></button>
 	        </div>
 
@@ -131,8 +166,34 @@
 		          </li>
 	          </c:if>
 	        </ul>
+    		<div class="barsMenu"><i class="fas fa-bars"></i></div>
       		</nav>
     		</form>
   		</div>
 	</div>
+	<div class="container productCategory-box">
+		<div class="productCategory-content-box">
+			<div class="productCategory-title">전체카테고리</div>
+			<div class="productCategory-content">여성의류</div>
+			<div class="productCategory-content">남성의류</div>
+			<div class="productCategory-content">패션잡화</div>
+			<div class="productCategory-content">뷰티/미용</div>
+			<div class="productCategory-content">키즈</div>
+			<div class="productCategory-content">가전</div>
+			<div class="productCategory-content">가구/인테리어</div>
+			<div class="productCategory-content">생활용품</div>
+			<div class="productCategory-content">스포츠</div>
+			<div class="productCategory-content">문화(도서,티켓 등)</div>
+			<div class="productCategory-content">차량/오토바이</div>
+			<div class="productCategory-content">기타</div>
+			<div class="productCategory-content">무료나눔</div>
+		</div>
+	</div>
+<script>
+	// 햄버거 메뉴에 마우스를 올리면 카테고리 박스 보여주기
+	$('.fa-bars').click(function(){
+		$('.productCategory-content-box').toggle();		
+	})
+	// 햄버거 메뉴나 카테고리 박스에서 벗어나면 카테고리 박스 숨기기
+</script>
 </body>
