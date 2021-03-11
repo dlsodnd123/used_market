@@ -20,7 +20,6 @@
 		font-weight: 700;
 		margin-bottom: 20px;
 		padding-bottom: 10px;
-    	border-bottom: 2px solid black;
 	}
 	.newProductList,
 	.interestProductList{
@@ -55,12 +54,13 @@
 		text-overflow: ellipsis;
     	white-space: nowrap;
     	overflow: hidden;
-    	margin: 5px 0 10px 0;    	
+    	margin: 5px 0 10px 5px;    	
 	}
 	.newProduct-price,
 	.interestProduct-price{
 		font-size: 15px;
 		font-weight: 700;
+		margin-left: 5px;
 	}
 	.newProduct-regDate,
 	.interestProduct-regDate{
@@ -80,7 +80,7 @@
     	overflow: hidden;
 	}
 	.interestProduct-count{
-		font-size: 13px;
+		font-size: 12px;
 		color: #999999;
 		float: left;
 	}
@@ -164,12 +164,14 @@
 	   	}
 	});
 	// 상품가격에 숫자 3자리마다 콤마넣기(최신상품)
-	for(var i = 0; i<32; i++){
+	var cnt = $('.newProduct-box').length;
+	for(var i = 0; i<cnt; i++){
 		var comma = numberWithCommas($('.newProduct-price').eq(i).text());
 		$('.newProduct-price').eq(i).text(comma);		
 	}
 	// 상품가격에 숫자 3자리마다 콤마넣기(관심상품)
-	for(var i = 0; i<32; i++){
+	var cnt = $('.interestProduct-box').length;
+	for(var i = 0; i<cnt; i++){
 		var comma = numberWithCommas($('.interestProduct-price').eq(i).text());
 		$('.interestProduct-price').eq(i).text(comma);		
 	}

@@ -126,5 +126,17 @@
 	<select id="selectInterestProduct" resultType="kr.green.usedmarket.vo.DibsVo">
 		select * from product where pd_isDel = 'N' and pd_interestCnt > 0 and pd_isSale = 'N' order by pd_interestCnt DESC limit 0, 32
 	</select>
-
+<!-- 카테고리와 일치하는 상품목록을 가져오는 쿼리문(최신순으로) -->
+	<select id="selectPdCategotyList" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_category = #{pd_category} and pd_isDel = 'N' and pd_isSale = 'N' order by pd_registerDate DESC
+	</select>
+<!-- 카테고리와 일치하는 상품목록을 저가순으로 가져오는 쿼리문 -->
+	<select id="selectPdLowList" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_category = #{category} and pd_isDel = 'N' and pd_isSale = 'N' order by pd_price
+	</select>
+<!-- 카테고리와 일치하는 상품목록을 고가순으로 가져오는 쿼리문 -->	
+	<select id="selectPdHighList" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_category = #{category} and pd_isDel = 'N' and pd_isSale = 'N' order by pd_price DESC
+	</select>
+	
 </mapper>

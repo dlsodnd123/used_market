@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.vo.BoardVo;
+import kr.green.usedmarket.vo.CategorySortVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -187,5 +188,38 @@ public class ProductServiceImp implements ProductService {
 		for(DibsVo tmp : interestProductList)
 			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
 		return interestProductList;
+	}
+	// 카테고리와 일치하는 상품목록 가져오기
+	@Override
+	public ArrayList<DibsVo> getPdCategoryList(String pd_category) {
+		ArrayList<DibsVo> pdCategoryList = productDao.selectPdCategotyList(pd_category);
+		for(DibsVo tmp : pdCategoryList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		return pdCategoryList;
+	}
+	// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
+	@Override
+	public ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort) {
+		ArrayList<DibsVo> ProductSortList = new ArrayList<DibsVo>(); 	
+		// sort가 '최신순' 이면 최근에 등록된 순서대로 상품가져오기
+		if(categorySort.getSort().equals("최신순")) {			
+			ProductSortList = productDao.selectPdCategotyList(categorySort.getCategory());
+			for(DibsVo tmp : ProductSortList)
+				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		}
+		// sort가 '저가순' 이면 가격이 낮은 순서대로 상품가져오기
+		else if(categorySort.getSort().equals("저가순")) {			
+			ProductSortList = productDao.selectPdLowList(categorySort.getCategory());
+			for(DibsVo tmp : ProductSortList)
+				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		}
+		// sort가 '고가순' 이면 가격이 높은 순서대로 상품가져오기
+		else {			
+			ProductSortList = productDao.selectPdHighList(categorySort.getCategory());
+			for(DibsVo tmp : ProductSortList)
+				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		}
+
+		return ProductSortList;
 	}
 }

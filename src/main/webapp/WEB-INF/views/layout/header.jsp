@@ -21,7 +21,7 @@
     }
     .search-box{
       display: inline-block;
-      border: 1px solid #17a2b8;
+      border: 2px solid #5a93fa;
       padding: 5px 10px;
       width: 450px;
     }
@@ -31,7 +31,7 @@
       padding-top: 3px;
     }
     .search-box .btn{
-      color: #17a2b8;
+      color: #5a93fa;
       float: right;
     }
     ul>li, .dropdown-item{
@@ -87,6 +87,11 @@
     }
     .fa-bars{
     	cursor: pointer;
+    }
+    .productCategory-content-box>.productCategory-content>a{
+    	text-decoration: none;
+    	color: black;
+    	display: block;
     }
 }	
   </style>
@@ -174,26 +179,25 @@
 	<div class="container productCategory-box">
 		<div class="productCategory-content-box">
 			<div class="productCategory-title">전체카테고리</div>
-			<div class="productCategory-content">여성의류</div>
-			<div class="productCategory-content">남성의류</div>
-			<div class="productCategory-content">패션잡화</div>
-			<div class="productCategory-content">뷰티/미용</div>
-			<div class="productCategory-content">키즈</div>
-			<div class="productCategory-content">가전</div>
-			<div class="productCategory-content">가구/인테리어</div>
-			<div class="productCategory-content">생활용품</div>
-			<div class="productCategory-content">스포츠</div>
-			<div class="productCategory-content">문화(도서,티켓 등)</div>
-			<div class="productCategory-content">차량/오토바이</div>
-			<div class="productCategory-content">기타</div>
-			<div class="productCategory-content">무료나눔</div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=여성의류">여성의류</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=남성의류">남성의류</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=패션잡화">패션잡화</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=뷰티/미용">뷰티/미용</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=키즈">키즈</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가전">가전</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가구/인테리어">가구/인테리어</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=생활용품">생활용품</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=스포츠">스포츠</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=문화(도서,티켓 등)">문화(도서,티켓 등)</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=차량/오토바이">차량/오토바이</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=기타">기타</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=무료나눔">무료나눔</a></div>
 		</div>
 	</div>
 <script>
-	// 햄버거 메뉴에 마우스를 올리면 카테고리 박스 보여주기
+	// 햄버거 메뉴에 마우스를 올리면 카테고리 박스 보여주기 및 숨기기
 	$('.fa-bars').click(function(){
 		$('.productCategory-content-box').toggle();		
-	})
-	// 햄버거 메뉴나 카테고리 박스에서 벗어나면 카테고리 박스 숨기기
+	})	
 </script>
 </body>
