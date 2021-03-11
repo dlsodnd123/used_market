@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.green.usedmarket.pagination.Criteria;
+import kr.green.usedmarket.pagination.PageMaker;
 import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
@@ -272,11 +274,20 @@ public class ProductController {
 	}
 	// 카테고리 화면 담당
 	@RequestMapping(value = "/product/category", method = RequestMethod.GET)
-	public ModelAndView productCategoryGet(ModelAndView mv, String pd_category) {
-		
+	public ModelAndView productCategoryGet(ModelAndView mv, String pd_category, Criteria cri) {		
 		// 카테리고와 일치하는 상품목록을 가져오기(판매 X, 삭제 X)
-		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(pd_category);
+		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(pd_category, cri);
 		
+		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		int totalCount = productService.getTotalCount(pd_category);
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 3;
+		
+		PageMaker pm = new PageMaker(cri, totalCount, displayPageNum);
+		
+		System.out.println(pm);
+		
+		mv.addObject("pm", pm);
 		mv.addObject("pdCategoryList", pdCategoryList);
 		mv.addObject("pd_category",pd_category);
 		mv.setViewName("/product/productCategory");
@@ -285,7 +296,7 @@ public class ProductController {
 	// 상품카테고리 페이지에서 상품을 정렬하는 기능
 	@RequestMapping(value = "/categoty/sort", method = RequestMethod.POST)
 	@ResponseBody
-	public Object categorySortPost(@RequestBody CategorySortVo categorySort) {		
+	public Object categorySortPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// sort값이 '최신순', '저가순', '고가순'이 아니면 'wrong' 전달해주기
 		if(!categorySort.getSort().equals("최신순") && !categorySort.getSort().equals("저가순") && !categorySort.getSort().equals("고가순")) {
@@ -293,10 +304,7 @@ public class ProductController {
 			return map;
 		}
 		// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
-		ArrayList<DibsVo> productSortList = productService.getProductSortList(categorySort); 
-		
-		for(DibsVo tmp : productSortList)
-			System.out.println(tmp);
+		ArrayList<DibsVo> productSortList = productService.getProductSortList(categorySort, cri);
 		
 		map.put("productSortList", productSortList);
 		return map;

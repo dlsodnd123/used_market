@@ -9,6 +9,8 @@
 <style>
         .w3-content{
             display: inline-block;
+            width: 480px;
+            height: 480px;
         }
         ul, li{
             list-style: none;

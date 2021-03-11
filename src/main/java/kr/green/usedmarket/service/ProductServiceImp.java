@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.ProductDao;
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CategorySortVo;
 import kr.green.usedmarket.vo.CommentVo;
@@ -191,19 +192,19 @@ public class ProductServiceImp implements ProductService {
 	}
 	// 카테고리와 일치하는 상품목록 가져오기
 	@Override
-	public ArrayList<DibsVo> getPdCategoryList(String pd_category) {
-		ArrayList<DibsVo> pdCategoryList = productDao.selectPdCategotyList(pd_category);
+	public ArrayList<DibsVo> getPdCategoryList(String pd_category, Criteria cri) {
+		ArrayList<DibsVo> pdCategoryList = productDao.selectPdCategotyList(pd_category, cri);
 		for(DibsVo tmp : pdCategoryList)
 			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
 		return pdCategoryList;
 	}
 	// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
 	@Override
-	public ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort) {
+	public ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort, Criteria cri) {
 		ArrayList<DibsVo> ProductSortList = new ArrayList<DibsVo>(); 	
 		// sort가 '최신순' 이면 최근에 등록된 순서대로 상품가져오기
 		if(categorySort.getSort().equals("최신순")) {			
-			ProductSortList = productDao.selectPdCategotyList(categorySort.getCategory());
+			ProductSortList = productDao.selectPdCategotyList(categorySort.getCategory(), cri);
 			for(DibsVo tmp : ProductSortList)
 				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
 		}
@@ -221,5 +222,10 @@ public class ProductServiceImp implements ProductService {
 		}
 
 		return ProductSortList;
+	}
+	// 카테고리와 일치하는 전체 상품의 갯수 가져오기
+	@Override
+	public int getTotalCount(String pd_category) {
+		return productDao.selectTotalCount(pd_category);
 	}
 }

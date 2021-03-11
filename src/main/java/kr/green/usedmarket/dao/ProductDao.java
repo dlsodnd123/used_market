@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
@@ -68,10 +69,12 @@ public interface ProductDao {
 
 	ArrayList<DibsVo> selectInterestProduct();
 
-	ArrayList<DibsVo> selectPdCategotyList(@Param("pd_category")String pd_category);
+	ArrayList<DibsVo> selectPdCategotyList(@Param("pd_category")String pd_category, @Param("cri")Criteria cri);
 
 	ArrayList<DibsVo> selectPdLowList(@Param("category")String category);
 
 	ArrayList<DibsVo> selectPdHighList(@Param("category")String category);
+
+	int selectTotalCount(@Param("pd_category")String pd_category);
 
 }

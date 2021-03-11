@@ -2,6 +2,7 @@ package kr.green.usedmarket.service;
 
 import java.util.ArrayList;
 
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CategorySortVo;
 import kr.green.usedmarket.vo.CommentVo;
@@ -56,8 +57,10 @@ public interface ProductService {
 
 	ArrayList<DibsVo> getInterestProduct();
 
-	ArrayList<DibsVo> getPdCategoryList(String pd_category);
+	ArrayList<DibsVo> getPdCategoryList(String pd_category, Criteria cri);
 
-	ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort);
+	ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort, Criteria cri);
+
+	int getTotalCount(String pd_category);
 
 }

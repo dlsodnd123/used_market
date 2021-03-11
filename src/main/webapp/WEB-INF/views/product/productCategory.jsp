@@ -122,6 +122,12 @@
 				</c:forEach>			
 			</div>
 		</div>
+		<ul class="pagination justify-content-center">
+		    <li class="page-item"><a class="page-link" href="javascript:void(0);">이전</a></li>
+		    <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
+		    <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+		    <li class="page-item"><a class="page-link" href="javascript:void(0);">다음</a></li>
+		</ul>
 	</div>
 <script>
 	// 상품상자 클릭스 해당 상세페이지로 이동
