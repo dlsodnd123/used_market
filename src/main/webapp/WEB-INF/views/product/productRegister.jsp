@@ -9,7 +9,7 @@
 <style>
         .pd-line{
             border-bottom: 1px solid #dae0e5;
-            padding: 35px 0;
+            padding: 25px 0;
             font-size: 17px;
         }
         .pd-line{
@@ -82,11 +82,11 @@
     <div class="container">
         <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data">
           <div class="form-group pd-line">
-            <h4>제목(필수)</h4> <br>
+            <h4>제목(필수)</h4>
             <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24">
           </div>
           <div class="form-group pd-line">
-            <h4>카테고리(필수)</h4> <br>
+            <h4>카테고리(필수)</h4>
             <label for="pd_category" class="error" id="pd_category-error"></label>
             <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
                 <option value="여성의류">여성의류</option>
@@ -105,7 +105,7 @@
             </select>
           </div>
           <div class="form-group pd-line">
-            <h4>상품이미지(필수)</h4> <br>
+            <h4>상품이미지(필수)</h4>
             <label for="pdimg_name" class="error" id="pdimg_name-error"></label>
               <ul class="pd-img-box">
                   <li class="pd-img-content">
@@ -114,11 +114,11 @@
               </ul>
           </div>
           <div class="form-group pd-line">
-            <h4>거래방법(필수)</h4> <br>
+            <h4>거래방법(필수)</h4>
             <label for="pd_deal" class="error" id="pd_deal-error"></label>
             <div class="form-check-inline">
                 <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배" checked>택배
+                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배">택배
                 </label>
               </div>
               <div class="form-check-inline">
@@ -128,11 +128,16 @@
               </div>
           </div>
           <div class="form-group pd-line">
-            <h4>상품내용</h4> <br>
+          	<h4>거래지역(필수)</h4>
+          	<label for="pd_area" class="error" id="pd_area-error"></label>
+          	<input type="text" class="form-control col-8" id="pd_area" placeholder="상세주소는 빼고 입력해주세요.(ex. 충북 청주시 상당구)" name="pd_area" maxlength="24">          	
+          </div>
+          <div class="form-group pd-line">
+            <h4>상품내용</h4>
             <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content"></textarea>
           </div>
           <div class="form-group pd-line">
-              <h4>상품가격(필수)</h4> <br>
+              <h4>상품가격(필수)</h4>
               <label for="pd_price" class="error" id="pd_price-error"></label> <br>
             <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price">원 
           </div>
@@ -152,6 +157,9 @@
             pd_deal : {
                 required : true
             },
+            pd_area : {
+            	required : true
+            },
             pd_price : {
                 required : true
             }
@@ -165,6 +173,9 @@
             },
             pd_deal : {
                 required : '필수 선택 사항입니다.'
+            },
+            pd_area : {
+            	required : '필수 선택 사항입니다.'
             },
             pd_price : {
                 required : '필수 입력 사항입니다.'
@@ -196,8 +207,17 @@
 	    	$(this).parent().remove();
 	    })
     })
-    
-       
+    // 택배를 선택했을때 거래지역에 택배로 입력되고 readonly 적용시키키
+       $('.form-check-label').click(function(){
+    	   var checkDeal = $(this).find('input[name=pd_deal]').val();    	  
+    	   if(checkDeal == '택배'){
+    		   $(this).parents('.form-group').next().find('input[name=pd_area]').val('전국');
+    		   $(this).parents('.form-group').next().find('input[name=pd_area]').attr('readonly', 'true');
+    	   }else{
+    		   $(this).parents('.form-group').next().find('input[name=pd_area]').val('');
+    		   $(this).parents('.form-group').next().find('input[name=pd_area]').removeAttr('readonly');
+    	   }
+       })
     function previewImg(event) { 
     	var reader = new FileReader(); 
     	

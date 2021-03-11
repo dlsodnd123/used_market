@@ -7,9 +7,9 @@
 <!-- 상품등록에서 상품정보를 등록하는 쿼리문 -->
 	<insert id="insertProduct" parameterType="kr.green.usedmarket.vo.ProductVo" useGeneratedKeys="true" keyProperty="product.pd_num">
 		insert into 
-			product(pd_mb_id, pd_title, pd_category, pd_content, pd_price, pd_deal)
+			product(pd_mb_id, pd_title, pd_category, pd_content, pd_price, pd_deal, pd_area)
 			values(#{product.pd_mb_id}, #{product.pd_title}, #{product.pd_category}, 
-					#{product.pd_content}, #{product.pd_price}, #{product.pd_deal})
+					#{product.pd_content}, #{product.pd_price}, #{product.pd_deal}, #{product.pd_area})
 	</insert>
 <!-- 상품등록에서 상품이미지를 등록하는 쿼리문 -->
 	<insert id="insertProductImg">
@@ -120,11 +120,11 @@
 	</select>
 <!-- 메인 화면에 나타낼 최신상품을 가져오는 쿼리문(최대 32개) -->
 	<select id="selectNewProductList" resultType="kr.green.usedmarket.vo.DibsVo">
-		select * from product where pd_isDel = 'N' order by pd_registerDate DESC limit 0, 32
+		select * from product where pd_isDel = 'N' and pd_isSale = 'N' order by pd_registerDate DESC limit 0, 32
 	</select>
 <!-- 메인 화면에 나타낼 관심상품을 가져오는 쿼리문 -->
 	<select id="selectInterestProduct" resultType="kr.green.usedmarket.vo.DibsVo">
-		select * from product where pd_isDel = 'N' and pd_interestCnt > 0 order by pd_interestCnt DESC limit 0, 32
+		select * from product where pd_isDel = 'N' and pd_interestCnt > 0 and pd_isSale = 'N' order by pd_interestCnt DESC limit 0, 32
 	</select>
 
 </mapper>

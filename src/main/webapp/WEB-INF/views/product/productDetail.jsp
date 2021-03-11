@@ -76,6 +76,9 @@
         .right-box .middle-box .deal-box{
             margin-bottom: 12px;
         }
+        .right-box .middle-box .category-box{
+            margin-bottom: 12px;
+        }
         .right-box .middle-box .deal,
         .right-box .middle-box .category{
             display: inline-block;
@@ -324,6 +327,10 @@
                 <div class="category-box">
                     <div class="category title"><i class="fas fa-caret-right"></i> 카테고리</div>
                     <div class="category content">${product.pd_category}</div>
+                </div>
+                <div class="area-box"> 
+                    <div class="category title"><i class="fas fa-caret-right"></i> 거래지역</div>
+                    <div class="category content">${product.pd_area}</div>
                 </div>
                 <div class="btn-box">
                 	<!-- 상품판매자와 로그인한 회원이 같지 않다면 -->

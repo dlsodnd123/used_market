@@ -29,15 +29,15 @@
 	}
 	.newProduct-box,
 	.interestProduct-box{
-		width: 230px;
-		height: 312px;
+		width: 192px;
+		height: 302px;
 		border: 1px solid #dae0e5;
 		display: inline-block;
-		margin: 0 29px 20px 0;
+		margin: 0 10px 20px 0;
 		cursor: pointer;
 	}
-	.newProduct-box:nth-of-type(4n),
-	.interestProduct-box:nth-of-type(4n){
+	.newProduct-box:nth-of-type(5n),
+	.interestProduct-box:nth-of-type(5n){
 		margin: 0 0 20px 0;
 	}
 	.newProduct-img-box,
@@ -47,11 +47,11 @@
 	.newProduct-img,
 	.interestProduct-img{
 		width: 100%;
-		height: 228px;
+		height: 192px;
 	}
 	.newProduct-title,
 	.interestProduct-title{
-		font-size: 15px;
+		font-size: 13px;
 		text-overflow: ellipsis;
     	white-space: nowrap;
     	overflow: hidden;
@@ -59,14 +59,25 @@
 	}
 	.newProduct-price,
 	.interestProduct-price{
-		font-size: 17px;
+		font-size: 15px;
 		font-weight: 700;
 	}
 	.newProduct-regDate,
 	.interestProduct-regDate{
+		float: right;		
+		font-size: 11px;
+		color: #999999;
+	}
+	.newProduct-area,
+	.interestProduct-area{
 		font-size: 13px;
 		color: #999999;
-		float: right;
+		border-top: 1px solid #dae0e5;
+		margin-top: 18px;
+		padding: 8px 0 0 6px;
+		text-overflow: ellipsis;
+    	white-space: nowrap;
+    	overflow: hidden;
 	}
 	.interestProduct-count{
 		font-size: 13px;
@@ -113,13 +124,14 @@
 						<div class="newProduct-title">${newProduct.pd_title}</div>
 						<div class="newProduct-price">${newProduct.pd_price}</div>
 						<div class="newProduct-regDate">${newProduct.pd_registerDate}</div>
+						<div class="newProduct-area"><i class="fas fa-map-marker-alt"></i> ${newProduct.pd_area}</div>
 					</div>
 					<input type="hidden" class="newProduct-num" value="${newProduct.pd_num}">
 				</div>
 			</c:forEach>			
 		</div>
 		<div class="categoryTitle-box">
-			<div class="categoryTitle col-4">관심상품</div>
+			<div class="categoryTitle col-4">관심수가 높은 상품</div>
 		</div>
 		<div class="interestProductList">
 			<c:forEach items="${interestProductList}" var="interestProduct">
@@ -132,6 +144,7 @@
 						<div class="interestProduct-price">${interestProduct.pd_price}</div>
 						<div class="interestProduct-count">관심수 ${interestProduct.pd_interestCnt}</div>
 						<div class="interestProduct-regDate">${interestProduct.pd_registerDate}</div>
+						<div class="interestProduct-area"><i class="fas fa-map-marker-alt"></i> ${interestProduct.pd_area}</div>
 					</div>
 					<input type="hidden" class="interestProduct-num" value="${interestProduct.pd_num}">
 				</div>

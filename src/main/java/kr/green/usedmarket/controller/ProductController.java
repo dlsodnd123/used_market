@@ -47,7 +47,7 @@ public class ProductController {
 		return mv;
 	}
 	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
-	public ModelAndView productRegisterPost(ModelAndView mv, ProductVo product, MultipartFile [] imgFileList) throws IOException, Exception {
+	public ModelAndView productRegisterPost(ModelAndView mv, HttpServletRequest request,ProductVo product, MultipartFile [] imgFileList) throws IOException, Exception {
 		productService.setProduct(product);
 		if(imgFileList != null && imgFileList.length != 0) {
 			for(MultipartFile file : imgFileList) {
@@ -57,7 +57,8 @@ public class ProductController {
 				}
 			}
 		}
-		mv.setViewName("redirect:/stand");
+		MemberVo member = standService.getMemberId(request);
+		mv.setViewName("redirect:/stand?mb_id=" + member.getMb_id() + "#home");
 		return mv;
 	}
 	// 내용수정 화면 담당

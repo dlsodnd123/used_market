@@ -42,9 +42,6 @@ public class HomeController {
 		// 메인화면에 나타낼 관심수가 많은 상품의 목록 가져오기
 		ArrayList<DibsVo> interestProductList = productService.getInterestProduct();
 		
-		for(DibsVo tmp : interestProductList)
-			System.out.println(tmp);
-			
 		mv.addObject("interestProductList", interestProductList);
 		mv.addObject("newProductList", newProductList);
 		mv.setViewName("/main/home");
@@ -219,11 +216,9 @@ public class HomeController {
 			String pw = memberService.NewPassword(8);
 			member.setMb_pw(pw);
 			memberService.setMember(member);
-			System.out.println(pw);
 			// 메일제목과 내용을 입력
 			String title = "[중고시장] 비밀번호찾기 메일입니다.";
 			String content = "안녕하세요. 중고시장입니다. 새 비밀번호는 " + pw + " 입니다. 본인이 보낸것이 아니면 즉시 고객센터로 문의 바랍니다.";
-			System.out.println(content);
 			// 제목, 내용, 회원가입시 입력한 메일정보를 이용해서 메일 보내기
 			memberService.sendMail(title, content, member.getMb_email());
 		}

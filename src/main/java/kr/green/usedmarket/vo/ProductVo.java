@@ -15,6 +15,7 @@ public class ProductVo {
 	private String pd_isSale;
 	private String pd_saleDate;
 	private String pd_isDel;
+	private String pd_area;
 	private int pd_interestCnt;
 	private int pd_views;
 	
@@ -67,6 +68,12 @@ public class ProductVo {
 	public void setPd_deal(String pd_deal) {
 		this.pd_deal = pd_deal;
 	}
+	public String getPd_area() {
+		return pd_area;
+	}
+	public void setPd_area(String pd_area) {
+		this.pd_area = pd_area;
+	}
 	public String getPd_registerDate() {
 		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String dateString = simpleFormat.format(pd_registerDate);
@@ -104,8 +111,7 @@ public class ProductVo {
 		return "ProductVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_category="
 				+ pd_category + ", pd_content=" + pd_content + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
 				+ ", pd_registerDate=" + pd_registerDate + ", pd_isSale=" + pd_isSale + ", pd_saleDate=" + pd_saleDate
-				+ ", pd_isDel=" + pd_isDel + ", pd_interestCnt=" + pd_interestCnt + ", pd_views=" + pd_views + "]";
+				+ ", pd_isDel=" + pd_isDel + ", pd_area=" + pd_area + ", pd_interestCnt=" + pd_interestCnt
+				+ ", pd_views=" + pd_views + "]";
 	}
-	
-
 }
