@@ -201,26 +201,22 @@ public class ProductServiceImp implements ProductService {
 	// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
 	@Override
 	public ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort, Criteria cri) {
-		ArrayList<DibsVo> ProductSortList = new ArrayList<DibsVo>(); 	
-		// sort가 '최신순' 이면 최근에 등록된 순서대로 상품가져오기
-		if(categorySort.getSort().equals("최신순")) {			
-			ProductSortList = productDao.selectPdCategotyList(categorySort.getCategory(), cri);
-			for(DibsVo tmp : ProductSortList)
-				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		ArrayList<DibsVo> ProductSortList = new ArrayList<DibsVo>();
+		// sort가 '최신순' 이면 cri에 'date', '저가순' 이면 'low', '고가순'이면 'high'
+		if(categorySort.getSort().equals("최신순")) {
+			cri.setOrder("date");
 		}
-		// sort가 '저가순' 이면 가격이 낮은 순서대로 상품가져오기
-		else if(categorySort.getSort().equals("저가순")) {			
-			ProductSortList = productDao.selectPdLowList(categorySort.getCategory());
-			for(DibsVo tmp : ProductSortList)
-				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		else if(categorySort.getSort().equals("저가순")) {	
+			cri.setOrder("low");
 		}
-		// sort가 '고가순' 이면 가격이 높은 순서대로 상품가져오기
-		else {			
-			ProductSortList = productDao.selectPdHighList(categorySort.getCategory());
-			for(DibsVo tmp : ProductSortList)
-				tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		else {	
+			cri.setOrder("high");
 		}
-
+		// 정렬방식대로 가져오기
+		ProductSortList = productDao.selectPdCategotyList(categorySort.getCategory(), cri);
+		for(DibsVo tmp : ProductSortList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		
 		return ProductSortList;
 	}
 	// 카테고리와 일치하는 전체 상품의 갯수 가져오기

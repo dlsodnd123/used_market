@@ -297,8 +297,19 @@
         .middle-box .btn-box .btn>i{
         	color: red;
         }
+        .notProduct{
+        	width: 1024px;
+			margin: 35px auto 35px auto;
+			font-size: 30px;
+			font-weight: 700;
+        }
+        .notProduct-btn{
+        	margin: 0 0 25px 25px; 
+        	font-size: 20px;       	
+        }
 </style>
 <body>
+	<c:if test="${product != null}">
     <div class="container top-line after">
         <div class="left-box">
             <div class="w3-content w3-display-container">
@@ -493,9 +504,15 @@
                 </c:if>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
-	
+      </c:if>
+	<c:if test="${product == null}">
+		<div class="container">
+			<div class="notProduct"><i class="fas fa-exclamation-triangle"></i> 존재하지 않거나 삭제된 상품입니다.</div>
+			<a href="<%=request.getContextPath()%>/"><button type="button" class="btn btn-primary notProduct-btn">메인홈으로</button></a>					
+		</div>		
+	</c:if>
     <script>
     
     

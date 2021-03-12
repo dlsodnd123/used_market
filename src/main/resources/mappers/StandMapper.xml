@@ -23,9 +23,9 @@
 	<update id="updateStandImg">
 		update stand set st_img = #{fileName} where st_mb_id = #{mb_id}
 	</update>
-	
+<!-- 판매중인 상품의 목록을 가져오는 쿼리문 -->	
 	<select id="selectProductList" resultType="kr.green.usedmarket.vo.ProductVo">
-		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N'
+		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'N' and pd_isDel = 'N' limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 <!-- 판매중인 상품 개수를 가져오는 쿼리문 -->
 	<select id="selectProductCount" resultType="int">

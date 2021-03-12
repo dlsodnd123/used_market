@@ -179,19 +179,19 @@
 	<div class="container productCategory-box">
 		<div class="productCategory-content-box">
 			<div class="productCategory-title">전체카테고리</div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=여성의류">여성의류</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=남성의류">남성의류</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=패션잡화">패션잡화</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=뷰티/미용">뷰티/미용</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=키즈">키즈</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가전">가전</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가구/인테리어">가구/인테리어</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=생활용품">생활용품</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=스포츠">스포츠</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=문화(도서,티켓 등)">문화(도서,티켓 등)</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=차량/오토바이">차량/오토바이</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=기타">기타</a></div>
-			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=무료나눔">무료나눔</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=여성의류&page=1&order=date">여성의류</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=남성의류&page=1&order=date">남성의류</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=패션잡화&page=1&order=date">패션잡화</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=뷰티/미용&page=1&order=date">뷰티/미용</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=키즈&page=1&order=date">키즈</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가전&page=1&order=date">가전</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=가구/인테리어&page=1&order=date">가구/인테리어</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=생활용품&page=1&order=date">생활용품</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=스포츠&page=1&order=date">스포츠</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=문화(도서,티켓 등)&page=1&order=date">문화(도서,티켓 등)</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=차량/오토바이&page=1&order=date">차량/오토바이</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=기타&page=1&order=date">기타</a></div>
+			<div class="productCategory-content"><a href="<%=request.getContextPath()%>/product/category?pd_category=무료나눔&page=1&order=date">무료나눔</a></div>
 		</div>
 	</div>
 <script>

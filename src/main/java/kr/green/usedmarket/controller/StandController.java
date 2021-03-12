@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.green.usedmarket.pagination.Criteria;
+import kr.green.usedmarket.pagination.PageMaker;
 import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
@@ -38,19 +40,20 @@ public class StandController {
 	ProductService productService;
 	
 	private String uploadPath = "D:\\JAVA_LRW\\git\\used_market\\src\\main\\webapp\\resources\\stand_img";
-
+	// 가판대 화면 담당
 	@RequestMapping(value = "/stand", method = RequestMethod.GET)
-	public ModelAndView standGet(ModelAndView mv, String mb_id, HttpServletRequest request) {
+	public ModelAndView standGet(ModelAndView mv, String mb_id, HttpServletRequest request, Criteria cri) {
+		cri.setPerPageNum(20);
 		// 로그인 정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		// 아이디와 일치하는 가판대 정보 가져오기
 		StandVo stand = standService.getStand(mb_id);
 		// ID와 일치하는 상품목록 가져오기
-		ArrayList<ProductVo> productList = standService.getProductList(mb_id);
+		ArrayList<ProductVo> productList = standService.getProductList(mb_id, cri);
 		// ID와 일치하는 상품 개수 가져오기
 		int productCount = standService.getProductCount(mb_id);
 		// ID와 일치하면서 판매완료된 상품목록 가져오기
-		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(mb_id);
+		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(mb_id, cri);
 		// ID와 일치하는 판매완료한 상품 개수 가져오기
 		int saleProductCount = standService.getSaleProductCount(mb_id);
 		// ID와 일치하는 찜한 상품 가져오기
@@ -63,6 +66,12 @@ public class StandController {
 		int stQuestionsCount = standService.getStQuestionsCount(stand.getSt_name());
 		// 가판대 아이디와 일치하는 문의사항 게시글에 달린 답변들 가져오기
 		ArrayList<CommentVo> commentList = standService.getCommentList(stand.getSt_mb_id());
+		
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;
+		// 페이지네이션 메이커 생성
+		PageMaker pmPdList = new PageMaker(cri, displayPageNum, productCount);
+		PageMaker pmSalePdList = new PageMaker(cri, displayPageNum, saleProductCount);
 			
 		mv.addObject("member", member);
 		mv.addObject("productCount", productCount);
@@ -75,6 +84,8 @@ public class StandController {
 		mv.addObject("stQuestionsList", stQuestionsList);
 		mv.addObject("stQuestionsCount", stQuestionsCount);
 		mv.addObject("commentList", commentList);
+		mv.addObject("pmPdList", pmPdList);
+		mv.addObject("pmSalePdList", pmSalePdList);	
 		
 		mv.setViewName("/stand/stand");
 		return mv;
@@ -113,8 +124,9 @@ public class StandController {
 	// 상품목록/관리에서 판매여부를 변경하는 기능
 	@RequestMapping(value = "/modify/isSale", method = RequestMethod.POST)
 	@ResponseBody
-	public Object modifyisSale(@RequestBody ProductVo pd_num, HttpServletRequest request) throws Exception {
+	public Object modifyisSale(@RequestBody ProductVo pd_num, HttpServletRequest request, Criteria cri) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		cri.setPerPageNum(20);
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);		
 		ProductVo product = standService.getProduct(pd_num.getPd_num());
@@ -125,11 +137,11 @@ public class StandController {
 		standService.updateProductisSale(product);
 
 		// ID와 일치하는 상품목록 가져오기
-		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id());
+		ArrayList<ProductVo> productList = standService.getProductList(member.getMb_id(), cri);
 		// ID와 일치하는 상품 개수 가져오기
 		int productCount = standService.getProductCount(member.getMb_id());
 		// ID와 일치하면서 판매완료된 상품목록 가져오기
-		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(member.getMb_id());
+		ArrayList<ProductVo> saleProductList = standService.getSaleProductList(member.getMb_id(), cri);
 		// ID와 일치하는 판매완료한 상품 개수 가져오기
 		int saleProductCount = standService.getSaleProductCount(member.getMb_id());
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -23,7 +24,7 @@ public interface StandDao {
 
 	void updateStandImg(@Param("fileName")String fileName, @Param("mb_id")String mb_id);
 
-	ArrayList<ProductVo> selectProductList(@Param("mb_id")String mb_id);
+	ArrayList<ProductVo> selectProductList(@Param("mb_id")String mb_id, @Param("cri")Criteria cri);
 
 	int selectProductCount(@Param("mb_id")String mb_id);
 
@@ -35,7 +36,7 @@ public interface StandDao {
 	
 	int selectProductSaleCount(@Param("mb_id")String mb_id);
 
-	ArrayList<ProductVo> selectSaleProductList(@Param("mb_id")String mb_id);
+	ArrayList<ProductVo> selectSaleProductList(@Param("mb_id")String mb_id, @Param("cri")Criteria cri);
 
 	int selectSaleProductCount(@Param("mb_id")String mb_id);
 

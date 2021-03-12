@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
@@ -26,7 +27,7 @@ public interface StandService {
 
 	void updateStandImg(String fileName, String mb_id);
 
-	ArrayList<ProductVo> getProductList(String mb_id);
+	ArrayList<ProductVo> getProductList(String mb_id, Criteria cri);
 
 	int getProductCount(String mb_id);
 
@@ -38,7 +39,7 @@ public interface StandService {
 
 	int getProductSaleCount(String mb_id);
 
-	ArrayList<ProductVo> getSaleProductList(String mb_id);
+	ArrayList<ProductVo> getSaleProductList(String mb_id, Criteria cri);
 
 	int getSaleProductCount(String mb_id);
 

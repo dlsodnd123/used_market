@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.dao.StandDao;
+import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -60,10 +61,10 @@ public class StandServiceImp implements StandService{
 	public void updateStandImg(String fileName, String mb_id) {
 		standDao.updateStandImg(fileName, mb_id);
 	}
-	// 등록된 상품 가져오기
+	// 등록된 상품들 가져오기
 	@Override
-	public ArrayList<ProductVo> getProductList(String mb_id) {
-		return standDao.selectProductList(mb_id);
+	public ArrayList<ProductVo> getProductList(String mb_id, Criteria cri) {
+		return standDao.selectProductList(mb_id, cri);
 	}
 	// 등록된 상품의 개수 가져오기
 	@Override
@@ -73,7 +74,9 @@ public class StandServiceImp implements StandService{
 	// 상품 번호와 일치하는 상품내용 가져오기
 	@Override
 	public ProductVo getProduct(int pd_num) {
-		return standDao.selectProduct(pd_num);
+		ProductVo product = standDao.selectProduct(pd_num);
+		System.out.println(product);
+		return product;
 	}
 	// 판매여부처리
 	@Override
@@ -107,8 +110,8 @@ public class StandServiceImp implements StandService{
 	}
 	// 판매완료된 상품리스트 가져오기
 	@Override
-	public ArrayList<ProductVo> getSaleProductList(String mb_id) {
-		return standDao.selectSaleProductList(mb_id);
+	public ArrayList<ProductVo> getSaleProductList(String mb_id, Criteria cri) {
+		return standDao.selectSaleProductList(mb_id, cri);
 	}
 	// 판매완료된 상품 개수 가져오기
 	@Override

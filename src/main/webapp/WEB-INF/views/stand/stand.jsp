@@ -396,6 +396,11 @@
                 	</tbody>
 				</table>
 			</c:if>
+			<ul class="pagination justify-content-center">				
+			    <li class="page-item"><a class="page-link" href="javascript:void(0);">이전</a></li>
+			    <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
+			    <li class="page-item"><a class="page-link" href="javascript:void(0);">다음</a></li>
+			</ul>
 			</div>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
 	         	<div id="menu1" class="container tab-pane fade"><br>
@@ -424,6 +429,11 @@
 						</c:forEach>
 					</tbody>
 		     	</table>
+		     	<ul class="pagination justify-content-center">				
+				    <li class="page-item"><a class="page-link" href="javascript:void(0);">이전</a></li>
+				    <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
+				    <li class="page-item"><a class="page-link" href="javascript:void(0);">다음</a></li>
+				</ul>
 				</div>
 			</c:if>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
@@ -450,7 +460,7 @@
 			           		<input type="hidden" name="dibspd-num" value="${dibs.pd_num}">
 		           		</div>
 	           		</c:forEach>
-	         	</div>
+	         	</div>	         	
          	</c:if>
          	<div id="menu3" class="container tab-pane fade"><br>
          		<h3>거래후기</h3>

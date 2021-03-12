@@ -104,42 +104,43 @@ public class ProductController {
 	@RequestMapping(value = "/product/detail", method = RequestMethod.GET)
 	public ModelAndView productDetailGet(ModelAndView mv, int pd_num, HttpServletRequest request) {
 		// 로그인된 회원정보 가져오기
-		MemberVo member = standService.getMemberId(request);
-		// 상품번호와 일치하는 상품이미지들 가져오기
-		String [] productImgList = productService.getImgList(pd_num);
-		// 상품번호와 일치하는 상품의 조회수를 증가시키기
-		productService.setViews(pd_num);
+		MemberVo member = standService.getMemberId(request);		
 		// 상품번호와 일치하는 상품 가져오기
 		ProductVo product = standService.getProduct(pd_num);
-		// 상품등록한 ID와 일치하는 상품정보 가져오기
-		StandVo stand = standService.getStand(product.getPd_mb_id());
-		// 상품페이지의 가판대정보에 보여질 정보 가져오기
-		ArrayList<PreviewVo> previewList = productService.getPreviewList(pd_num, product.getPd_mb_id()); 
-		// 판매중인 상품의 갯수
-		int productCount = standService.getProductCount(product.getPd_mb_id());
-		// 판매완료된 상품의 갯수
-		int productSaleCount = standService.getProductSaleCount(product.getPd_mb_id());
-		// 상품문의에 등록된 게시글을 보여줄 정보 가져오기
-		ArrayList<ProductQuestionsVo> productQuestionsList = productService.getProductQuestionsList(pd_num);
-		// 상품문의에 등록된 게시글에 답글 정보 가져오기
-		ArrayList<CommentVo> commentList = productService.getCommentList(pd_num);
-		
+		// 상품번호 일치하는 상품이 있으면
+		if(product != null) {			
+			// 상품번호와 일치하는 상품이미지들 가져오기
+			String [] productImgList = productService.getImgList(pd_num);
+			// 상품번호와 일치하는 상품의 조회수를 증가시키기
+			productService.setViews(pd_num);
+			// 상품등록한 ID와 일치하는 상품정보 가져오기
+			StandVo stand = standService.getStand(product.getPd_mb_id());
+			// 상품페이지의 가판대정보에 보여질 정보 가져오기
+			ArrayList<PreviewVo> previewList = productService.getPreviewList(pd_num, product.getPd_mb_id()); 
+			// 판매중인 상품의 갯수
+			int productCount = standService.getProductCount(product.getPd_mb_id());
+			// 판매완료된 상품의 갯수
+			int productSaleCount = standService.getProductSaleCount(product.getPd_mb_id());
+			// 상품문의에 등록된 게시글을 보여줄 정보 가져오기
+			ArrayList<ProductQuestionsVo> productQuestionsList = productService.getProductQuestionsList(pd_num);
+			// 상품문의에 등록된 게시글에 답글 정보 가져오기
+			ArrayList<CommentVo> commentList = productService.getCommentList(pd_num);	
+			mv.addObject("productImgList", productImgList);
+			mv.addObject("stand", stand);
+			mv.addObject("previewList", previewList);
+			mv.addObject("productCount", productCount);
+			mv.addObject("productSaleCount",productSaleCount);
+			mv.addObject("productQuestionsList", productQuestionsList);
+			mv.addObject("commentList", commentList);
+		}
 		// 로그인 정보 null이 아니면
 		if(member != null ) {
 			// 로그인된 유저와 상품 정보가 일치하는 상품찜한 정보 가져오기
 			InterestPdVo interestPd = productService.setInterestPd(member, pd_num);
 			mv.addObject("interestPd", interestPd);
-		}
-		
-		mv.addObject("member", member);
-		mv.addObject("productImgList", productImgList);
-		mv.addObject("product", product);
-		mv.addObject("stand", stand);
-		mv.addObject("previewList", previewList);
-		mv.addObject("productCount", productCount);
-		mv.addObject("productSaleCount",productSaleCount);
-		mv.addObject("productQuestionsList", productQuestionsList);
-		mv.addObject("commentList", commentList);
+		}		
+		mv.addObject("member", member);		
+		mv.addObject("product", product);		
 		
 		mv.setViewName("/product/productDetail");
 		
@@ -281,10 +282,8 @@ public class ProductController {
 		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
 		int totalCount = productService.getTotalCount(pd_category);
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
-		int displayPageNum = 3;
-		
-		PageMaker pm = new PageMaker(cri, totalCount, displayPageNum);
-		
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);				
 		System.out.println(pm);
 		
 		mv.addObject("pm", pm);
@@ -294,7 +293,7 @@ public class ProductController {
 		return mv;
 	}
 	// 상품카테고리 페이지에서 상품을 정렬하는 기능
-	@RequestMapping(value = "/categoty/sort", method = RequestMethod.POST)
+	@RequestMapping(value = "/category/sort", method = RequestMethod.POST)
 	@ResponseBody
 	public Object categorySortPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -304,9 +303,31 @@ public class ProductController {
 			return map;
 		}
 		// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
-		ArrayList<DibsVo> productSortList = productService.getProductSortList(categorySort, cri);
+		ArrayList<DibsVo> pdCategoryList = productService.getProductSortList(categorySort, cri);
 		
-		map.put("productSortList", productSortList);
+		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		int totalCount = productService.getTotalCount(categorySort.getCategory());
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);		
+		System.out.println(pm);
+		
+		map.put("pdCategoryList", pdCategoryList);
+		map.put("pm", pm);
 		return map;
 	}
+	// 상품카테고리 페이지 하단 페이지네이션 번호를 눌렀을 때 처리하는 기능
+	@RequestMapping(value = "/category/pagenation", method = RequestMethod.POST)
+	@ResponseBody
+	public Object categoryPagenationPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 화면에서 전달 받은 정보를 cri에 넣어주기		
+		cri.setPage(categorySort.getPage());
+		cri.setOrder(categorySort.getOrder());
+		// 카테고리명, 정렬방식, 페이지번호와 맞는 상품 목록을 가져와서 화면에 전달
+		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(categorySort.getCategory(), cri);
+		
+		map.put("pdCategoryList", pdCategoryList);
+		return map;
+	}	
 }
