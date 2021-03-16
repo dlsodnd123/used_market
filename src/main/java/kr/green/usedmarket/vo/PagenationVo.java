@@ -1,6 +1,6 @@
 package kr.green.usedmarket.vo;
 
-public class CategorySortVo {
+public class PagenationVo {
 	private String sort;
 	private String category;
 	private int page;
@@ -31,6 +31,6 @@ public class CategorySortVo {
 	}
 	@Override
 	public String toString() {
-		return "CategorySortVo [sort=" + sort + ", category=" + category + ", page=" + page + ", order=" + order + "]";
-	}	
+		return "PagenationVo [sort=" + sort + ", category=" + category + ", page=" + page + ", order=" + order + "]";
+	}
 }
