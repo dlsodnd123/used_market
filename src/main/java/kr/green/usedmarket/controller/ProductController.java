@@ -283,8 +283,7 @@ public class ProductController {
 		int totalCount = productService.getTotalCount(pd_category);
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
-		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);				
-		System.out.println(pm);
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);
 		
 		mv.addObject("pm", pm);
 		mv.addObject("pdCategoryList", pdCategoryList);
@@ -310,13 +309,14 @@ public class ProductController {
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
 		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);		
+		
 		System.out.println(pm);
 		
 		map.put("pdCategoryList", pdCategoryList);
 		map.put("pm", pm);
 		return map;
 	}
-	// 상품카테고리 페이지 하단 페이지네이션 번호를 눌렀을 때 처리하는 기능
+	// 상품카테고리 페이지 하단 페이지네이션을 눌렀을 때 처리하는 기능
 	@RequestMapping(value = "/category/pagenation", method = RequestMethod.POST)
 	@ResponseBody
 	public Object categoryPagenationPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
@@ -325,9 +325,16 @@ public class ProductController {
 		cri.setPage(categorySort.getPage());
 		cri.setOrder(categorySort.getOrder());
 		// 카테고리명, 정렬방식, 페이지번호와 맞는 상품 목록을 가져와서 화면에 전달
-		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(categorySort.getCategory(), cri);
+		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(categorySort.getCategory(), cri);		
+		
+		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		int totalCount = productService.getTotalCount(categorySort.getCategory());
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);		
 		
 		map.put("pdCategoryList", pdCategoryList);
+		map.put("pm", pm);
 		return map;
 	}	
 }

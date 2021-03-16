@@ -140,6 +140,8 @@
 		    </c:if>
 		</ul>
 		<input type="hidden" id="order" value="${pm.criteria.order}">
+		<input type="hidden" id="startPage" value="${pm.startPage}">
+		<input type="hidden" id="endPage" value="${pm.endPage}">
 		<c:if test="${pdCategoryList == '[]'}">
 			<div class="notProduct"><i class="fas fa-exclamation-triangle"></i> 현재 등록된 상품이 없습니다.</div>
 		</c:if>		
@@ -154,9 +156,8 @@
 	eventComma($('.category-Product-num'))	
 	
 	// '최신순', '저가순', '고가순'을 클릭했을 때
-	$('.category-new, .category-low, .category-high').click(function(){
-		var sort = $(this).text();
-		
+		$('.category-new, .category-low, .category-high').click(function(){
+		var sort = $(this).text();		
 		// url주소 바꾸기(새로고침 없이)
 		var loc = location.href;
 		loc = loc.replace(/\&order=([a-z]+)/ig,'');
@@ -178,6 +179,7 @@
 			dataType:"json",
 			contentType:"application/json; charset=UTF-8",
 			success : function(data){
+				var page = 1;
 				// 기존에 있던 상품목록 지워주고 새로 넣기
 				eventRenewalPd(data.pdCategoryList);				
 				// 기존에 있던 input[id=order] 지워주고 현재 정렬방식에 맞는 값으로 새로 넣어주기
@@ -186,10 +188,30 @@
 				$('.sort-box').find('a').removeClass('checked');
 				clickPoint.addClass('checked');
 				// 상품가격에 숫자 3자리 마다 콤마 찍어주기
-				eventComma($('.category-Product-num'))
-				// 기존의 페이지번호 active를 삭제하고 1번 페이지번호에 active 넣어주기
-				$('.page-item ').removeClass('active');
-				$('.page-item ').eq(0).addClass('active');
+				eventComma($('.category-Product-num'))				
+				// 기존에 있던 페이지네이션 지우고 새로운 페이지네이션 넣기					
+				$('.pagination').remove();				
+				var str = '';
+				str += '<ul class="pagination justify-content-center">';
+				if(data.pm.prev)
+					str += '<li class="page-item page-prev"><a class="page-link">이전</a></li>';
+				for(var i = data.pm.startPage; i<=data.pm.endPage; i++){
+					if(page == i)
+						str += '<li class="page-item page-num active"><a class="page-link">' + i + '</a></li>';
+					else
+						str += '<li class="page-item page-num"><a class="page-link">' + i + '</a></li>';
+				}
+				if(data.pm.next)
+					str += '<li class="page-item page-next"><a class="page-link">다음</a></li>';
+				str += '</ul>';
+				$('.middle-box').after(str);				
+				// 기존에 있던 input태그에 있는 시작번호와 끝번호 변경해주기
+				$('input[id=startPage]').val(data.pm.startPage);
+				$('input[id=endPage]').val(data.pm.endPage);
+				// 페이지네이션에 번호를 클릭했을 때
+				eventPagenationNumBtn($('.page-num'));
+				// 페이지네이션에 이전 다음 버튼 클릭했을 때
+				eventPagenationPrevNextBtn($('.page-prev, .page-next'));
 			},
    	     	error: function(error) {
    	        	console.log('에러발생');
@@ -197,56 +219,22 @@
   	    })
 	})
 	// 페이지네이션에 번호를 클릭했을 때
-	$('.page-num').click(function(){		
-		var page = $(this).text();
-		var category = $('.category-Title').find('b').text();
-		var order = $('input[id=order]').val();
-		var clickPoint = $(this);
-		var sendData = {"page" : page, "category" : category, "order" : order}
-		$.ajax({
-     		url : '<%=request.getContextPath()%>/category/pagenation',
-			async:false,
-			type : 'post',
-			data : JSON.stringify(sendData),
-			dataType:"json",
-			contentType:"application/json; charset=UTF-8",
-			success : function(data){
-				// 기존에 있던 상품목록 지워주고 새로 넣기
-				eventRenewalPd(data.pdCategoryList);
-				// url주소 바꾸기(새로고침 없이)
-				var loc = location.href;
-				loc = loc.replace(/\&page=([0-9]+)/ig,'');
-				loc = loc.replace(/\&order=([a-z]+)/ig,'');
-				loc += '&page=' + page;
-				loc += '&order=' + order;
-				history.pushState(null, null, loc);
-				// 가격에 콤마 직어주기
-				eventComma($('.category-Product-num'))
-				// 선택된 페이지 번호의 active를 삭제하고 클릭한 페이지번호에 active 넣어주기
-				$('.page-item').removeClass('active');
-				clickPoint.addClass('active');
-			},
-   	     	error: function(error) {
-   	        	console.log('에러발생');
-   	    	}
-  	    }) 	    
-	})
+	eventPagenationNumBtn($('.page-num'));
+	
 	// 페이지네이션에 이전 다음 버튼 클릭했을 때
-	$('.page-prev, .page-next').click(function(){
-		var page = '';
-		if($(this).text() == '이전')
-			page = parseInt('${pm.startPage}') - 1;
-		else
-			page = parseInt('${pm.endPage}') + 1;
-		var catagory = $('.category-Title').find('b').text();
-		var order = $('input[id=order]').val();
-		console.log("page : " + page);
-		console.log("catagory : " + catagory);
-		console.log("order : " + order);
-	})
+	eventPagenationPrevNextBtn($('.page-prev, .page-next'));
 	
-	
-
+	// 정렬되어있는 방식에 해당하는 글자 빨강색으로 변경하기
+	var order = $('input[id=order]').val();
+	$('.sort-box').find('a').removeClass('checked');
+	console.log(order);
+	if(order == 'date')
+		$('.category-new').addClass('checked')
+	else if(order == 'low')
+		$('.category-low').addClass('checked')
+	else if(order == 'high')
+		$('.category-high').addClass('checked')
+		
 	// 가격에 숫자 3자리마다 콤마 찍어주는 함수
 	function eventComma(obj){
 		var cnt = obj.length;
@@ -280,6 +268,105 @@
 			str += '</div>'
 			$('.category-ProductList').html(str);
 		}
+	}
+	
+	// 페이지네이션에 번호를 클릭했을 때 함수
+	function eventPagenationNumBtn(obj){		
+		obj.click(function(){		
+			var page = $(this).text();
+			var category = $('.category-Title').find('b').text();
+			var order = $('input[id=order]').val();
+			var clickPoint = $(this);
+			var sendData = {"page" : page, "category" : category, "order" : order}
+			$.ajax({
+	     		url : '<%=request.getContextPath()%>/category/pagenation',
+				async:false,
+				type : 'post',
+				data : JSON.stringify(sendData),
+				dataType:"json",
+				contentType:"application/json; charset=UTF-8",
+				success : function(data){
+					// 기존에 있던 상품목록 지워주고 새로 넣기
+					eventRenewalPd(data.pdCategoryList);
+					// url주소 바꾸기(새로고침 없이)
+					var loc = location.href;
+					loc = loc.replace(/\&page=([0-9]+)/ig,'');
+					loc = loc.replace(/\&order=([a-z]+)/ig,'');
+					loc += '&page=' + page;
+					loc += '&order=' + order;
+					history.pushState(null, null, loc);
+					// 가격에 콤마 직어주기
+					eventComma($('.category-Product-num'))
+					// 선택된 페이지 번호의 active를 삭제하고 클릭한 페이지번호에 active 넣어주기
+					$('.page-item').removeClass('active');
+					clickPoint.addClass('active');
+				},
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
+	  	    }) 	    
+		})
+	}
+	// 페이지네이션에 이전 다음 버튼 클릭했을 때 함수
+	function eventPagenationPrevNextBtn(obj){
+		$(obj).click(function(){
+			var page = '';
+			if($(this).text() == '이전'){
+				page = parseInt($('input[id=startPage]').val()) - 1;				
+			}else{				
+				page = parseInt($('input[id=endPage]').val()) + 1;
+			}
+			var category = $('.category-Title').find('b').text();
+			var order = $('input[id=order]').val();
+			var sendData = {"page" : page, "category" : category, "order" : order}
+			$.ajax({
+	     		url : '<%=request.getContextPath()%>/category/pagenation',
+				async:false,
+				type : 'post',
+				data : JSON.stringify(sendData),
+				dataType:"json",
+				contentType:"application/json; charset=UTF-8",
+				success : function(data){					
+					// 기존에 있던 상품목록 지워주고 새로 상품목록 넣기
+					eventRenewalPd(data.pdCategoryList);
+					// url주소 바꾸기(새로고침 없이)
+					var loc = location.href;
+					loc = loc.replace(/\&page=([0-9]+)/ig,'');
+					loc = loc.replace(/\&order=([a-z]+)/ig,'');
+					loc += '&page=' + page;
+					loc += '&order=' + order;
+					history.pushState(null, null, loc);
+					// 가격에 콤마 직어주기
+					eventComma($('.category-Product-num'))
+					// 기존에 있던 페이지네이션 지우고 새로운 페이지네이션 넣기					
+					$('.pagination').remove();
+					var str = '';
+					str += '<ul class="pagination justify-content-center">';
+					if(data.pm.prev)
+						str += '<li class="page-item page-prev"><a class="page-link">이전</a></li>';
+					for(var i = data.pm.startPage; i<=data.pm.endPage; i++){
+						if(page == i)
+							str += '<li class="page-item page-num active"><a class="page-link">' + i + '</a></li>';
+						else
+							str += '<li class="page-item page-num"><a class="page-link">' + i + '</a></li>';
+					}
+					if(data.pm.next)
+						str += '<li class="page-item page-next"><a class="page-link">다음</a></li>';
+					str += '</ul>';
+					$('.middle-box').after(str);
+					// 기존에 있던 input태그에 있는 시작번호와 끝번호 변경해주기
+					$('input[id=startPage]').val(data.pm.startPage);
+					$('input[id=endPage]').val(data.pm.endPage);					
+					// 페이지네이션에 번호를 클릭했을 때
+					eventPagenationNumBtn($('.page-num'));
+					// 페이지네이션에 이전 다음 버튼 클릭했을 때
+					eventPagenationPrevNextBtn($('.page-prev, .page-next'));
+				},
+	   	     	error: function(error) {
+	   	        	console.log('에러발생');
+	   	    	}
+	  	    })
+		})	
 	}
 </script>
 </body>

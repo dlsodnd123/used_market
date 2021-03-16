@@ -136,8 +136,8 @@
         .dibs-info-box .dibs-check-box{
         	display: inline-block;
         	position: absolute;
-        	top: 20px;
-        	right: 10px;
+        	top: 5px;
+        	right: 5px;
         	font-size: 18px;
         }
         .dibs-info-box .dibs-check-box>i{
@@ -161,7 +161,7 @@
         .dibs-info-box .dibs-content-box{
         	display: inline-block;
         	vertical-align: top;
-        	padding: 20px 65px 0 20px;
+        	padding: 20px 45px 0 20px;
         }
         .dibs-info-box .dibs-content-box .dibs-title{
         	font-size: 14px;

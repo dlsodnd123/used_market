@@ -9,7 +9,7 @@ public class Criteria {
 	private String order;
 	public Criteria() {
 		this.page = 1;
-		this.perPageNum = 5;
+		this.perPageNum = 20;
 	}
 	//getter and setter	
 	public int getPage() {
