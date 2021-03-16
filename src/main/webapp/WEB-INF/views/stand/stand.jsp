@@ -369,18 +369,18 @@
 	                    <tr>
 	                    	<th>상품번호</th>
 	                        <th>제목</th>
-	                        <th>가격</th>
+	                        <th class="productList-price">가격</th>
 	                        <th>거래방법</th>
 	                        <th>등록일</th>
 	                        <th></th>
 	                    </tr>
                 	</thead>
-                	<tbody class="productList-tbody">
+                	<tbody class="productList-tbody"> 
 	                	<c:forEach items="${productList}" var="product">                
 		                    <tr class="productList-tr">
 		                     	<td>${product.pd_num}</td>
 		                        <td>${product.pd_title}</td>
-		                        <td>${product.pd_price}</td>
+		                        <td class="productList-price">${product.pd_price}</td>
 		                        <td>${product.pd_deal}</td>
 		                        <td>${product.pd_registerDate}</td>		                        
 		                        <td>
@@ -396,10 +396,16 @@
                 	</tbody>
 				</table>
 			</c:if>
-			<ul class="pagination justify-content-center">				
-			    <li class="page-item"><a class="page-link" href="javascript:void(0);">이전</a></li>
-			    <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-			    <li class="page-item"><a class="page-link" href="javascript:void(0);">다음</a></li>
+			<ul class="pagination justify-content-center">
+				<c:if test="${pmPdList.prev}">				
+			    	<li class="page-item page-pd-prev"><a class="page-link">이전</a></li>
+			    </c:if>
+			    <c:forEach begin="${pmPdList.startPage}" end="${pmPdList.endPage}" var="pmPd">
+			    	<li class="page-item page-pd-num"><a class="page-link">${pmPd}</a></li>
+			    </c:forEach>
+			    <c:if test="${pmPdList.next}">
+			    	<li class="page-item page-pd-next"><a class="page-link">다음</a></li>
+			    </c:if>
 			</ul>
 			</div>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
@@ -421,7 +427,7 @@
 				        	<tr class="saleProductList-tr">
 				            	<td>${saleProduct.pd_num}</td>
 				                <td>${saleProduct.pd_title}</td>
-				                <td>${saleProduct.pd_price}</td>
+				                <td class="saleProductList-price">${saleProduct.pd_price}</td>
 				                <td>${saleProduct.pd_deal}</td>
 				                <td>${saleProduct.pd_saleDate}</td>
 				                <td><button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button></td>
@@ -429,10 +435,16 @@
 						</c:forEach>
 					</tbody>
 		     	</table>
-		     	<ul class="pagination justify-content-center">				
-				    <li class="page-item"><a class="page-link" href="javascript:void(0);">이전</a></li>
-				    <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-				    <li class="page-item"><a class="page-link" href="javascript:void(0);">다음</a></li>
+		     	<ul class="pagination justify-content-center">
+		     		<c:if test="${pmSalePdList.prev}">				
+				    	<li class="page-item page-salePd-prev"><a class="page-link">이전</a></li>
+				    </c:if>
+				    <c:forEach begin="${pmSalePdList.startPage}" end="${pmSalePdList.endPage}" var="pmSalePd">
+				    	<li class="page-item page-salePd-num"><a class="page-link">${pmSalePd}</a></li>
+				    </c:forEach>
+				    <c:if test="${pmSalePdList.next}">
+				    	<li class="page-item page-salePd-next"><a class="page-link">다음</a></li>
+				    </c:if>
 				</ul>
 				</div>
 			</c:if>
@@ -781,6 +793,66 @@
    			selectTab();
 		});   	    
    	    
+   		// 페이지 네이션 번호 클릭시 
+   		$('.page-pd-num, .page-salePd-num').click(function(){
+   			var page = $(this).find('.page-link').text();
+   			var division = $(this).hasClass('page-pd-num');
+   			var category = '';
+   			if(division)
+   				category = 'pd';
+   			else
+   				category = 'salePd';
+   			var mb_id = '${stand.st_mb_id}';
+   			var sendData = {"page" : page, "category" : category, "mb_id" : mb_id};
+   			$.ajax({
+   	     		url : '<%=request.getContextPath()%>/stand/pagenation',
+   				async:false,
+   				type : 'post',
+    			data : sendData,
+   				dataType:"json",
+   				success : function(data){
+   					// 해당 페이지네이션이 '상품목록'이면
+   					if(data.category == 'pd'){
+   						// 상품목록 지우고 다시 넣어주기
+   						$('div[id=home]').find('.productList-tr').remove();
+   						var str = '';
+   						for(var i=0; i<data.productList.length; i++){
+   							str += '<tr class="productList-tr">';
+	                     	str += '<td>' + data.productList[i].pd_num + '</td>';
+	                        str += '<td>' + data.productList[i].pd_title + '</td>';
+	                        str += '<td class="productList-price">' + data.productList[i].pd_price + '</td>';
+	                        str += '<td>' + data.productList[i].pd_deal + '</td>';
+	                        str += '<td>' + data.productList[i].pd_registerDate + '</td>';		                        
+	                        str += '<td>'
+	                        // 가판대아이디와 로그인된 아이디가 같으면 판매처리, 내용수정, 삭제 넣어주기
+	                        if('${stand.st_mb_id}' == data.mb_id){	                        	
+		                        str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>';
+		                        str += '<a href="<%=request.getContextPath()%>/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>';
+		                        str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>';
+	                        }
+		                    str += '<a href="<%=request.getContextPath()%>/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>';
+	                        str += '</td>'
+	                     	str += '</tr>'
+	                     	$('div[id=home]').find('.productList-tbody').html(str);
+   						}
+   					}
+   					// 해당 페이지네이션이 '판매한상품' 이면
+   					else{
+   						
+   					}
+   				},
+   	   	     	error: function(error) {
+   	   	        	console.log('에러발생');
+   	   	    	}
+      	    })
+   		})
+   		
+   		// 상품목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+   		eventComma(parseInt('${productCount}'), $('.productList-price')); 
+   		
+   		// 판매한목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+   		eventComma(parseInt('${saleProductCount}'), $('.saleProductList-price'))
+   		
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
    	 		obj.click(function(){
@@ -1111,7 +1183,18 @@
 	   		$('.select').find('a').removeClass('active');
 	   		$('.select').find('a.'+arr[1]).addClass('active')
 
-   		}   		
+   		}
+   		// 가격에 숫자 3자리마다 콤마 찍어주는 함수
+   		function eventComma(cnt, obj){
+   			for(var i = 0; i<cnt; i++){
+   				var comma = numberWithCommas(obj.eq(i).text());
+   				obj.eq(i).text(comma);
+   			}
+   		}
+	   	// 숫자숫자 3자리 마다 콤마를 넣는 정규식 함수
+   		function numberWithCommas(obj) {
+   		    return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   		}
   	</script>
 </body>
 </html>

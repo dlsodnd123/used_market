@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.BoardVo;
-import kr.green.usedmarket.vo.CategorySortVo;
+import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -59,7 +59,7 @@ public interface ProductService {
 
 	ArrayList<DibsVo> getPdCategoryList(String pd_category, Criteria cri);
 
-	ArrayList<DibsVo> getProductSortList(CategorySortVo categorySort, Criteria cri);
+	ArrayList<DibsVo> getProductSortList(PagenationVo categorySort, Criteria cri);
 
 	int getTotalCount(String pd_category);
 

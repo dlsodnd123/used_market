@@ -26,6 +26,7 @@ import kr.green.usedmarket.vo.BoardVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
 import kr.green.usedmarket.vo.ProductVo;
 import kr.green.usedmarket.vo.StandVo;
@@ -43,7 +44,7 @@ public class StandController {
 	// 가판대 화면 담당
 	@RequestMapping(value = "/stand", method = RequestMethod.GET)
 	public ModelAndView standGet(ModelAndView mv, String mb_id, HttpServletRequest request, Criteria cri) {
-		cri.setPerPageNum(20);
+		cri.setPerPageNum(5);
 		// 로그인 정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		// 아이디와 일치하는 가판대 정보 가져오기
@@ -71,8 +72,8 @@ public class StandController {
 		int displayPageNum = 10;
 		// 페이지네이션 메이커 생성
 		PageMaker pmPdList = new PageMaker(cri, displayPageNum, productCount);
-		PageMaker pmSalePdList = new PageMaker(cri, displayPageNum, saleProductCount);
-			
+		PageMaker pmSalePdList = new PageMaker(cri, displayPageNum, saleProductCount);			
+		
 		mv.addObject("member", member);
 		mv.addObject("productCount", productCount);
 		mv.addObject("productList", productList);
@@ -199,6 +200,40 @@ public class StandController {
 		// 문의글 번호와 일치하는 문의글 정보 가져오기
 		ProductQuestionsVo stQuestions = standService.getStQuestions(board.getBo_num());
 		map.put("stQuestions", stQuestions);
+		return map;
+	}
+	// 상품판매목록, 판매한목록 하단 페이지네이션을 눌렀을 때 처리하는 기능
+	@RequestMapping(value = "/stand/pagenation", method = RequestMethod.POST)
+	@ResponseBody
+	public Object standPagenationPost(@RequestBody @RequestParam Integer page, @RequestParam  String category, @RequestParam  String mb_id, HttpServletRequest request) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		Criteria cri = new Criteria();
+		cri.setPage(page);
+		cri.setPerPageNum(5);
+		// 상품목록인지 판매한상품목록 인지 구분(pagenation.category)하여 목록 가져오기
+		int totalCount = 0;
+		ArrayList<ProductVo> productList = new ArrayList<ProductVo>();
+		if(category.equals("pd")) {
+			// ID와 페이지번호가 일치하는 상품목록 가져오기
+			productList = standService.getProductList(mb_id, cri);
+			// ID와 일치하는 상품 개수 가져오기
+			totalCount = standService.getProductCount(mb_id);	
+		}else {
+			// ID와 페이지번호가 일치하면서 판매완료된 상품목록 가져오기
+			productList = standService.getSaleProductList(mb_id, cri);
+			// ID와 일치하는 판매완료한 상품 개수 가져오기
+			totalCount = standService.getSaleProductCount(mb_id);
+		}
+		// 페이지 메이커 생성
+		int displayPageNum = 10;
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);
+		map.put("member", member);
+		map.put("productList", productList);
+		map.put("category", category);
+		map.put("pm", pm);
+		
 		return map;
 	}
 }

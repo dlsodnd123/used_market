@@ -75,7 +75,6 @@ public class StandServiceImp implements StandService{
 	@Override
 	public ProductVo getProduct(int pd_num) {
 		ProductVo product = standDao.selectProduct(pd_num);
-		System.out.println(product);
 		return product;
 	}
 	// 판매여부처리

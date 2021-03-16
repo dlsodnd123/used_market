@@ -21,7 +21,7 @@ import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.BoardVo;
-import kr.green.usedmarket.vo.CategorySortVo;
+import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -294,7 +294,7 @@ public class ProductController {
 	// 상품카테고리 페이지에서 상품을 정렬하는 기능
 	@RequestMapping(value = "/category/sort", method = RequestMethod.POST)
 	@ResponseBody
-	public Object categorySortPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
+	public Object categorySortPost(@RequestBody PagenationVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// sort값이 '최신순', '저가순', '고가순'이 아니면 'wrong' 전달해주기
 		if(!categorySort.getSort().equals("최신순") && !categorySort.getSort().equals("저가순") && !categorySort.getSort().equals("고가순")) {
@@ -319,7 +319,7 @@ public class ProductController {
 	// 상품카테고리 페이지 하단 페이지네이션을 눌렀을 때 처리하는 기능
 	@RequestMapping(value = "/category/pagenation", method = RequestMethod.POST)
 	@ResponseBody
-	public Object categoryPagenationPost(@RequestBody CategorySortVo categorySort, Criteria cri) {		
+	public Object categoryPagenationPost(@RequestBody PagenationVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 화면에서 전달 받은 정보를 cri에 넣어주기		
 		cri.setPage(categorySort.getPage());
