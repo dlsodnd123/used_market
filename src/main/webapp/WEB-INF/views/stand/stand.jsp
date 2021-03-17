@@ -401,12 +401,14 @@
 			    	<li class="page-item page-pd-prev"><a class="page-link">이전</a></li>
 			    </c:if>
 			    <c:forEach begin="${pmPdList.startPage}" end="${pmPdList.endPage}" var="pmPd">
-			    	<li class="page-item page-pd-num"><a class="page-link">${pmPd}</a></li>
+			    	<li class="page-item page-pd-num <c:if test="${pmPd == pmPdList.criteria.page }">active</c:if>"><a class="page-link">${pmPd}</a></li>
 			    </c:forEach>
 			    <c:if test="${pmPdList.next}">
 			    	<li class="page-item page-pd-next"><a class="page-link">다음</a></li>
 			    </c:if>
 			</ul>
+			<input type="hidden" id="pmPd-startPage" value="${pmPdList.startPage}"> 
+			<input type="hidden" id="pmPd-endPage" value="${pmPdList.endPage}">
 			</div>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
 	         	<div id="menu1" class="container tab-pane fade"><br>
@@ -440,12 +442,14 @@
 				    	<li class="page-item page-salePd-prev"><a class="page-link">이전</a></li>
 				    </c:if>
 				    <c:forEach begin="${pmSalePdList.startPage}" end="${pmSalePdList.endPage}" var="pmSalePd">
-				    	<li class="page-item page-salePd-num"><a class="page-link">${pmSalePd}</a></li>
+				    	<li class="page-item page-salePd-num <c:if test="${pmSalePd == pmSalePdList.criteria.page }">active</c:if>"><a class="page-link">${pmSalePd}</a></li>
 				    </c:forEach>
 				    <c:if test="${pmSalePdList.next}">
 				    	<li class="page-item page-salePd-next"><a class="page-link">다음</a></li>
 				    </c:if>
 				</ul>
+				<input type="hidden" id="pmSalePd-startPage" value="${pmSalePdList.startPage}"> 
+				<input type="hidden" id="pmSalePd-endPage" value="${pmSalePdList.endPage}">
 				</div>
 			</c:if>
 			<c:if test="${stand.st_mb_id == member.mb_id}">
@@ -595,25 +599,8 @@
    	 	eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn'));
    		
    	    // 삭제 버튼 클릭시 삭제여부 변경
-   	    $('.product-delete-btn').click(function(){
-   	    	var clickPoint = $(this);
-   	    	var isDel = confirm('등록된 상품이 삭제됩니다. 삭제 하시겠습니까?')
-   	    	if(isDel == true){
-   	    		var pd_num = $(this).parent().siblings().first().text();
-   	    		var data = {'pd_num' : pd_num}
-		   	  	$.ajax({
-		  	        type:'post',
-		  	        data:data,
-		  	        url:'<%=request.getContextPath()%>/modify/isDel',
-		  	        success : function(data){
-		  	        	 clickPoint.parents('.productList-tr').remove();
-		   	        },
-		   	     	error: function(error) {
-		   	        	console.log('에러발생');
-		   	    	}
-		    	})   
-   	    	}
-   	    })
+   	    eventStDelBtn($('.product-delete-btn'));
+   	   
    	  	// 가판대 소개글 변경하기 버튼 클릭시
    	    $('.stand-introduce-box .stand-btn-box .introduce-btn').click(function(){
    	    	$('.stand-introduce-box .modify-box').show();
@@ -793,65 +780,17 @@
    			selectTab();
 		});   	    
    	    
-   		// 페이지 네이션 번호 클릭시 
-   		$('.page-pd-num, .page-salePd-num').click(function(){
-   			var page = $(this).find('.page-link').text();
-   			var division = $(this).hasClass('page-pd-num');
-   			var category = '';
-   			if(division)
-   				category = 'pd';
-   			else
-   				category = 'salePd';
-   			var mb_id = '${stand.st_mb_id}';
-   			var sendData = {"page" : page, "category" : category, "mb_id" : mb_id};
-   			$.ajax({
-   	     		url : '<%=request.getContextPath()%>/stand/pagenation',
-   				async:false,
-   				type : 'post',
-    			data : sendData,
-   				dataType:"json",
-   				success : function(data){
-   					// 해당 페이지네이션이 '상품목록'이면
-   					if(data.category == 'pd'){
-   						// 상품목록 지우고 다시 넣어주기
-   						$('div[id=home]').find('.productList-tr').remove();
-   						var str = '';
-   						for(var i=0; i<data.productList.length; i++){
-   							str += '<tr class="productList-tr">';
-	                     	str += '<td>' + data.productList[i].pd_num + '</td>';
-	                        str += '<td>' + data.productList[i].pd_title + '</td>';
-	                        str += '<td class="productList-price">' + data.productList[i].pd_price + '</td>';
-	                        str += '<td>' + data.productList[i].pd_deal + '</td>';
-	                        str += '<td>' + data.productList[i].pd_registerDate + '</td>';		                        
-	                        str += '<td>'
-	                        // 가판대아이디와 로그인된 아이디가 같으면 판매처리, 내용수정, 삭제 넣어주기
-	                        if('${stand.st_mb_id}' == data.mb_id){	                        	
-		                        str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>';
-		                        str += '<a href="<%=request.getContextPath()%>/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>';
-		                        str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>';
-	                        }
-		                    str += '<a href="<%=request.getContextPath()%>/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>';
-	                        str += '</td>'
-	                     	str += '</tr>'
-	                     	$('div[id=home]').find('.productList-tbody').html(str);
-   						}
-   					}
-   					// 해당 페이지네이션이 '판매한상품' 이면
-   					else{
-   						
-   					}
-   				},
-   	   	     	error: function(error) {
-   	   	        	console.log('에러발생');
-   	   	    	}
-      	    })
-   		})
+   		// 페이지네이션 번호 클릭시 
+   		eventPagenationNumBtn($('.page-pd-num, .page-salePd-num'));
+   		$('.page-pd-next, .page-pd-prev, .page-salePd-next, .page-salePd-prev').off('click')   				
+   		// 페이지네이션에서 이전 다음 버튼 클릭시
+   		eventPagenationNextPrevBtn($('.page-pd-next, .page-pd-prev, .page-salePd-next, .page-salePd-prev'));
    		
    		// 상품목록에 판매가격 숫자 3자리마다 콤마 찍어주기
    		eventComma(parseInt('${productCount}'), $('.productList-price')); 
    		
    		// 판매한목록에 판매가격 숫자 3자리마다 콤마 찍어주기
-   		eventComma(parseInt('${saleProductCount}'), $('.saleProductList-price'))
+   		eventComma(parseInt('${saleProductCount}'), $('.saleProductList-price'));
    		
    	    // 상품판매 처리 및 판매처리취소 함수
    	    function eventProductSaleBtn(obj){
@@ -878,7 +817,6 @@
 			  	        	if(data.result == 'memberDifferent')
 					      		alert('수정 권한이 없습니다.')
 					    	alert('처리되었습니다.')
-					    	console.log(data);
 			  	        	// 기존에 있던 상품목록/관리와 판매한상품 지우고 새로 나타내기		  	        	
 			  	        	$('.productList-tr').remove();
 			  	        	$('.mgtPd-tab').remove();
@@ -930,6 +868,31 @@
 	   	  		}   	  			    
 	   	    })
    		}
+   		// 상품목록 삭제 하는 함수
+   		function eventStDelBtn(obj){
+   			// 삭제 버튼 클릭시 삭제여부 변경
+   	   	    obj.click(function(){
+   	   	    	var clickPoint = $(this);
+   	   	    	var isDel = confirm('등록된 상품이 삭제됩니다. 삭제 하시겠습니까?')
+   	   	    	if(isDel == true){
+   	   	    		var pd_num = $(this).parent().siblings().first().text();
+   	   	    		var data = {'pd_num' : pd_num}
+   			   	  	$.ajax({
+   			  	        type:'post',
+   			  	        data:data,
+   			  	        url:'<%=request.getContextPath()%>/modify/isDel',
+   			  	        success : function(data){
+   			  	        	 clickPoint.parents('.productList-tr').remove();
+   			   	        },
+   			   	     	error: function(error) {
+   			   	        	console.log('에러발생');
+   			   	    	}
+   			    	})   
+   	   	    	}
+   	   	    })
+   		}
+   		
+   		
    		// 문의사항 탭의 문의글 수정 함수
    	    function eventStQuestionsModifyBtn(obj){ 
 	   	    // 문의사항 탭의 문의글 수정 버튼 클릭시 수정 박스 나타내고, 내용이랑 버튼 숨기기
@@ -1195,6 +1158,203 @@
    		function numberWithCommas(obj) {
    		    return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    		}
+	   	// 상품목록 지우고 다시 넣어주고, 콤마찍기기능, 삭제처리기능, 페이지네이션 시작/끝 번호 갱신 함수
+	   	function eventPdListRenewal(productList, pm, member){	   		
+	   		// 상품목록 지우고 다시 넣어주기 
+			$('div[id=home]').find('.productList-tr').remove(); 
+			var str = '';			
+			for(var i=0; i<productList.length; i++){				
+				str += '<tr class="productList-tr">';
+	        	str += '<td>' + productList[i].pd_num + '</td>';
+	            str += '<td>' + productList[i].pd_title + '</td>';
+	           	str += '<td class="productList-price">' + productList[i].pd_price + '</td>';
+	           	str += '<td>' + productList[i].pd_deal + '</td>';
+	           	str += '<td>' + productList[i].pd_registerDate + '</td>';		                        
+	           	str += '<td>'
+	           	// 가판대아이디와 로그인된 아이디가 같으면 판매처리, 내용수정, 삭제 넣어주기
+	           	if(member != null){
+		           	if('${stand.st_mb_id}' == member.mb_id){	                        	
+		               	str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>';
+		               	str += '<a href="<%=request.getContextPath()%>/product/modify?pd_num=' + productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>';
+		               	str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>';
+		               	str += '<a href="<%=request.getContextPath()%>/product/detail?pd_num=' + productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>';
+		           	}
+	           	}else
+	           		str += '<a href="<%=request.getContextPath()%>/product/detail?pd_num=' + productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>';	           	
+	           	str += '</td>'
+	           	str += '</tr>'
+	           	$('div[id=home]').find('.productList-tbody').html(str);
+			}
+			// 상품목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+       		eventComma(parseInt('${productCount}'), $('.productList-price'));
+       		// 삭제 버튼 클릭시 삭제여부 변경
+       	    eventStDelBtn($('.product-delete-btn'));			
+       	 	// 페이지네이션 시작번호, 끝번호 갱신하기
+			$('#pmPd-startPage').val(pm.startPage);
+			$('#pmPd-endPage').val(pm.endPage);
+	   	}
+	   	
+	 	// 판매한상품 지우고 다시 넣어주고, 콤마찍기기능, 페이지네이션 시작/끝 번호 갱신 함수
+	   	function eventSalePdListRenewal(productList, pm){
+	 		// 판매한상품 지우고 다시 넣어주기
+			$('div[id=menu1]').find('.saleProductList-tr').remove();
+			var str = '';
+			for(var i=0; i<productList.length; i++){
+				str += '<tr class="saleProductList-tr">';
+        		str += '<td>' + productList[i].pd_num + '</td>';
+           		str += '<td>' + productList[i].pd_title + '</td>';
+            	str += '<td class="saleProductList-price">' + productList[i].pd_price + '</td>';
+            	str += '<td>' + productList[i].pd_deal + '</td>';
+            	str += '<td>' + productList[i].pd_saleDate + '</td>';
+            	str += '<td><button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button></td>';
+				str += '</tr>';
+				$('div[id=menu1]').find('.saleProductList-tbody').html(str);
+			}
+			// 판매한목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+	   		eventComma(parseInt('${saleProductCount}'), $('.saleProductList-price'));		
+	   		// 페이지네이션 시작번호, 끝번호 갱신하기
+	   		$('#pmSalePd-startPage').val(pm.startPage);
+	   		$('#pmSalePd-endPage').val(pm.endPage);	   	
+	 	}
+ 		// 상품목록, 판매한상품 페이지내이션 지우고 새로 넣어주는 함수
+ 		function eventStPagenationRenewal(obj, pm, page, category){
+			// 기존에 있던 페이지내이션 지우고 새로 넣어주기 
+			obj.find('.pagination').empty();
+			var str = '';
+			if(category == 'pd'){
+				if(pm.prev)
+					str += '<li class="page-item page-pd-prev"><a class="page-link">이전</a></li>'
+				for(var i=pm.startPage; i<=pm.endPage; i++){
+					if(i == page)
+						str += '<li class="page-item page-pd-num active"><a class="page-link">' + i + '</a></li>';
+					else
+						str += '<li class="page-item page-pd-num"><a class="page-link">' + i + '</a></li>';
+				}
+				if(pm.next)
+					str += '<li class="page-item page-pd-next"><a class="page-link">다음</a></li>'
+				obj.find('.pagination').html(str);
+			}else{
+				if(pm.prev)
+					str += '<li class="page-item page-salePd-prev"><a class="page-link">이전</a></li>'
+				for(var i=pm.startPage; i<=pm.endPage; i++){
+					if(i == page)
+						str += '<li class="page-item page-salePd-num active"><a class="page-link">' + i + '</a></li>';
+					else
+						str += '<li class="page-item page-salePd-num"><a class="page-link">' + i + '</a></li>';
+				}
+				if(pm.next)
+					str += '<li class="page-item page-salePd-next"><a class="page-link">다음</a></li>'
+				obj.find('.pagination').html(str);
+			}
+			$('.page-pd-next, .page-pd-prev, .page-salePd-next, .page-salePd-prev').off('click')   
+			// 페이지네이션 다음, 이전 버튼 클릭시 처리 기능
+			eventPagenationNextPrevBtn($('.page-pd-next, .page-pd-prev, .page-salePd-next, .page-salePd-prev'))
+			// 페이지네이션 번호 클릭시 
+			eventPagenationNumBtn($('.page-pd-num, .page-salePd-num'));
+ 		} 		
+ 		// 페이지네이션에서 이전 다음 버튼 클릭시 처리 함수
+ 		function eventPagenationNextPrevBtn(obj){ 		
+	 		// 페이지네이션에서 이전 다음 버튼 클릭시
+	   		obj.click(function(){
+	   			// 이전 버튼인지 다음 버튼인지 구분 하여 page값 설정
+	   			var page = '';   			
+	   			if($(this).text() == '이전')
+	   				if($(this).hasClass('page-pd-prev'))   				
+	   					page = parseInt($('#pmPd-startPage').val()) - 1;
+	   				else
+	   					page = parseInt($('#pmSalePd-startPage').val()) - 1;
+	   			else
+	   				if($(this).hasClass('page-pd-next'))
+	   					page = parseInt($('#pmPd-endPage').val()) + 1;
+	   				else
+	   					page = parseInt($('#pmSalePd-endPage').val()) + 1;
+	   			// 페이지네이션인 상품목록인지 판매한상품인지 구분 하여 category값 설정
+	   			var category = '';
+	   			if($(this).parents('#home').attr('id') == 'home')
+	   				category = 'pd'
+	   			else
+	   				category = 'salePd'
+	   			var mb_id = '${stand.st_mb_id}'
+	   			var sendData = {"page" : page, "category" : category, "mb_id" : mb_id};
+				$.ajax({
+	   	     		url : '<%=request.getContextPath()%>/stand/pagenation',
+	   				async:false,
+	   				type : 'post',
+	    			data : sendData,
+	   				dataType:"json",
+	   				success : function(data){
+	   					// 해당 페이지네이션이 '상품목록' 이면
+	   					if(data.category == 'pd'){
+	   						// 상품목록 지우고 다시 넣어주고, 콤마찍기기능, 삭제처리기능, 페이지네이션 시작/끝 번호 갱신   						
+	   						eventPdListRenewal(data.productList, data.pm, data.member);
+	   						// 상품목록 기존에 있던 페이지내이션 지우고 새로 넣어주기
+	   						eventStPagenationRenewal($('#home'), data.pm, page, category);
+	   					}
+	   					// 해당 페이지네이션이 '판매한상품' 이면
+	   					else{ 
+	   					// 판매한상품 지우고 다시 넣어주고, 콤마찍기기능, 페이지네이션 시작/끝 번호 갱신 함수   						
+	   					eventSalePdListRenewal(data.productList, data.pm);
+	   					// 판매한상품 기존에 있던 페이지내이션 지우고 새로 넣어주기
+	   					eventStPagenationRenewal($('#menu1'), data.pm, page, category);
+	   					}
+	   					// 상품판매 처리 및 판매처리취소
+	   					eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn')); 
+	   				},
+	   	   	     	error: function(error) {
+	   	   	        	console.log('에러발생');
+	   	   	    	}
+				})
+	   		})
+ 		} 		
+ 		// 페이지네이션에서 번호 클릭시 처리 함수
+ 		function eventPagenationNumBtn(obj){ 		
+	 		// 페이지 네이션 번호 클릭시  
+	   		obj.click(function(){
+	   			var clickPoint = $(this);
+	   			var page = $(this).find('.page-link').text();
+	   			var division = $(this).hasClass('page-pd-num');
+	   			var category = '';
+	   			if(division)
+	   				category = 'pd';
+	   			else
+	   				category = 'salePd';
+	   			var mb_id = '${stand.st_mb_id}';
+	   			var sendData = {"page" : page, "category" : category, "mb_id" : mb_id};
+	   			$.ajax({
+	   	     		url : '<%=request.getContextPath()%>/stand/pagenation',
+	   				async:false,
+	   				type : 'post',
+	    			data : sendData,
+	   				dataType:"json",
+	   				success : function(data){
+	   					// 해당 페이지네이션이 '상품목록'이면
+	   					if(data.category == 'pd'){
+	   						// 상품목록 지우고 다시 넣어주고, 콤마찍기기능, 삭제처리기능, 페이지네이션 시작/끝 번호 갱신   						
+	   						eventPdListRenewal(data.productList, data.pm, data.member);   						
+							// 페이지번호와 일치하는 페이지네이션 번호에 active 넣기
+	   			       	 	if(clickPoint.text() === page){
+	   							$('.page-pd-num').removeClass('active');   						
+	   							clickPoint.addClass('active'); 
+	   			       	 	}
+						// 해당 페이지네이션이 '판매한상품' 이면
+	   					}else{ 
+	   						// 판매한상품 지우고 다시 넣어주고, 콤마찍기기능, 페이지네이션 시작/끝 번호 갱신 함수   						
+	   						eventSalePdListRenewal(data.productList, data.pm);   						
+	   				  		// 페이지번호와 일치하는 페이지네이션 번호에 active 넣기
+	   				   		if(clickPoint.text() === page){
+								$('.page-salePd-num').removeClass('active');   						
+								clickPoint.addClass('active');						
+	   						}
+	   					}
+	   					// 상품판매 처리 및 판매처리취소
+	   					eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn'));   					  						
+	   				},
+	   	   	     	error: function(error) {
+	   	   	        	console.log('에러발생');
+	   	   	    	}
+	      	    })
+	   		})
+ 		} 		
   	</script>
 </body>
 </html>

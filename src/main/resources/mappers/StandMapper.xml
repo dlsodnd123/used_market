@@ -49,7 +49,7 @@
 	</select>
 <!-- 판매완료된 상품리스트를 가져오는 쿼리문 -->
 	<select id="selectSaleProductList" resultType="kr.green.usedmarket.vo.ProductVo">
-		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N'
+		select * from product where pd_mb_id = #{mb_id} and pd_isSale = 'Y' and pd_isDel = 'N' limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 <!-- 판매환료된 상품 개수를 가져오는 쿼리문 -->
 	<select id="selectSaleProductCount" resultType="int">

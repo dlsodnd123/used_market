@@ -69,7 +69,7 @@ public class StandController {
 		ArrayList<CommentVo> commentList = standService.getCommentList(stand.getSt_mb_id());
 		
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
-		int displayPageNum = 10;
+		int displayPageNum = 3;
 		// 페이지네이션 메이커 생성
 		PageMaker pmPdList = new PageMaker(cri, displayPageNum, productCount);
 		PageMaker pmSalePdList = new PageMaker(cri, displayPageNum, saleProductCount);			
@@ -127,7 +127,7 @@ public class StandController {
 	@ResponseBody
 	public Object modifyisSale(@RequestBody ProductVo pd_num, HttpServletRequest request, Criteria cri) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		cri.setPerPageNum(20);
+		cri.setPerPageNum(5);
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);		
 		ProductVo product = standService.getProduct(pd_num.getPd_num());
@@ -227,7 +227,7 @@ public class StandController {
 			totalCount = standService.getSaleProductCount(mb_id);
 		}
 		// 페이지 메이커 생성
-		int displayPageNum = 10;
+		int displayPageNum = 3;
 		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);
 		map.put("member", member);
 		map.put("productList", productList);
