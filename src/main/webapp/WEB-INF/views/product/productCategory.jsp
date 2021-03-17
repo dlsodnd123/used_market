@@ -147,7 +147,7 @@
 		</c:if>		
 	</div>
 <script>
-	// 상품상자 클릭스 해당 상세페이지로 이동
+	// 상품상자 클릭시 해당 상세페이지로 이동
 	$('.category-Product-box').click(function(){
 		var pd_num = $(this).find('.category-Product-num').val()
 		location.href = '<%=request.getContextPath()%>/product/detail?pd_num=' + pd_num
@@ -179,6 +179,10 @@
 			dataType:"json",
 			contentType:"application/json; charset=UTF-8",
 			success : function(data){
+				if(data.result == 'wroong'){
+					alert('잘못된 접근 방법 입니다. 메인페이지로 돌아갑니다.')
+					location.href = '<%=request.getContextPath()%>/'
+				}
 				var page = 1;
 				// 기존에 있던 상품목록 지워주고 새로 넣기
 				eventRenewalPd(data.pdCategoryList);				

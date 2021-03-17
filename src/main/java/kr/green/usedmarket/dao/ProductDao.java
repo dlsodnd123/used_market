@@ -77,4 +77,8 @@ public interface ProductDao {
 
 	int selectTotalCount(@Param("pd_category")String pd_category);
 
+	ArrayList<DibsVo> selectPdSearchList(@Param("cri")Criteria cri);
+
+	int selectSearchTotalCount(@Param("cri")Criteria cri);
+
 }

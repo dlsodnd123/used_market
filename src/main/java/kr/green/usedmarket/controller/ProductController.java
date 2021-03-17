@@ -21,11 +21,11 @@ import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
 import kr.green.usedmarket.utils.UploadFileUtils;
 import kr.green.usedmarket.vo.BoardVo;
-import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
+import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.PreviewVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
 import kr.green.usedmarket.vo.ProductVo;
@@ -279,7 +279,7 @@ public class ProductController {
 		// 카테리고와 일치하는 상품목록을 가져오기(판매 X, 삭제 X)
 		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(pd_category, cri);
 		
-		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		// 카테고리와 일치하는 전체 갯수를 가져오기
 		int totalCount = productService.getTotalCount(pd_category);
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
@@ -304,7 +304,7 @@ public class ProductController {
 		// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
 		ArrayList<DibsVo> pdCategoryList = productService.getProductSortList(categorySort, cri);
 		
-		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		// 카테고리와 일치하는 전체 갯수를 가져오기
 		int totalCount = productService.getTotalCount(categorySort.getCategory());
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
@@ -327,7 +327,7 @@ public class ProductController {
 		// 카테고리명, 정렬방식, 페이지번호와 맞는 상품 목록을 가져와서 화면에 전달
 		ArrayList<DibsVo> pdCategoryList = productService.getPdCategoryList(categorySort.getCategory(), cri);		
 		
-		// 카테고리와 일치하는 전체 게시글 갯수를 가져오기
+		// 카테고리와 일치하는 전체 갯수를 가져오기
 		int totalCount = productService.getTotalCount(categorySort.getCategory());
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
@@ -336,5 +336,23 @@ public class ProductController {
 		map.put("pdCategoryList", pdCategoryList);
 		map.put("pm", pm);
 		return map;
+	}
+	// 검색 담당하는 기능
+	@RequestMapping(value = "/product/search", method = RequestMethod.GET)
+	public ModelAndView productSearchGet(ModelAndView mv, Criteria cri) {
+		cri.setPerPageNum(5);
+		// 제목중에 검색어가 들어간 상품들 정렬방식에 맞게 가져오기
+		ArrayList<DibsVo> productSearchList = productService.getProductSearchList(cri);
+		// 검색결과와 일치하는 상품들의 전체 갯수 가져오기
+		int totalCount = productService.getSearchTotalCount(cri);
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);	
+		
+		mv.addObject("cri", cri);
+		mv.addObject("productSearchList", productSearchList);
+		mv.addObject("pm", pm);
+		mv.setViewName("/product/productSearch");
+		return mv;
 	}	
 }

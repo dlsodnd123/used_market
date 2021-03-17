@@ -63,4 +63,8 @@ public interface ProductService {
 
 	int getTotalCount(String pd_category);
 
+	ArrayList<DibsVo> getProductSearchList(Criteria cri);
+
+	int getSearchTotalCount(Criteria cri);
+
 }

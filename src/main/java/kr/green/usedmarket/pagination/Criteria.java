@@ -7,6 +7,7 @@ public class Criteria {
 	private int perPageNum;
 	//Criteria 디폴트 생성자 : 현재 페이지를 1페이지로, 한 페이지에 20개의 컨텐츠
 	private String order;
+	private String search ="";
 	public Criteria() {
 		this.page = 1;
 		this.perPageNum = 20;
@@ -18,11 +19,15 @@ public class Criteria {
 	public String getOrder() {
 		return order;
 	}
-
 	public void setOrder(String order) {
 		this.order = order;
 	}
-
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
 	public void setPage(int page) {
 		//현재 페이지 번호를 음수로 설정하려 할 때
 		if(page <= 0) {
@@ -45,7 +50,8 @@ public class Criteria {
 	}
 	@Override
 	public String toString() {
-		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", order=" + order + "]";
+		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", order=" + order + ", search=" + search
+				+ "]";
 	}
 	/* 쿼리문에서 limit에 사용되는 인덱스를 계산하는 getter */
 	public int getPageStart() {

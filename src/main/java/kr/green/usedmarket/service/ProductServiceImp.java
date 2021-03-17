@@ -224,4 +224,17 @@ public class ProductServiceImp implements ProductService {
 	public int getTotalCount(String pd_category) {
 		return productDao.selectTotalCount(pd_category);
 	}
+	// 제목중에 검색어가 들어간 상품들 정렬방식에 맞게 가져오기
+	@Override
+	public ArrayList<DibsVo> getProductSearchList(Criteria cri) {
+		ArrayList<DibsVo> productSearchList = productDao.selectPdSearchList(cri);
+		for(DibsVo tmp : productSearchList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		return productSearchList;
+	}
+	// 검색결과와 일치하는 상품들의 전체 갯수 가져오기
+	@Override
+	public int getSearchTotalCount(Criteria cri) {		
+		return productDao.selectSearchTotalCount(cri);
+	}
 }

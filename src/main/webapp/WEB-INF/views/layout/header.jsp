@@ -13,9 +13,6 @@
     .form-inline{
       display: block; 
     }
-    .navbar-brand{
-      padding-right: 55px;
-    }
     .navbar-nav{
       float: right;
     }
@@ -24,6 +21,7 @@
       border: 2px solid #5a93fa;
       padding: 5px 10px;
       width: 450px;
+      margin-left: 105px;
     }
     .search-box input{
       border: none;
@@ -99,14 +97,18 @@
 <body>
 	<div class="line-box">
 		<div class="container">
-    		<form class="form-inline" action="#">
       		<nav class="navbar navbar-expand-sm navbar-light">
         	<!-- Brand -->
         	<a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
 
 	        <div class="search-box">
-	          <input type="text" placeholder="상품명, 검색할 내용 입력">
-	          <button class="btn btn-basic" type="submit"><i class="fas fa-search"></i></button>
+	        	<form style="margin-bottom : 0;" action="<%=request.getContextPath()%>/product/search">
+		          	<input type="text" name="search" placeholder="상품명, 검색할 내용 입력">
+		          	<button class="btn btn-basic" type="submit"><i class="fas fa-search"></i></button>
+		          	<input type="hidden" name="page" value=1>
+		          	<input type="hidden" name="order" value="date">
+	          	</form>
+	          	
 	        </div>
 
 	        <ul class="navbar-nav">
@@ -173,7 +175,6 @@
 	        </ul>
     		<div class="barsMenu"><i class="fas fa-bars"></i></div>
       		</nav>
-    		</form>
   		</div>
 	</div>
 	<div class="container productCategory-box">
@@ -195,9 +196,13 @@
 		</div>
 	</div>
 <script>
-	// 햄버거 메뉴에 마우스를 올리면 카테고리 박스 보여주기 및 숨기기
-	$('.fa-bars').click(function(){
-		$('.productCategory-content-box').toggle();		
-	})	
+	// 햄버거 메뉴에 마우스를 올리면 카테고리 박스 보여주기
+	$('.fa-bars, .productCategory-content-box').mouseover(function(){
+		$('.productCategory-content-box').show();		
+	})
+	$('.fa-bars, .productCategory-content-box').mouseout(function(){
+		$('.productCategory-content-box').hide();
+	})
+	// 햄버거 메뉴나 카테고리 박스에서 마우스를 때면 카테고리 박스 숨기기
 </script>
 </body>
