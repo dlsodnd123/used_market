@@ -835,7 +835,7 @@
 						    	str += '<tr>'
 		                     	str += '<td>' + data.productList[i].pd_num + '</td>'
 		                        str += '<td>' + data.productList[i].pd_title + '</td>'
-		                        str += '<td>' + data.productList[i].pd_price + '</td>'
+		                        str += '<td class="productList-price">' + data.productList[i].pd_price + '</td>'
 		                        str += '<td>' + data.productList[i].pd_deal + '</td>'
 		                        str += '<td>' + data.productList[i].pd_registerDate + '</td>'
 		                        str += '<td>'
@@ -852,7 +852,7 @@
 					    		str += '<tr>';
 				            	str += '<td>' + data.saleProductList[i].pd_num + '</td>'
 				                str += '<td>' + data.saleProductList[i].pd_title + '</td>'
-				                str += '<td>' + data.saleProductList[i].pd_price + '</td>'
+				                str += '<td class="saleProductList-price">' + data.saleProductList[i].pd_price + '</td>'
 				                str += '<td>' + data.saleProductList[i].pd_deal + '</td>'
 				                str += '<td>' + data.saleProductList[i].pd_saleDate + '</td>'
 				                str += '<td><button type="button" class="btn btn-light product-SaleCancel-btn">판매처리취소</button></td>'
@@ -860,6 +860,10 @@
 					    	}	
 					    	$('.saleProductList-tbody').html(str);
 					    	eventProductSaleBtn($('.product-sale-btn, .product-SaleCancel-btn'));
+					    	// 상품목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+					   		eventComma(parseInt('${productCount}'), $('.productList-price')); 					   		
+					   		// 판매한목록에 판매가격 숫자 3자리마다 콤마 찍어주기
+					   		eventComma(parseInt('${saleProductCount}'), $('.saleProductList-price'));
 			   	        },
 			   	     	error: function(error) {
 			   	        	console.log('에러발생');
