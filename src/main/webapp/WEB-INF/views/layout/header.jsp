@@ -159,25 +159,5 @@
 	$('.fa-bars, .productCategory-content-box').mouseout(function(){
 		$('.productCategory-content-box').hide();
 	})
-	
-	// 카카오톡으로 로그인 하기
-	// fbb41e20319d2c89281a16086581a627
-	window.Kakao.init('fbb41e20319d2c89281a16086581a627');
-	
-	function kakaLogin() {
-		window.Kakao.Auth.login({
-			scope: 'profile, account_email, gender'
-			success: function(authObj){
-				console.log(authObj);
-				window.Kakao.API.request({
-					url:'v2/user/me',
-					success: res => {
-						const kakao_acc ount = res.kakao_account;
-						console.log(kakao_account)
-					}
-				})
-			}
-		});
-	}
 </script>
 </body>
