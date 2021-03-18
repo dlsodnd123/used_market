@@ -46,16 +46,17 @@
         </div>
         <button type="submit" class="btn btn-primary login-btn col-4">로그인</button>
         <div class="more-login">
-	        <a href="https://kauth.kakao.com/oauth/authorize
-            ?client_id=fbb41e20319d2c89281a16086581a627
-            &redirect_uri=http://localhost:8080/usedmarket/login
-            &response_type=code" id="kakao-login-btn"></a>
+        	<a href="javascript:kakaoLogin()"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
+	        <!-- <a id="kakao-login-btn"></a> -->
 	        <a href="#"><img height="45px" src="<%=request.getContextPath()%>/resources/img/네이버 아이디로 로그인_완성형_Green.PNG"></a>
         </div>
         <div class="find-box">
           <a href="<%=request.getContextPath()%>/idFind" class="id-find">아이디 찾기</a>
           <a href="<%=request.getContextPath()%>/pwFind" class="pw-find">비밀번호 찾기</a>
         </div>
+        
+        <a href="https://developers.kakao.com/logout">로그아웃</a>
+        
       </form>
     </div>
 <script type="text/javascript">
@@ -98,49 +99,52 @@
 	$('input[name=id]').val(id);
 </script>
 
-<!-- <script type='text/javascript'>
+<script type='text/javascript'>
 	
    	//<![CDATA[
    	// 사용할 앱의 JavaScript 키를 설정해 주세요.
    	Kakao.init('fbb41e20319d2c89281a16086581a627');
    	// 카카오 로그인 버튼을 생성합니다.
-   	Kakao.Auth.createLoginButton({
+   	function kakaoLogin(){
+   		Kakao.Auth.login({
+   			scope: 'profile, account_email, gender',
+   			success: function (authObj) {
+   	       		console.log(authObj)
+   	       		Kakao.API.request({
+   	       			url: '/v2/user/me',
+   	       			success: res => {
+   	       				const kakao_account = res.kakao_account;
+   	       				console.log(kakao_account);
+   	       			}
+   	       				
+   	       		});       		
+   	       	}/* ,
+   	       	fail: function (err) {
+   	           	alert(JSON.stringify(err));
+   	       	} */
+   		})
+   	}
+   	
+/*    	Kakao.Auth.createLoginButton({
+   		scope: 'profile, account_email, gender',
        	container: '#kakao-login-btn',
        	success: function (authObj) {
-       		alert(JSON.stringify(authObj));
+       		console.log(authObj)
+       		KaKao.API.request({
+       			url: '/v2/user/me',
+       			success: res => {
+       				const kakao_account = res.kakao_account;
+       				console.log(kakao_account);
+       			}
+       				
+       		});       		
        	},
        	fail: function (err) {
            	alert(JSON.stringify(err));
        	}
-   	});
+   	}); */
  	//]]>
-</script> -->
-
-<script type="text/javascript">
-
-  Kakao.init('fbb41e20319d2c89281a16086581a627');
-  Kakao.Auth.createLoginButton({
-    container: '#kakao-login-btn',
-    success: function(authObj) {
-      Kakao.API.request({
-        url: '/v2/user/me',
-        success: function(res) {
-          alert(JSON.stringify(res))
-        },
-        fail: function(error) {
-          alert(
-            'login success, but failed to request user information: ' +
-              JSON.stringify(error)
-          )
-        },
-      })
-    },
-    fail: function(err) {
-      alert('failed to login: ' + JSON.stringify(err))
-    },
-  })
-</script>
-
+</script> 
 
 
 </body>
