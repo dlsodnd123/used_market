@@ -42,11 +42,14 @@
         .check{
             display: inline-block;
         }
+        .signup-btn{
+        	height: 50px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="<%=request.getContextPath()%>/" class="logo"><img width="200px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
+        <a href="<%=request.getContextPath()%>/" class="logo"><img width="200px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고2.jpg" alt=""></a>
         <form action="<%=request.getContextPath()%>/signup" class="container" method="post">
             <div class="form-group">
                 <h5>아이디</h5>
@@ -101,7 +104,7 @@
             </div>
             <input type="hidden" name="mb_division" value="normal">
             <div class="form-group">
-                <button class="btn btn-success col-8">회원가입</button>
+                <button class="btn btn-success signup-btn col-8">회원가입</button>
             </div>
         </form>
     </div>

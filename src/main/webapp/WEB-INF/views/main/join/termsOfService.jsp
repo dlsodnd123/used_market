@@ -46,7 +46,7 @@
 <body>
     <div class="container-fluid">
         <div class="container top">
-            <a href="<%=request.getContextPath()%>/" class="logo"><img width="200px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
+            <a href="<%=request.getContextPath()%>/" class="logo"><img width="200px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고2.jpg" alt=""></a>
         </div>
         <div class="container">
             <label for="comment">이용약관</label>

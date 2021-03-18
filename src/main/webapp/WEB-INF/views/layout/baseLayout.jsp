@@ -17,7 +17,8 @@
 <script src="<%=request.getContextPath()%>/resources/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery.validate.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/additional-methods.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>    
+<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 </head>
 <body>
     <tiles:insertAttribute name="header"/>

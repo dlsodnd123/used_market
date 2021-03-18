@@ -213,7 +213,7 @@
 	// 페이지네이션에 번호를 클릭했을 때
 	eventPagenationNumBtn($('.page-num'));
 	
-	// 페이지네이션에 이전 다음 버튼 클릭했을 때
+	// 페이지네이션에 이전 다음 버튼 클릭했을 때	
 	eventPagenationPrevNextBtn($('.page-prev, .page-next'));
 	
 	

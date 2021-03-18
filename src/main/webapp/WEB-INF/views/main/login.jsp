@@ -26,6 +26,12 @@
         .pw-find{
             padding-left: 20px;
         }
+        .login-btn{
+        	height: 45px;
+        }
+        .more-login{
+        	margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +44,11 @@
         <div class="form-group">
           <input type="password" class="form-control login col-4" id="pw" name="pw" placeholder="비밀번호">
         </div>
-        <button type="submit" class="btn btn-primary col-4">로그인</button>
+        <button type="submit" class="btn btn-primary login-btn col-4">로그인</button>
+        <div class="more-login">
+	        <a href="#"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
+	        <a href="#"><img height="45px" src="<%=request.getContextPath()%>/resources/img/네이버 아이디로 로그인_완성형_Green.PNG"></a>
+        </div>
         <div class="find-box">
           <a href="<%=request.getContextPath()%>/idFind" class="id-find">아이디 찾기</a>
           <a href="<%=request.getContextPath()%>/pwFind" class="pw-find">비밀번호 찾기</a>

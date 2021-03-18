@@ -38,19 +38,6 @@
     .navbar-light .navbar-nav .nav-link {
       color: #505050;
     }
-    .modal-body{
-      text-align: center;
-      margin-top: 25px;
-    }
-    .modal-body>div{
-      margin-bottom: 25px;
-    }
-    .modal-body>div>a>.btn{
-      width: 250px;
-      height: 75px;
-      font-size: 20px;
-      font-weight: bold;
-    }
     .barsMenu{
     	margin-top: 10px;
     	font-size: 24px;
@@ -94,12 +81,12 @@
 }	
   </style>
 </head>
-<body>
-	<div class="line-box">
+<body>	
+	<div class="line-box">		
 		<div class="container">
       		<nav class="navbar navbar-expand-sm navbar-light">
         	<!-- Brand -->
-        	<a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고.jpg" alt=""></a>
+        	<a class="navbar-brand" href="<%=request.getContextPath()%>/"><img width="125px" src="<%=request.getContextPath()%>/resources/img/중고시장_로고2.jpg" alt=""></a>
 
 	        <div class="search-box">
 	        	<form style="margin-bottom : 0;" action="<%=request.getContextPath()%>/product/search">
@@ -112,66 +99,35 @@
 	        </div>
 
 	        <ul class="navbar-nav">
-	          <li class="nav-item">
-	          	  <c:if test="${member == null}">
-	             	 <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">회원가입</a>
-	              </c:if>
-	                <!-- The Modal -->
-	               <div class="container">
-	                 <div class="modal fade" id="myModal">
-	                   <div class="modal-dialog modal-dialog-centered">
-	                     <div class="modal-content">
-	                      
-	                        <!-- Modal Header -->
-	                       <div class="modal-header">
-	                         <h4 class="modal-title">중고시장 회원가입</h4>
-	                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-	                       </div>
-	                        
-	                        <!-- Modal body -->
-	                       <div class="modal-body">
-	                         <div><a href="<%=request.getContextPath()%>/termsOfService"><button type="button" class="btn btn-outline-secondary">일반회원가입</button></a></div>
-	                         <div><a href="#"><button type="button" class="btn btn-outline-warning">카카오로 가입하기</button></a></div>
-	                         <div><a href="#"><button type="button" class="btn btn-outline-success">네이버로 가입하기</button></a></div>
-	                       </div>
-	                        
-	                       <!-- Modal footer -->
-	                       <div class="modal-footer">
-	                       </div>
-	                        
-	                     </div>
-	                   </div>
-	                 </div>
-	               </div>
-	           </li>
-	          <c:if test="${member == null}">
-		          <li class="nav-item">
-		            <a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
-		          </li>
-	          </c:if>
-	          <c:if test="${member != null }">
-		          <li class="nav-item">
-		            <a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
-		          </li>
-	          
-		          <li class="nav-item">
-		            <a class="nav-link" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#home">내가판대</a>
-		          </li>
-		          <li class="nav-item">
-		            <a class="nav-link" href="#">채팅</a>
-		          </li>
-		
-		          <li class="nav-item dropdown">
-		            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-		              마이페이지
-		            </a>
+	        	<li class="nav-item">
+	          		<c:if test="${member == null}">
+	             		<a class="nav-link" href="<%=request.getContextPath()%>/termsOfService">회원가입</a>
+	             	</c:if>	                
+	       		</li>
+	          	<c:if test="${member == null}">
+		          	<li class="nav-item">
+		            	<a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
+		          	</li>
+	          	</c:if>
+	          	<c:if test="${member != null }">
+		          	<li class="nav-item">
+		            	<a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
+		          	</li>	          
+		          	<li class="nav-item">
+		            	<a class="nav-link" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#home">내가판대</a>
+		          	</li>
+		          	<li class="nav-item">
+		            	<a class="nav-link" href="#">채팅</a>
+		          	</li>		
+		          	<li class="nav-item dropdown">
+		            	<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">마이페이지</a>
 		            <div class="dropdown-menu">
 		                <a class="dropdown-item" href="<%=request.getContextPath()%>/memberConfirm">회원정보수정</a>
 		                <a class="dropdown-item" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#menu2">찜한상품</a>
 		                <a class="dropdown-item" href="<%=request.getContextPath()%>/withdrawal">회원탈퇴</a>
 		            </div>
-		          </li>
-	          </c:if>
+		          	</li>
+	          	</c:if>
 	        </ul>
     		<div class="barsMenu"><i class="fas fa-bars"></i></div>
       		</nav>
@@ -203,6 +159,25 @@
 	$('.fa-bars, .productCategory-content-box').mouseout(function(){
 		$('.productCategory-content-box').hide();
 	})
-	// 햄버거 메뉴나 카테고리 박스에서 마우스를 때면 카테고리 박스 숨기기
+	
+	// 카카오톡으로 로그인 하기
+	// fbb41e20319d2c89281a16086581a627
+	window.Kakao.init('fbb41e20319d2c89281a16086581a627');
+	
+	function kakaLogin() {
+		window.Kakao.Auth.login({
+			scope: 'profile, account_email, gender'
+			success: function(authObj){
+				console.log(authObj);
+				window.Kakao.API.request({
+					url:'v2/user/me',
+					success: res => {
+						const kakao_acc ount = res.kakao_account;
+						console.log(kakao_account)
+					}
+				})
+			}
+		});
+	}
 </script>
 </body>
