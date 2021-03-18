@@ -1,6 +1,6 @@
 package kr.green.usedmarket.vo;
 
-public class PagenationVo {
+public class SortVo {
 	private String sort;
 	private String category;
 	private int page;
