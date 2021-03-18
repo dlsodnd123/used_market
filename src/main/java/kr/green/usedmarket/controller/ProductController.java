@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,10 +26,10 @@ import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
 import kr.green.usedmarket.vo.MemberVo;
-import kr.green.usedmarket.vo.PagenationVo;
 import kr.green.usedmarket.vo.PreviewVo;
 import kr.green.usedmarket.vo.ProductQuestionsVo;
 import kr.green.usedmarket.vo.ProductVo;
+import kr.green.usedmarket.vo.SortVo;
 import kr.green.usedmarket.vo.StandVo;
 
 @Controller
@@ -294,7 +295,7 @@ public class ProductController {
 	// 상품카테고리 페이지에서 상품을 정렬하는 기능
 	@RequestMapping(value = "/category/sort", method = RequestMethod.POST)
 	@ResponseBody
-	public Object categorySortPost(@RequestBody PagenationVo categorySort, Criteria cri) {		
+	public Object categorySortPost(@RequestBody SortVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// sort값이 '최신순', '저가순', '고가순'이 아니면 'wrong' 전달해주기
 		if(!categorySort.getSort().equals("최신순") && !categorySort.getSort().equals("저가순") && !categorySort.getSort().equals("고가순")) {
@@ -308,10 +309,7 @@ public class ProductController {
 		int totalCount = productService.getTotalCount(categorySort.getCategory());
 		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
 		int displayPageNum = 10;		
-		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);		
-		
-		System.out.println(pm);
-		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);				
 		map.put("pdCategoryList", pdCategoryList);
 		map.put("pm", pm);
 		return map;
@@ -319,7 +317,7 @@ public class ProductController {
 	// 상품카테고리 페이지 하단 페이지네이션을 눌렀을 때 처리하는 기능
 	@RequestMapping(value = "/category/pagenation", method = RequestMethod.POST)
 	@ResponseBody
-	public Object categoryPagenationPost(@RequestBody PagenationVo categorySort, Criteria cri) {		
+	public Object categoryPagenationPost(@RequestBody SortVo categorySort, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 화면에서 전달 받은 정보를 cri에 넣어주기		
 		cri.setPage(categorySort.getPage());
@@ -354,5 +352,59 @@ public class ProductController {
 		mv.addObject("pm", pm);
 		mv.setViewName("/product/productSearch");
 		return mv;
-	}	
+	}
+	// 검색 상품 정렬하는 기능
+	@RequestMapping(value = "/search/sort", method = RequestMethod.POST)
+	@ResponseBody
+	public Object searchSortPost(@RequestBody @RequestParam String sort, @RequestParam String search, Criteria cri) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		cri.setPerPageNum(5);
+		// sort값이 '최신순', '저가순', '고가순'이 아니면 'wrong' 전달해주기
+		if(!sort.equals("최신순") && !sort.equals("저가순" ) && !sort.equals("고가순")) {
+			map.put("result", "wroong");
+			return map;
+		}
+		// 화면에서 전달 받은 검색 값 cri에 넣어주기
+		cri.setSearch(search);
+		// 화면에서 전달 받은 정렬방식 cri에 넣어주기(최신순 = date, 저가순 = low, 고가순 = high)
+		if(sort.equals("최신순"))
+			cri.setOrder("date");
+		else if(sort.equals("저가순"))
+			cri.setOrder("low");
+		else
+			cri.setOrder("high");
+		// 해당 검색상품 정렬해서 가져오기
+		ArrayList<DibsVo> searchPdSortList = productService.getSearchPdSortList(cri);		
+		// 검색결과와 일치하는 상품들의 전체 갯수 가져오기
+		int totalCount = productService.getSearchTotalCount(cri);
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);
+		
+		map.put("searchPdSortList", searchPdSortList);
+		map.put("pm", pm);
+		return map;
+	}
+	// 검색 상품 정렬하는 기능
+	@RequestMapping(value = "/search/pagenation", method = RequestMethod.POST)
+	@ResponseBody
+	public Object searchPagenationPost(@RequestBody @RequestParam Integer page, @RequestParam String search, @RequestParam String order, Criteria cri) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		cri.setPerPageNum(5);
+		// 화면에서 전달 받은 정보를 cri에 넣어주기
+		cri.setPage(page);
+		cri.setSearch(search);
+		cri.setOrder(order);
+		// 해당 검색상품 정렬해서 가져오기
+		ArrayList<DibsVo> searchPdSortList = productService.getSearchPdSortList(cri);		
+		// 검색결과와 일치하는 상품들의 전체 갯수 가져오기
+		int totalCount = productService.getSearchTotalCount(cri);
+		// 한 페이지네이션에서 보여줄 최대 페이지 수를 임의로 선정하여 변수에 저장
+		int displayPageNum = 10;		
+		PageMaker pm = new PageMaker(cri, displayPageNum, totalCount);		
+		
+		map.put("searchPdSortList", searchPdSortList);
+		map.put("pm", pm);		
+		return map;
+	}
 }

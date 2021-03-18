@@ -160,13 +160,15 @@
 		var sort = $(this).text();		
 		// url주소 바꾸기(새로고침 없이)
 		var loc = location.href;
+		loc = loc.replace(/\&page=([0-9]+)/ig,'');
 		loc = loc.replace(/\&order=([a-z]+)/ig,'');
+		loc += '&page=1';
 		if(sort == '최신순')
-			loc += '&order=date' 
+			loc += '&order=date';
 		else if(sort == '저가순')
-			loc += '&order=low'
+			loc += '&order=low';
 		else if(sort == '고가순')
-			loc += '&order=high'
+			loc += '&order=high';
 		history.pushState(null, null, loc);		
 		var clickPoint = $(this);		
 		var category = $('.category-Title').find('b').text();

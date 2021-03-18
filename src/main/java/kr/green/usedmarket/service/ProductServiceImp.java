@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.green.usedmarket.dao.ProductDao;
 import kr.green.usedmarket.pagination.Criteria;
 import kr.green.usedmarket.vo.BoardVo;
-import kr.green.usedmarket.vo.PagenationVo;
+import kr.green.usedmarket.vo.SortVo;
 import kr.green.usedmarket.vo.CommentVo;
 import kr.green.usedmarket.vo.DibsVo;
 import kr.green.usedmarket.vo.InterestPdVo;
@@ -200,7 +200,7 @@ public class ProductServiceImp implements ProductService {
 	}
 	// CategorySortVo에 담겨있는 sort정보에 맞게 정렬해서 가져오기
 	@Override
-	public ArrayList<DibsVo> getProductSortList(PagenationVo categorySort, Criteria cri) {
+	public ArrayList<DibsVo> getProductSortList(SortVo categorySort, Criteria cri) {
 		ArrayList<DibsVo> ProductSortList = new ArrayList<DibsVo>();
 		// sort가 '최신순' 이면 cri에 'date', '저가순' 이면 'low', '고가순'이면 'high'
 		if(categorySort.getSort().equals("최신순")) {
@@ -236,5 +236,13 @@ public class ProductServiceImp implements ProductService {
 	@Override
 	public int getSearchTotalCount(Criteria cri) {		
 		return productDao.selectSearchTotalCount(cri);
+	}
+	// 해당 검색상품 정렬해서 가져오기
+	@Override
+	public ArrayList<DibsVo> getSearchPdSortList(Criteria cri) {
+		ArrayList<DibsVo> searchPdSortList = productDao.selectPdSearchList(cri);
+		for(DibsVo tmp : searchPdSortList)
+			tmp.setSt_img(productDao.selectPreviewImg(tmp.getPd_num()));
+		return searchPdSortList;
 	}
 }
