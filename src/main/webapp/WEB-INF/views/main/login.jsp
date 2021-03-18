@@ -46,7 +46,10 @@
         </div>
         <button type="submit" class="btn btn-primary login-btn col-4">로그인</button>
         <div class="more-login">
-	        <a href="#"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
+	        <a href="https://kauth.kakao.com/oauth/authorize
+            ?client_id=fbb41e20319d2c89281a16086581a627
+            &redirect_uri=http://localhost:8080/usedmarket/login
+            &response_type=code" id="kakao-login-btn"></a>
 	        <a href="#"><img height="45px" src="<%=request.getContextPath()%>/resources/img/네이버 아이디로 로그인_완성형_Green.PNG"></a>
         </div>
         <div class="find-box">
@@ -55,44 +58,90 @@
         </div>
       </form>
     </div>
-    <script type="text/javascript">
-    	$(function(){
-    		var check = false;
-    		$('form').submit(function(){
-    			var id = $('input[name=id]').val();
-    			var pw = $('input[name=pw]').val();
-    			var sendData = {'mb_id' : id, 'mb_pw' : pw};
-    			$.ajax({
-    				url : '<%=request.getContextPath()%>/idpw/check',
-    				async:false,
-    				type : 'post',
-    				data : JSON.stringify(sendData),
-    				dataType:"json",
-    		        contentType:"application/json; charset=UTF-8",
-    				success : function(data){
-    					if(data.result == 'notId'){
-    						alert('존재하는 아이디가 아닙니다');
-    						check = false;
-    					}else if(data.result == 'notSamePw'){
-    						alert('비밀번호가 일치하지 않습니다.');
-    						check = false;
-    					}else if(data.result == 'same'){
-    						check = true;
-    					}
-    				},
-    	   	     	error: function(error) {
-    	   	        	console.log('에러발생');
-    	   	    	}
-    			})
-    			return check;
+<script type="text/javascript">
+    $(function(){
+    	var check = false;
+    	$('form').submit(function(){
+    		var id = $('input[name=id]').val();
+    		var pw = $('input[name=pw]').val();
+    		var sendData = {'mb_id' : id, 'mb_pw' : pw};
+    		$.ajax({
+    			url : '<%=request.getContextPath()%>/idpw/check',
+    			async:false,
+    			type : 'post',
+    			data : JSON.stringify(sendData),
+    			dataType:"json",
+    	        contentType:"application/json; charset=UTF-8",
+    			success : function(data){
+    				if(data.result == 'notId'){
+    					alert('존재하는 아이디가 아닙니다');
+    					check = false;
+    				}else if(data.result == 'notSamePw'){
+    					alert('비밀번호가 일치하지 않습니다.');
+    					check = false;
+    				}else if(data.result == 'same'){
+    					check = true;
+    				}
+    			},
+       	     	error: function(error) {
+       	        	console.log('에러발생');
+       	    	}
     		})
+    		return check;
     	})
-    	// 아이디 찾기 페이지에서 아이디를 찾고 넘어왔을 때 아이디 칸에 찾은 아이디 넣어주기
-		var loc = location.href;
-		var arr = loc.split('?')
-		var id = arr[1];
-		console.log(id);
-		$('input[name=id]').val(id);
-    </script>
+    })
+   	// 아이디 찾기 페이지에서 아이디를 찾고 넘어왔을 때 아이디 칸에 찾은 아이디 넣어주기
+	var loc = location.href;
+	var arr = loc.split('?')
+	var id = arr[1];
+	console.log(id);
+	$('input[name=id]').val(id);
+</script>
+
+<!-- <script type='text/javascript'>
+	
+   	//<![CDATA[
+   	// 사용할 앱의 JavaScript 키를 설정해 주세요.
+   	Kakao.init('fbb41e20319d2c89281a16086581a627');
+   	// 카카오 로그인 버튼을 생성합니다.
+   	Kakao.Auth.createLoginButton({
+       	container: '#kakao-login-btn',
+       	success: function (authObj) {
+       		alert(JSON.stringify(authObj));
+       	},
+       	fail: function (err) {
+           	alert(JSON.stringify(err));
+       	}
+   	});
+ 	//]]>
+</script> -->
+
+<script type="text/javascript">
+
+  Kakao.init('fbb41e20319d2c89281a16086581a627');
+  Kakao.Auth.createLoginButton({
+    container: '#kakao-login-btn',
+    success: function(authObj) {
+      Kakao.API.request({
+        url: '/v2/user/me',
+        success: function(res) {
+          alert(JSON.stringify(res))
+        },
+        fail: function(error) {
+          alert(
+            'login success, but failed to request user information: ' +
+              JSON.stringify(error)
+          )
+        },
+      })
+    },
+    fail: function(err) {
+      alert('failed to login: ' + JSON.stringify(err))
+    },
+  })
+</script>
+
+
+
 </body>
 </html>
