@@ -35,6 +35,7 @@ public class MemberServiceImp implements MemberService {
 		String encPw = passwordEncoder.encode(member.getMb_pw());
 		member.setMb_pw(encPw);
 		memberDao.insertMember(member);
+		// 회원가입시 기본적인 가판대 생성
 		StandVo stand = new StandVo(member.getMb_id());
 		
 		memberDao.insertStand(stand);
@@ -154,5 +155,48 @@ public class MemberServiceImp implements MemberService {
 	    } catch(Exception e){
 	        System.out.println(e);
 	    }	
+	}
+	// 카카오로 가입된 정보가 있는 조회(이메일과 닉네임으로)
+	@Override
+	public MemberVo getKakaoCheck(String nickname, String email) {
+		return memberDao.selectKakaoCheck(nickname, email);
+	}
+	@Override
+	public MemberVo setKaKaoMember(String nickname, String email, String gender) {
+		MemberVo kakaoMember = new MemberVo();
+		kakaoMember.setMb_name(nickname);
+		kakaoMember.setMb_email(email);
+		if(gender.equals("male"))
+			kakaoMember.setMb_gender("남");
+    	else
+    		kakaoMember.setMb_gender("여");
+		// 가입구분을 "kakao"를 넣어주기
+		kakaoMember.setMb_division("kakao");
+    	// 아이디에 쓰일 랜덤한 8개 번호 생성 후 기존 맴버 아이디와 일치하는지 확인 후 없으면 아이디로 사용
+    	String new_id = "";
+    	for(int i=0; i<8; i++) {
+    		int randomNum = (int)(Math.random() * 9);
+    		new_id += randomNum;
+    	}
+    	kakaoMember.setMb_id(new_id);
+    	// 랜덤한 8개 비밀번호 생성
+    	String pw = "";
+		for(int i=0; i<8; i++) {
+			int r = (int)(Math.random() * 62);
+			if(r <= 9)
+				pw += (char)('0' + r);
+			else if(r <= 35)
+				pw += (char)('a' + r - 10);
+			else
+				pw += (char)('A' + r - 36);
+		}		
+		String encPw = passwordEncoder.encode(pw);
+		kakaoMember.setMb_pw(encPw);
+    	memberDao.insertKakaoMember(kakaoMember);
+    	MemberVo member = memberDao.selectKakaoCheck(nickname, email);
+    	// 회원가입시 기본적인 가판대 생성
+    	StandVo stand = new StandVo(member.getMb_id());
+    	memberDao.insertStand(stand);
+		return member;
 	}
 }

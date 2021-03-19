@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.green.usedmarket.kakaologin.KakaoAPI;
 import kr.green.usedmarket.service.MemberService;
 import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
@@ -35,18 +36,33 @@ public class HomeController {
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	KakaoAPI kakaoAPI;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView homeGet(ModelAndView mv) {
+	public ModelAndView homeGet(ModelAndView mv, String code, HttpServletRequest request) {
+		// 카카오 토큰을 이용한 로그인
+		String access_Token = kakaoAPI.getAccessToken(code);
+		HashMap<String, Object> userInfo = kakaoAPI.getUserInfo(access_Token);
+	    MemberVo member = null;
+	    if(userInfo.size() != 0) {
+	    	// 카카오로 가입된 정보가 있는 조회(이메일과 닉네임으로)
+	    	member = memberService.getKakaoCheck((String)userInfo.get("nickname"), (String)userInfo.get("email"));
+	    	// 가입된 정보가 없다면 가입 진행
+	    	if(member == null)
+	    		member = memberService.setKaKaoMember((String)userInfo.get("nickname"), (String)userInfo.get("email"), (String)userInfo.get("gender"));
+	    }
 		// 메인화면에 나타낼 신규상품의 목록 가져오기
 		ArrayList<DibsVo> newProductList = productService.getNewProduct();		
 		// 메인화면에 나타낼 관심수가 많은 상품의 목록 가져오기
 		ArrayList<DibsVo> interestProductList = productService.getInterestProduct();
 		
+		mv.addObject("member", member);
 		mv.addObject("interestProductList", interestProductList);
 		mv.addObject("newProductList", newProductList);
 		mv.setViewName("/main/home");
 		return mv;
-	}
+	}	
 	// 약관동의 화면
 	@RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
 	public ModelAndView termsOfServiceGet(ModelAndView mv) {
@@ -81,18 +97,18 @@ public class HomeController {
 	// 로그인 화면
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginGet(ModelAndView mv) {
-
 		mv.setViewName("/main/login");
 		return mv;
 	}
 	// 로그인정보 입력받아 처리하는 기능
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView loginPost(ModelAndView mv, String id, String pw) {
+		
 		MemberVo member = memberService.getMember(id);
 		mv.addObject("member",member);
 		mv.setViewName("redirect:/");
 		return mv;
-	}
+	}	
 	// 로그인할 때 아이디 비번 체크하는 기능
 	@RequestMapping(value = "/idpw/check", method = RequestMethod.POST)
 	@ResponseBody
@@ -106,6 +122,10 @@ public class HomeController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logoutGet(ModelAndView mv, HttpServletRequest request) {
 		request.getSession().removeAttribute("member");
+		kakaoAPI.kakaoLogout((String)request.getAttribute("access_Token"));
+		request.removeAttribute("access_Token");
+		request.removeAttribute("userId");		
+		
 		mv.setViewName("redirect:/");
 		return mv;
 	}

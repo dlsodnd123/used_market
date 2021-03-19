@@ -46,17 +46,13 @@
         </div>
         <button type="submit" class="btn btn-primary login-btn col-4">로그인</button>
         <div class="more-login">
-        	<a href="javascript:kakaoLogin()"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
-	        <!-- <a id="kakao-login-btn"></a> -->
+        	<a href="https://kauth.kakao.com/oauth/authorize?client_id=19dc637ddfd6828dcbe4ec333e6ebc94&redirect_uri=http://218.236.203.105:8080/usedmarket/&response_type=code"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
 	        <a href="#"><img height="45px" src="<%=request.getContextPath()%>/resources/img/네이버 아이디로 로그인_완성형_Green.PNG"></a>
         </div>
         <div class="find-box">
           <a href="<%=request.getContextPath()%>/idFind" class="id-find">아이디 찾기</a>
           <a href="<%=request.getContextPath()%>/pwFind" class="pw-find">비밀번호 찾기</a>
-        </div>
-        
-        <a href="https://developers.kakao.com/logout">로그아웃</a>
-        
+        </div> 
       </form>
     </div>
 <script type="text/javascript">
@@ -95,12 +91,11 @@
 	var loc = location.href;
 	var arr = loc.split('?')
 	var id = arr[1];
-	console.log(id);
 	$('input[name=id]').val(id);
 </script>
 
 <script type='text/javascript'>
-	
+	/* 
    	//<![CDATA[
    	// 사용할 앱의 JavaScript 키를 설정해 주세요.
    	Kakao.init('fbb41e20319d2c89281a16086581a627');
@@ -114,17 +109,19 @@
    	       			url: '/v2/user/me',
    	       			success: res => {
    	       				const kakao_account = res.kakao_account;
+   	       				var email = res.kaccount_email;
+   	       				console.log('email : ' + email);
    	       				console.log(kakao_account);
    	       			}
    	       				
    	       		});       		
-   	       	}/* ,
+   	       	},
    	       	fail: function (err) {
    	           	alert(JSON.stringify(err));
-   	       	} */
+   	       	}
    		})
    	}
-   	
+   	 */
 /*    	Kakao.Auth.createLoginButton({
    		scope: 'profile, account_email, gender',
        	container: '#kakao-login-btn',

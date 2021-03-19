@@ -100,16 +100,16 @@
 
 	        <ul class="navbar-nav">
 	        	<li class="nav-item">
-	          		<c:if test="${member == null}">
+	          		<c:if test="${member == null  && userId == null}">
 	             		<a class="nav-link" href="<%=request.getContextPath()%>/termsOfService">회원가입</a>
 	             	</c:if>	                
 	       		</li>
-	          	<c:if test="${member == null}">
+	          	<c:if test="${member == null && userId == null}">
 		          	<li class="nav-item">
 		            	<a class="nav-link" href="<%=request.getContextPath()%>/login">로그인</a>
 		          	</li>
 	          	</c:if>
-	          	<c:if test="${member != null }">
+	          	<c:if test="${member != null || userId != null}">
 		          	<li class="nav-item">
 		            	<a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
 		          	</li>	          

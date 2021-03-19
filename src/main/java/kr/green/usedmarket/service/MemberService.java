@@ -23,4 +23,8 @@ public interface MemberService {
 	void setMember(MemberVo member);
 
 	void sendMail(String title, String content, String mb_email);
+
+	MemberVo getKakaoCheck(String nickname, String email);
+
+	MemberVo setKaKaoMember(String nickname, String email, String gender);
 }
