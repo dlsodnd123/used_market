@@ -338,7 +338,6 @@ public class ProductController {
 	// 검색 담당하는 기능
 	@RequestMapping(value = "/product/search", method = RequestMethod.GET)
 	public ModelAndView productSearchGet(ModelAndView mv, Criteria cri) {
-		cri.setPerPageNum(5);
 		// 제목중에 검색어가 들어간 상품들 정렬방식에 맞게 가져오기
 		ArrayList<DibsVo> productSearchList = productService.getProductSearchList(cri);
 		// 검색결과와 일치하는 상품들의 전체 갯수 가져오기
@@ -358,7 +357,6 @@ public class ProductController {
 	@ResponseBody
 	public Object searchSortPost(@RequestBody @RequestParam String sort, @RequestParam String search, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		cri.setPerPageNum(5);
 		// sort값이 '최신순', '저가순', '고가순'이 아니면 'wrong' 전달해주기
 		if(!sort.equals("최신순") && !sort.equals("저가순" ) && !sort.equals("고가순")) {
 			map.put("result", "wroong");
@@ -390,7 +388,6 @@ public class ProductController {
 	@ResponseBody
 	public Object searchPagenationPost(@RequestBody @RequestParam Integer page, @RequestParam String search, @RequestParam String order, Criteria cri) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		cri.setPerPageNum(5);
 		// 화면에서 전달 받은 정보를 cri에 넣어주기
 		cri.setPage(page);
 		cri.setSearch(search);
