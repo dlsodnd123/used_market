@@ -35,9 +35,13 @@ public interface MemberDao {
 
 	MemberVo selectPwFind(@Param("mb_id")String mb_id, @Param("mb_name")String mb_name, @Param("mb_email")String mb_email);
 
-	MemberVo selectKakaoCheck(@Param("nickname")String nickname, @Param("email")String email);
+	MemberVo selectKakaoCheck(@Param("nickname")String nickname, @Param("email")String email, @Param("division")String division);
 
 	void insertKakaoMember(@Param("kakaoMember")MemberVo kakaoMember);
+
+	MemberVo selectNaverCheck(@Param("name")String name, @Param("email")String email, @Param("mobile")String mobile, @Param("division")String division);
+
+	void insertMemberNaver(@Param("memberNaver")MemberVo memberNaver);
 
 
 

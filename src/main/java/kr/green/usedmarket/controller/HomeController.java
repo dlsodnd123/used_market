@@ -1,9 +1,11 @@
 package kr.green.usedmarket.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,7 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import kr.green.usedmarket.kakaologin.KakaoAPI;
+import kr.green.usedmarket.naverlogin.NaverLoginBo;
 import kr.green.usedmarket.service.MemberService;
 import kr.green.usedmarket.service.ProductService;
 import kr.green.usedmarket.service.StandService;
@@ -39,18 +47,54 @@ public class HomeController {
 	@Autowired
 	KakaoAPI kakaoAPI;
 	
+    /* NaverLoginBO */
+    private NaverLoginBo naverLoginBO;
+    private String apiResult = null;
+    
+    @Autowired
+    private void setNaverLoginBO(NaverLoginBo naverLoginBO) {
+        this.naverLoginBO = naverLoginBO;
+    }
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView homeGet(ModelAndView mv, String code, HttpServletRequest request) {
+	public ModelAndView homeGet(ModelAndView mv, String code, HttpServletRequest request, String state, HttpSession session) throws IOException {
 		// 카카오 토큰을 이용한 로그인
 		String access_Token = kakaoAPI.getAccessToken(code);
 		HashMap<String, Object> userInfo = kakaoAPI.getUserInfo(access_Token);
-	    MemberVo member = null;
+		MemberVo member = null;
 	    if(userInfo.size() != 0) {
 	    	// 카카오로 가입된 정보가 있는 조회(이메일과 닉네임으로)
 	    	member = memberService.getKakaoCheck((String)userInfo.get("nickname"), (String)userInfo.get("email"));
 	    	// 가입된 정보가 없다면 가입 진행
 	    	if(member == null)
-	    		member = memberService.setKaKaoMember((String)userInfo.get("nickname"), (String)userInfo.get("email"), (String)userInfo.get("gender"));
+	    		memberService.setMemberKakaO((String)userInfo.get("nickname"), (String)userInfo.get("email"), (String)userInfo.get("gender"));
+	    }
+	    // 네이버 로그인
+	    if(code != null && state != null) {
+		    OAuth2AccessToken oauthToken;
+	        oauthToken = naverLoginBO.getAccessToken(session, code, state);
+	        // 로그인 사용자 정보를 읽어온다.
+	        apiResult = naverLoginBO.getUserProfile(oauthToken);
+	        // 사용자 정보가 비어있지 않다면 
+	        // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성하여 필요 정보 추출
+	        if(apiResult != null) {
+	            JsonParser parser = new JsonParser();
+	            JsonElement element = parser.parse(apiResult);
+	            
+	            JsonObject response = element.getAsJsonObject().get("response").getAsJsonObject();
+	            
+	            String name = response.getAsJsonObject().get("name").getAsString();
+	            String email = response.getAsJsonObject().get("email").getAsString();
+		        String gender = response.getAsJsonObject().get("gender").getAsString();
+		        String mobile = response.getAsJsonObject().get("mobile").getAsString();
+		        
+		        // 네이버로 가입된 정보가 있는지 확인 후
+		        member = memberService.getNaverCheck(name, email, gender, mobile);
+		        // 가입된 정보가 없으면 회원가입 진행
+		        if(member == null) {
+		        	memberService.setMemberNaver(name, email, gender, mobile);
+		        }
+	        }
 	    }
 		// 메인화면에 나타낼 신규상품의 목록 가져오기
 		ArrayList<DibsVo> newProductList = productService.getNewProduct();		
@@ -96,7 +140,11 @@ public class HomeController {
 	}
 	// 로그인 화면
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView loginGet(ModelAndView mv) {
+	public ModelAndView loginGet(ModelAndView mv, HttpSession session) {
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
+        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);        
+        System.out.println("네이버:" + naverAuthUrl);        
+        mv.addObject("url", naverAuthUrl);
 		mv.setViewName("/main/login");
 		return mv;
 	}

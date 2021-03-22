@@ -26,5 +26,9 @@ public interface MemberService {
 
 	MemberVo getKakaoCheck(String nickname, String email);
 
-	MemberVo setKaKaoMember(String nickname, String email, String gender);
+	void setMemberKakaO(String nickname, String email, String gender);
+
+	MemberVo getNaverCheck(String name, String email, String gender, String mobile);
+
+	void setMemberNaver(String name, String email, String gender, String mobile);
 }

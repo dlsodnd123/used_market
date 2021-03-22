@@ -159,26 +159,34 @@ public class MemberServiceImp implements MemberService {
 	// 카카오로 가입된 정보가 있는 조회(이메일과 닉네임으로)
 	@Override
 	public MemberVo getKakaoCheck(String nickname, String email) {
-		return memberDao.selectKakaoCheck(nickname, email);
+		String division = "kakao";
+		return memberDao.selectKakaoCheck(nickname, email, division);
 	}
+	// 카카오로 회원가입
 	@Override
-	public MemberVo setKaKaoMember(String nickname, String email, String gender) {
-		MemberVo kakaoMember = new MemberVo();
-		kakaoMember.setMb_name(nickname);
-		kakaoMember.setMb_email(email);
+	public void setMemberKakaO(String nickname, String email, String gender) {
+		MemberVo memberKakao = new MemberVo();
+		memberKakao.setMb_name(nickname);
+		memberKakao.setMb_email(email);
 		if(gender.equals("male"))
-			kakaoMember.setMb_gender("남");
+			memberKakao.setMb_gender("남");
     	else
-    		kakaoMember.setMb_gender("여");
+    		memberKakao.setMb_gender("여");
 		// 가입구분을 "kakao"를 넣어주기
-		kakaoMember.setMb_division("kakao");
+		memberKakao.setMb_division("kakao");
     	// 아이디에 쓰일 랜덤한 8개 번호 생성 후 기존 맴버 아이디와 일치하는지 확인 후 없으면 아이디로 사용
-    	String new_id = "";
-    	for(int i=0; i<8; i++) {
-    		int randomNum = (int)(Math.random() * 9);
-    		new_id += randomNum;
-    	}
-    	kakaoMember.setMb_id(new_id);
+		String new_id = "";
+		MemberVo memberCheck = new MemberVo();
+		while(true) {
+			for(int i=0; i<8; i++) {
+	    		int randomNum = (int)(Math.random() * 9);
+	    		new_id += randomNum;
+	    	}
+	    	memberCheck = memberDao.getMember(new_id);
+	    	if(memberCheck == null)
+	    		break;			
+		}		
+		memberKakao.setMb_id(new_id);
     	// 랜덤한 8개 비밀번호 생성
     	String pw = "";
 		for(int i=0; i<8; i++) {
@@ -191,12 +199,71 @@ public class MemberServiceImp implements MemberService {
 				pw += (char)('A' + r - 36);
 		}		
 		String encPw = passwordEncoder.encode(pw);
-		kakaoMember.setMb_pw(encPw);
-    	memberDao.insertKakaoMember(kakaoMember);
-    	MemberVo member = memberDao.selectKakaoCheck(nickname, email);
-    	// 회원가입시 기본적인 가판대 생성
-    	StandVo stand = new StandVo(member.getMb_id());
-    	memberDao.insertStand(stand);
-		return member;
+		memberKakao.setMb_pw(encPw);
+    	memberDao.insertKakaoMember(memberKakao);
+    	String division = "kakao";
+    	MemberVo member = memberDao.selectKakaoCheck(nickname, email, division);
+    	// 회원등록이 문제없이 진행되었다면
+    	if(member != null) {
+	    	// 기본 가판대 생성
+	    	StandVo stand = new StandVo(member.getMb_id());
+    		memberDao.insertStand(stand);
+    	}
 	}
+	// 네이버로 가입된 정보가 있는지 확인
+	@Override
+	public MemberVo getNaverCheck(String name, String email, String gender, String mobile) {
+		String division = "naver";
+		return memberDao.selectNaverCheck(name, email, mobile, division);		
+	}
+	// 네이버로 회원가입
+	@Override
+	public void setMemberNaver(String name, String email, String gender, String mobile) {
+		MemberVo memberNaver = new MemberVo();
+		memberNaver.setMb_name(name);
+		memberNaver.setMb_email(email);
+		memberNaver.setMb_phone(mobile);
+		if(gender.equals("M"))
+			memberNaver.setMb_gender("남");
+		else
+			memberNaver.setMb_gender("여");
+		// 가입구분을 "kakao"를 넣어주기
+		memberNaver.setMb_division("naver");
+		// 아이디에 쓰일 랜덤한 8개 번호 생성 후 기존 맴버 아이디와 일치하는지 확인 후 없으면 아이디로 사용
+		String new_id = "";
+		MemberVo memberCheck = new MemberVo();
+		while(true) {
+			for(int i=0; i<8; i++) {
+	    		int randomNum = (int)(Math.random() * 9);
+	    		new_id += randomNum;
+	    	}
+	    	memberCheck = memberDao.getMember(new_id);
+	    	if(memberCheck == null)
+	    		break;			
+		}
+		System.out.println(new_id);
+		memberNaver.setMb_id(new_id);
+		// 랜덤한 8개 비밀번호 생성
+    	String pw = "";
+		for(int i=0; i<8; i++) {
+			int r = (int)(Math.random() * 62);
+			if(r <= 9)
+				pw += (char)('0' + r);
+			else if(r <= 35)
+				pw += (char)('a' + r - 10);
+			else
+				pw += (char)('A' + r - 36);
+		}		
+		String encPw = passwordEncoder.encode(pw);
+		memberNaver.setMb_pw(encPw);
+		memberDao.insertMemberNaver(memberNaver);
+		String division = "naver";
+		MemberVo member = memberDao.selectNaverCheck(name, email, mobile, division);
+		// 회원등록이 문제없이 진행되었다면
+    	if(member != null) {
+	    	// 기본 가판대 생성
+	    	StandVo stand = new StandVo(member.getMb_id());
+    		memberDao.insertStand(stand);
+    	}			
+	}	
 }

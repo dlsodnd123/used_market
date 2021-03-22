@@ -20,7 +20,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	    throws Exception {
 	    ModelMap modelMap = modelAndView.getModelMap();
 	    MemberVo member = (MemberVo)modelMap.get("member");
-
+	    
 	    if(member != null) {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("member", member);

@@ -67,9 +67,9 @@
 	<select id="selectPwFind" resultType="kr.green.usedmarket.vo.MemberVo">
 		select * from member where mb_id = #{mb_id} and mb_name = #{mb_name} and mb_email = #{mb_email}
 	</select>
-<!-- 이름과 이메일주소가 일치하는 회원정보를 조회하는 쿼리문 -->
+<!-- 이름과 이메일주소, 가입구분이 일치하는 회원정보를 조회하는 쿼리문 -->
 	<select id="selectKakaoCheck" resultType="kr.green.usedmarket.vo.MemberVo">
-		select * from member where mb_name = #{nickname} and mb_email = #{email}
+		select * from member where mb_name = #{nickname} and mb_email = #{email} and mb_division = #{division}
 	</select>
 <!-- 카카오로 로그인한 회원정보 등록하는 쿼리문 -->
 	<insert id="insertKakaoMember">
@@ -77,6 +77,21 @@
 			member(mb_name, mb_email, mb_gender, mb_division, mb_id, mb_pw)
 			values(#{kakaoMember.mb_name}, #{kakaoMember.mb_email}, #{kakaoMember.mb_gender}, #{kakaoMember.mb_division}, #{kakaoMember.mb_id}, #{kakaoMember.mb_pw})
 	</insert>
+<!-- 이름, 이메일, 휴대폰 번화, 가입구분이 일치하는 회원정보를 조회하는 쿼리문 -->
+	<select id="selectNaverCheck" resultType="kr.green.usedmarket.vo.MemberVo">
+		select * from member where mb_name = #{name} and mb_email = #{email} and mb_phone = #{mobile} and mb_division = #{division}
+	</select>
+<!-- 네이버로 로그인한 회원정보 등록하는 쿼리문 -->
+	<insert id="insertMemberNaver">
+		insert into
+			member(mb_name, mb_email, mb_phone, mb_gender, mb_division, mb_id, mb_pw)
+			values(#{memberNaver.mb_name}, #{memberNaver.mb_email}, #{memberNaver.mb_phone}, #{memberNaver.mb_gender}, #{memberNaver.mb_division},
+					#{memberNaver.mb_id}, #{memberNaver.mb_pw})
+	</insert>
+
+
+
+
 
 
 
