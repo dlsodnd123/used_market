@@ -356,7 +356,7 @@
 	                    <c:if test="${interestPd.itpd_selected == 0 || interestPd.itpd_selected == null}">
 	                    	<button type="button" class="btn btn-light selected-btn"><i class="far fa-heart"></i> 찜하기</button>
 	                    </c:if>	                    
-                     <button type="button" class="btn btn-info">연락하기</button>
+                     <button type="button" class="btn btn-info chatting-btn">연락하기</button>
                     </c:if>
                     <!-- 상품판매자와 로그인한 회원이 같다면 -->
                     <c:if test="${product.pd_mb_id == member.mb_id}">
@@ -934,7 +934,15 @@
 		   	    	}
 		    	})   
    	    	}
-   	    })   	    
+   	    })
+   	    // 연락하기 버튼 클릭시 채팅팝업 띄우기
+        $('.chatting-btn').click(function(){
+            var url = "http://localhost:8080/usedmarket/popup/chatting";
+            var name = "popup test";
+            var option = "width = 350, height = 680, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        })
+       
     </script>
 </body>
 </html>
