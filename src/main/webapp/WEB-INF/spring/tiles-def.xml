@@ -4,12 +4,15 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
  
 <tiles-definitions>
-    <!-- (1) 레이아웃을 적용하지않는화면-->    
+    <!-- (1) 레이아웃을 적용하지않는화면--> 
     <definition name="/main/join/termsOfService" template="/WEB-INF/views/layout/disapplyLayout.jsp">
     	 <put-attribute name="body" value="/WEB-INF/views/main/join/termsOfService.jsp" />
     </definition>
     <definition name="/main/join/signup" template="/WEB-INF/views/layout/disapplyLayout.jsp">
     	 <put-attribute name="body" value="/WEB-INF/views/main/join/signup.jsp" />
+    </definition>
+    <definition name="/popup/chat/chatting" template="/WEB-INF/views/layout/disapplyLayout.jsp">
+    	 <put-attribute name="body" value="/WEB-INF/views/popup/chat/chatting.jsp" />
     </definition>
  
     <!-- (2) 레이아웃을 적용하는화면-->
