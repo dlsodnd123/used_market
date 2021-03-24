@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class DibsVo {
 	private int pd_num;
+	private String pd_mb_id;
 	private String pd_title;
 	private int pd_price;
 	private String pd_deal;
@@ -18,6 +19,12 @@ public class DibsVo {
 	}
 	public void setPd_num(int pd_num) {
 		this.pd_num = pd_num;
+	}
+	public String getPd_mb_id() {
+		return pd_mb_id;
+	}
+	public void setPd_mb_id(String pd_mb_id) {
+		this.pd_mb_id = pd_mb_id;
 	}
 	public String getPd_title() {
 		return pd_title;
@@ -65,8 +72,8 @@ public class DibsVo {
 	}
 	@Override
 	public String toString() {
-		return "DibsVo [pd_num=" + pd_num + ", pd_title=" + pd_title + ", pd_price=" + pd_price + ", pd_deal=" + pd_deal
-				+ ", pd_registerDate=" + pd_registerDate + ", pd_interestCnt=" + pd_interestCnt + ", pd_area=" + pd_area
-				+ ", st_img=" + st_img + "]";
+		return "DibsVo [pd_num=" + pd_num + ", pd_mb_id=" + pd_mb_id + ", pd_title=" + pd_title + ", pd_price="
+				+ pd_price + ", pd_deal=" + pd_deal + ", pd_registerDate=" + pd_registerDate + ", pd_interestCnt="
+				+ pd_interestCnt + ", pd_area=" + pd_area + ", st_img=" + st_img + "]";
 	}	
 }

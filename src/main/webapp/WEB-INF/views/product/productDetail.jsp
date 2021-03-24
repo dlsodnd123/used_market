@@ -937,9 +937,9 @@
    	    })
    	    // 연락하기 버튼 클릭시 채팅팝업 띄우기
         $('.chatting-btn').click(function(){
-            var url = "http://localhost:8080/usedmarket/popup/chatting";
-            var name = "popup test";
-            var option = "width = 350, height = 680, top = 100, left = 200, location = no"
+            var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=${product.pd_num}';
+            var name = 'popup test';
+            var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
             window.open(url, name, option);
         })
        

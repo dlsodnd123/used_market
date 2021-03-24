@@ -3,5 +3,25 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.green.usedmarket.dao.ChatDao">
-
+<!-- 상품번호와 일치하는 상품정보 가져오는 쿼리문 -->
+	<select id="selectChatProduct" resultType="kr.green.usedmarket.vo.DibsVo">
+		select * from product where pd_num = #{pd_num}
+	</select>
+<!-- 상품번호, 상품판매자아이디, 로그인된아이디가 일치하는 채팅룸 정보를 가져오는 쿼리문 -->
+	<select id="selectCheckChattingRoom" resultType="kr.green.usedmarket.vo.ChattingVo">
+		select * from chat_room where chro_pd_num = #{pd_num} and chro_buyer_mb_id = #{mb_id} and chro_seller_mb_id = #{pd_mb_id}
+	</select>
+<!-- 상품번호, 채팅룸번호와 일치하는 채팅정보를 가져오는 쿼리문 -->
+	<select id="selectChattingList" resultType="kr.green.usedmarket.vo.ChattingVo">
+		select * from chat_message 
+			join chat_room on chat_message.chmg_chro_num = chat_room.chro_num 
+			where chro_pd_num = #{pd_num} and chro_num = #{chro_num}
+			order by chmg_sendDate;
+	</select>
+<!-- 채팅룸을 만들어주는 쿼리문 -->
+	<insert id="insertChatRoom">
+		insert into 
+			chat_room(chro_pd_num, chro_buyer_mb_id, chro_seller_mb_id)
+			values(#{pd_num}, #{mb_id}, #{pd_mb_id})
+	</insert>
 </mapper>
