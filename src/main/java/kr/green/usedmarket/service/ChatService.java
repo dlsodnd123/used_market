@@ -15,5 +15,9 @@ public interface ChatService {
 
 	void setChatRoom(Integer pd_num, String pd_mb_id, String mb_id);
 
+	void setChatMessage(int chro_num, String mb_id, String chmg_content);
+
+	ChattingVo getNewChatMessage(int chro_num, Integer chmg_num);
+
 
 }

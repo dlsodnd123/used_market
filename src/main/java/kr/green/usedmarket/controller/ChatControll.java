@@ -78,12 +78,41 @@ public class ChatControll {
 		if(checkChatRoom == null) {
 			// 채팅룸 생성
 			chatService.setChatRoom(pd_num, pd_mb_id, member.getMb_id());
+			// 생성된 채팅룸 정보 가져오기
+			ChattingVo chatting = chatService.getCheckChattingRoom(pd_num, pd_mb_id, member.getMb_id());
+			// 채팅메시지에 chro_num, mb_id, chmg_content 등록
+			chatService.setChatMessage(chatting.getChro_num(), member.getMb_id(), chmg_content);
 		}
 		// 해당 채팅룸이 있으면 채팅메시지에 chro_num, mb_id, chmg_content 등록
 		else {
-			
+			chatService.setChatMessage(checkChatRoom.getChro_num(), member.getMb_id(), chmg_content);
 		}
-		
+		map.put("result", "success");
+		return map;
+	}
+	// 1초마다 최신 메시지 확인하는 기능
+	@RequestMapping(value = "/reload/message", method = RequestMethod.POST)
+	@ResponseBody
+	public Object reloadMessagePost(@RequestBody @RequestParam String chmg_content, @RequestParam Integer pd_num,  @RequestParam String pd_mb_id, 
+			@RequestParam Integer chmg_num, HttpServletRequest request) {		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		String result = "";
+		// pd_num, pd_mb_id, mb_id와 일치하는 채팅룸이 있는지 확인해서 채팅방 정보 가져오기
+		ChattingVo checkChatRoom = chatService.getCheckChattingRoom(pd_num, pd_mb_id, member.getMb_id());
+		ChattingVo newChatMessage = new ChattingVo();
+		// 채팅룸 정보가 있으면
+		if(checkChatRoom != null) {
+			// 채팅방번호와 일치하는 메시지중에서 화면에서 준 chmg_num보다 큰 번호가 있으면 ChattingVo에 담아서 가져오기
+			newChatMessage = chatService.getNewChatMessage(checkChatRoom.getChro_num(), chmg_num);			
+		}
+		// 채팅룸 정보가 없으면 result에 "notChatRoom" 넣어주기 
+		else {
+			result = "notChatRoom";
+		}
+		System.out.println(newChatMessage);
+		map.put("result", result);
 		return map;
 	}
 }

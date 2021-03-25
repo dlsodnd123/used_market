@@ -119,11 +119,11 @@
 				<div class="chat-content-box">
 					<div class="chat-product-price">${chatProduct.pd_price} 원</div>
 					<div class="chat-product-title">${chatProduct.pd_title}</div>
-				</div>
+				</div>				
 			</div>
 		</div>
-		<div class="chat-lower-box">
-			<div class="message-box">
+		<div class="chat-lower-box" id="chat-lower-box">
+			<div class="message-box" id="message-box">
 				<c:forEach items="${chattingList}" var="chatting">
 					<c:if test="${member.mb_id != chatting.chmg_mb_id}">
 						<div class="opponent-message-box">
@@ -135,6 +135,7 @@
 							</div>
 							<div class="opponent-sendDate">${chatting.chmg_sendDate}</div>
 						</div>
+						<input type="hidden" id="chmg_num" value="${chatting.chmg_num}">
 					</c:if>				
 					<c:if test="${member.mb_id == chatting.chmg_mb_id}">
 						<div class="mySelf-message-box">
@@ -143,17 +144,40 @@
 							</div>
 							<div class="mySelf-sendDate">${chatting.chmg_sendDate}</div>
 						</div>
-					</c:if>
-				</c:forEach>		
+						<input type="hidden" id="chmg_num" value="${chatting.chmg_num}">	
+					</c:if>						
+				</c:forEach>
 			</div>
 			<div class="message-send-box">
-				<input type="text" class="form-control message" id="" name="">
+				<input type="text" class="form-control message" id="message" autofocus>
 				<button class="btn btn-primary message-send-btn" id="" type="submit">전송</button>
 			</div>
 		</div>
 	</div>
 </body>
 <script>
+ 	// 1초마다 새로고침
+ 	setInterval(() => {
+ 		var chmg_content = $('.message').val();
+		var pd_num = '${pd_num}';
+		var pd_mb_id = '${pd_mb_id}';		
+		var chmg_num = $('#chmg_num');
+		var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
+		$.ajax({
+     		url : '<%=request.getContextPath()%>/reload/message',
+			async:false,
+			type : 'post',
+			data : sendData,
+			dataType:"json",
+			success : function(data){
+				
+	        },
+   	     	error: function(error) {
+   	        	console.log('에러발생');
+   	    	}
+    	})
+	}, 1000);
+	
 	// 메시지 박스에 메시지를 입력하고 엔터를 누르면 ajax로 메시지 입력처리
 	$('.message').keydown(function(){
 		if(event.keyCode == 13){
@@ -169,13 +193,25 @@
 				data : sendData,
 				dataType:"json",
 				success : function(data){
-					
+					if(data.result == 'success'){						
+						location.reload();
+					}
     	        },
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');
 	   	    	}
 	    	})
 		}
-	})
+	})	
+	// 대화상자에 스크롤이 있을 때 제일 밑으로 가기
+	var lastOpponentLoc = $('.opponent-content-box').last().offset();
+	var lastMySelfLoc = $('.mySelf-message-box').last().offset();
+	// 상대방이 메시지가 마지막이라면
+	if(lastOpponentLoc.top>lastMySelfLoc.top){
+		$('.message-box').animate({scrollTop: lastOpponentLoc.top}, 0);
+	}else{
+		$('.message-box').animate({scrollTop: lastMySelfLoc.top}, 0);
+	}
+
 </script>
 </html>

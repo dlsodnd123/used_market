@@ -43,6 +43,17 @@ public class ChatServiceImp implements ChatService{
 	public void setChatRoom(Integer pd_num, String pd_mb_id, String mb_id) {
 		chatDao.insertChatRoom(pd_num, pd_mb_id, mb_id);		
 	}
+	// 채팅메시지에 chro_num, mb_id, chmg_content 등록
+	@Override
+	public void setChatMessage(int chro_num, String mb_id, String chmg_content) {
+		chatDao.insertChatMessage(chro_num, mb_id, chmg_content);
+		
+	}
+	// 채팅방번호와 일치하는 메시지중에서 화면에서 준 chmg_num보다 큰 번호가 있으면 ChattingVo에 담아서 가져오기
+	@Override
+	public ChattingVo getNewChatMessage(int chro_num, Integer chmg_num) {		
+		return chatDao.selectNewChatMessage(chro_num, chmg_num);
+	}
 	
 
 }

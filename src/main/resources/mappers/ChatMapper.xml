@@ -24,4 +24,19 @@
 			chat_room(chro_pd_num, chro_buyer_mb_id, chro_seller_mb_id)
 			values(#{pd_num}, #{mb_id}, #{pd_mb_id})
 	</insert>
+<!-- 채팅메시지를 등록하는 쿼리문 -->
+	<insert id="insertChatMessage">
+		insert into
+			chat_message(chmg_chro_num, chmg_mb_id, chmg_content)
+			values(#{chro_num}, #{mb_id}, #{chmg_content})
+	</insert>
+<!-- 채팅룸번호와 일치하는 채팅메시지 중에 화면보다 최신 메시지를 가져오는 쿼리문 -->
+	<select id="selectNewChatMessage" resultType="kr.green.usedmarket.vo.ChattingVo">
+		select * from chat_message where chmg_chro_num = #{chro_num} and chmg_num > #{chmg_num}
+	</select>
+
+
+
+
+
 </mapper>

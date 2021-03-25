@@ -17,4 +17,8 @@ public interface ChatDao {
 
 	void insertChatRoom(@Param("pd_num")Integer pd_num, @Param("pd_mb_id")String pd_mb_id, @Param("mb_id")String mb_id);
 
+	void insertChatMessage(@Param("chro_num")int chro_num, @Param("mb_id")String mb_id, @Param("chmg_content")String chmg_content);
+
+	ChattingVo selectNewChatMessage(@Param("chro_num")int chro_num, @Param("chmg_num")Integer chmg_num);
+
 }
