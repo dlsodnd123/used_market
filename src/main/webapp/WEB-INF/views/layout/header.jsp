@@ -78,6 +78,9 @@
     	color: black;
     	display: block;
     }
+    .chattingList-link{
+    	cursor: pointer;
+    }
 }	
   </style>
 </head>
@@ -117,7 +120,7 @@
 		            	<a class="nav-link" href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#home">내가판대</a>
 		          	</li>
 		          	<li class="nav-item">
-		            	<a class="nav-link" href="#">채팅</a>
+		            	<a class="nav-link chattingList-link">채팅</a>
 		          	</li>		
 		          	<li class="nav-item dropdown">
 		            	<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">마이페이지</a>
@@ -158,6 +161,13 @@
 	})
 	$('.fa-bars, .productCategory-content-box').mouseout(function(){
 		$('.productCategory-content-box').hide();
+	})
+	// 채팅 클릭시 채팅목록창 팝업으로 띄어주기
+	$('.chattingList-link').click(function(){
+		var url = 'http://localhost:8080/usedmarket/popup/chattingList';
+        var name = 'chattingListPopup';
+        var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
+        window.open(url, name, option);
 	})
 </script>
 </body>

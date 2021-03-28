@@ -32,7 +32,7 @@ public class ChatControll {
 	
 	// 채팅창 화면 담당
 	@RequestMapping(value = "/popup/chatting", method = RequestMethod.GET)
-	public ModelAndView termsOfServiceGet(ModelAndView mv, int pd_num, HttpServletRequest request) {
+	public ModelAndView popupChattingGet(ModelAndView mv, int pd_num, HttpServletRequest request) {
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		// 화면에서 넘겨준 pd_num과 일치하는 상품정보, 이미지 가져오기
@@ -69,7 +69,7 @@ public class ChatControll {
 	@RequestMapping(value = "/send/message", method = RequestMethod.POST)
 	@ResponseBody
 	public Object sendMessagePost(@RequestBody @RequestParam String chmg_content, @RequestParam Integer pd_num,  @RequestParam String pd_mb_id, HttpServletRequest request) {		
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();		
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		// pd_num, pd_mb_id, mb_id와 일치하는 채팅룸이 있는지 확인
@@ -93,7 +93,7 @@ public class ChatControll {
 	// 1초마다 최신 메시지 확인하는 기능
 	@RequestMapping(value = "/reload/message", method = RequestMethod.POST)
 	@ResponseBody
-	public Object reloadMessagePost(@RequestBody @RequestParam String chmg_content, @RequestParam Integer pd_num,  @RequestParam String pd_mb_id, 
+	public Object reloadMessagePost(@RequestBody @RequestParam Integer pd_num,  @RequestParam String pd_mb_id, 
 			@RequestParam Integer chmg_num, HttpServletRequest request) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
@@ -111,8 +111,22 @@ public class ChatControll {
 		else {
 			result = "notChatRoom";
 		}
-		System.out.println(newChatMessage);
+		if(newChatMessage == null)
+			result = "notNewMessage";
+		
+		map.put("member", member);
+		map.put("newChatMessage", newChatMessage);
 		map.put("result", result);
 		return map;
+	}
+	// 채팅목록 화면 담당
+	@RequestMapping(value = "/popup/chattingList", method = RequestMethod.GET)
+	public ModelAndView popupChattingListGet(ModelAndView mv, HttpServletRequest request) {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		
+		mv.addObject("member", member);
+		mv.setViewName("/popup/chat/chattingList");
+		return mv;
 	}
 }
