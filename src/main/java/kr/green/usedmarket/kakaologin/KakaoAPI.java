@@ -89,7 +89,6 @@ public class KakaoAPI {
 	        conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 	        
 	        int responseCode = conn.getResponseCode();
-	        System.out.println("responseCode : " + responseCode);
 	        
 	        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        
@@ -99,7 +98,6 @@ public class KakaoAPI {
 	        while ((line = br.readLine()) != null) {
 	            result += line;
 	        }
-	        System.out.println("response body : " + result);
 	        
 	        JsonParser parser = new JsonParser();
 	        JsonElement element = parser.parse(result);
