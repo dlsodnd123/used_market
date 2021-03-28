@@ -938,11 +938,18 @@
    	    // 연락하기 버튼 클릭시 채팅팝업 띄우기
         $('.chatting-btn').click(function(){
             var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=${product.pd_num}';
-            var name = 'popup test';
+            var name = 'chattingPopup';
             var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
             window.open(url, name, option);
         })
-       
+        // 상품가격에 숫자 3자리마다 콤마넣기
+        var comma = numberWithCommas($('.price').text());
+		$('.price').text(comma);	
+		
+       	// 숫자 3자리 마다 콤마를 넣는 정규식 함수
+		function numberWithCommas(obj) {
+	    	return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
     </script>
 </body>
 </html>
