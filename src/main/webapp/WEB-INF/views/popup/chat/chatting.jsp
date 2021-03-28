@@ -46,6 +46,7 @@
 		background-color: rgb(243,243,243);
 		height: 480px;
 		overflow: auto;
+		padding-top: 8px;
 	}
 	.opponent-message-box{
 		margin-bottom: 15px;
@@ -79,7 +80,7 @@
 		background-color: white;
 		padding: 10px 12px;
 		border-radius: 25px;
-		float: left; 			
+		float: left;
 	}
 	.message-box .opponent-content-box{
 		margin: 0 80px 0 12px;	
@@ -150,7 +151,7 @@
 			</div>
 			<div class="message-send-box">
 				<input type="text" class="form-control message" id="message" autofocus>
-				<button class="btn btn-primary message-send-btn" id="" type="submit">전송</button>
+				<button class="btn btn-primary message-send-btn" id="" type="button">전송</button>
 			</div>
 		</div>
 	</div>
@@ -158,11 +159,11 @@
 <script>
  	// 1초마다 새로고침
  	setInterval(() => {
- 		var chmg_content = $('.message').val();
 		var pd_num = '${pd_num}';
 		var pd_mb_id = '${pd_mb_id}';		
-		var chmg_num = $('#chmg_num');
-		var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
+		var chmg_num = $('input[id=chmg_num]').last().val();
+		console.log(chmg_num);
+		var sendData = {"pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
 		$.ajax({
      		url : '<%=request.getContextPath()%>/reload/message',
 			async:false,
@@ -170,6 +171,36 @@
 			data : sendData,
 			dataType:"json",
 			success : function(data){
+				if(data.result == "notChatRoom"){
+					alert('로그아웃 되었거나 문제가 발생하였습니다. 채팅창을 종료 합니다.')
+					var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=${product.pd_num}';
+		            var name = 'chattingPopup';
+		            var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
+		            window.close(url, name, option);					
+				}else if(data.newChatMessage != null){
+					var str = '';
+					if(data.member.mb_id != data.newChatMessage.chmg_mb_id){						
+						str += '<div class="opponent-message-box">'
+						str += '<div class="opponent-info-box">'
+						str += '<div class="opponent-id">' + data.newChatMessage.chmg_mb_id + '</div>'
+						str += '</div>'
+						str += '<div class="opponent-content-box">'
+						str += '<div class="opponent-message-content">' + data.newChatMessage.chmg_content + '</div>'
+						str += '</div>'
+						str += '<div class="opponent-sendDate">' + data.newChatMessage.chmg_sendDate + '</div>'
+						str += '</div>'
+						str += '<input type="hidden" id="chmg_num" value="' + data.newChatMessage.chmg_num + '">'
+					}else if(data.member.mb_id == data.newChatMessage.chmg_mb_id){						
+						str += '<div class="mySelf-message-box">'
+						str += '<div class="mySelf-content-box">'
+						str += '<div class="mySelf-message-content">' + data.newChatMessage.chmg_content + '</div>'
+						str += '</div>'
+						str += '<div class="mySelf-sendDate">' + data.newChatMessage.chmg_sendDate + '</div>'
+						str += '</div>'
+						str += '<input type="hidden" id="chmg_num" value="' + data.newChatMessage.chmg_num + '">'					
+					}
+					$('.message-box').append(str);					
+				}
 				
 	        },
    	     	error: function(error) {
@@ -178,31 +209,16 @@
     	})
 	}, 1000);
 	
-	// 메시지 박스에 메시지를 입력하고 엔터를 누르면 ajax로 메시지 입력처리
+	// 메시지 박스에 메시지를 입력하고 엔터를 누르거나 전송버튼 클릭시 ajax로 메시지 입력처리
 	$('.message').keydown(function(){
 		if(event.keyCode == 13){
-			var clickPoint = $(this);
-			var chmg_content = $('.message').val();
-			var pd_num = '${pd_num}';
-			var pd_mb_id = '${pd_mb_id}';		
-			var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id}
-			$.ajax({
-	     		url : '<%=request.getContextPath()%>/send/message',
-				async:false,
-				type : 'post',
-				data : sendData,
-				dataType:"json",
-				success : function(data){
-					if(data.result == 'success'){						
-						location.reload();
-					}
-    	        },
-	   	     	error: function(error) {
-	   	        	console.log('에러발생');
-	   	    	}
-	    	})
+			eventMessageSend();
 		}
-	})	
+	})
+	$('.message-send-btn').click(function(){
+		eventMessageSend();
+	})
+	
 	// 대화상자에 스크롤이 있을 때 제일 밑으로 가기
 	var lastOpponentLoc = $('.opponent-content-box').last().offset();
 	var lastMySelfLoc = $('.mySelf-message-box').last().offset();
@@ -212,6 +228,27 @@
 	}else{
 		$('.message-box').animate({scrollTop: lastMySelfLoc.top}, 0);
 	}
-
+	// 입력한 메시지 ajax로 전송하는 함수
+	function eventMessageSend(){
+		var chmg_content = $('.message').val();
+		var pd_num = '${pd_num}';
+		var pd_mb_id = '${pd_mb_id}';		
+		var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id}
+		$.ajax({
+	    		url : '<%=request.getContextPath()%>/send/message',
+			async:false,
+			type : 'post',
+			data : sendData,
+			dataType:"json",
+			success : function(data){
+				if(data.result == 'success'){						
+					location.reload();
+				}
+	  	        },
+	  	     	error: function(error) {
+	  	        	console.log('에러발생');
+	  	    	}
+	   	})		
+	}
 </script>
 </html>
