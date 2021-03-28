@@ -19,5 +19,7 @@ public interface ChatService {
 
 	ChattingVo getNewChatMessage(int chro_num, Integer chmg_num);
 
+	ArrayList<ChattingVo> getChatList(String mb_id);
+
 
 }

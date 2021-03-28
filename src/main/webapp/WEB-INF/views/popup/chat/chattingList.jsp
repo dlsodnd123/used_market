@@ -32,14 +32,12 @@
 	.chatList .chatList-info-box{
 		padding-top: 6px;
 		margin-bottom: 1px;
-		background-color: white;
-		cursor: pointer;
+		background-color: white;		
 	}
 	.chatList-info-box .chatList-img-box>img{
 		height: 60px;
 		width: 60px;
-		border-radius: 50%;
-		vertical-align: bottom;
+		border-radius: 50%;		
 	}
 	.chatList-info-box .chatList-img-box{
 		margin: 0 14px;
@@ -47,6 +45,8 @@
 	}
 	.chatList-info-box .chatList-content-box{
 		display: inline-block;
+		vertical-align: top;
+		cursor: pointer;
 	}
 	.chatList-info-box .chatList-party-id{
 		font-weight: 700;
@@ -72,21 +72,36 @@
 			<div class="chatList-title">채팅목록</div>
 		</div>
 		<div class="chatList-lower-box">
-			<div class="chatList-info-box">
-				<div class="chatList-img-box">
-					<img alt="" src="https://ichef.bbci.co.uk/news/1024/branded_korean/105C9/production/_113771076_gettyimages-81221975_giantpanda.jpg">
+			<c:forEach items="${chattingList}" var="chattingList" varStatus="status">
+				<div class="chatList-info-box">
+					<div class="chatList-img-box">
+						<img alt="" src="<%=request.getContextPath()%>/resources/stand_img/${standList[status.index].st_img}">
+					</div>
+					<div class="chatList-content-box">
+						<c:if test="${member.mb_id == chattingList.chro_buyer_mb_id}">
+							<div class="chatList-party-id">${chattingList.chro_seller_mb_id}</div>
+						</c:if>
+						<c:if test="${member.mb_id != chattingList.chro_buyer_mb_id}">
+							<div class="chatList-party-id">${chattingList.chro_buyer_mb_id}</div>
+						</c:if>
+						<div class="chatList-sendDate">${chattingList.chmg_sendDate}</div>
+						<div class="chatList-last-message">${chattingList.chmg_content}</div>
+					</div>
+					<div class="chatList-more-box"><i class="fas fa-ellipsis-v"></i></div>
+					<input type="hidden" name="chro_pd_num" value="${chattingList.chro_pd_num}">
 				</div>
-				<div class="chatList-content-box">
-					<div class="chatList-party-id">rmfls123</div>
-					<div class="chatList-sendDate">2021-03-28 17:27</div>
-					<div class="chatList-last-message">구매가능한가요??</div>
-				</div>
-				<div class="chatList-more-box"><i class="fas fa-ellipsis-v"></i></div>
-			</div>						
+			</c:forEach>
+									
 		</div>
 	</div>
 </body>
 <script>
-	
+	$('.chatList-content-box').click(function(){
+		var chro_pd_num = $(this).siblings('input[name=chro_pd_num]').val();
+		var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=' + chro_pd_num;
+        var name = 'chattingPopup';
+        var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
+        window.open(url, name, option);
+	})
 </script>
 </html>

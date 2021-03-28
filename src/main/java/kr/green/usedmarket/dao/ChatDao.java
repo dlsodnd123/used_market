@@ -1,6 +1,7 @@
 package kr.green.usedmarket.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,11 @@ public interface ChatDao {
 	void insertChatMessage(@Param("chro_num")int chro_num, @Param("mb_id")String mb_id, @Param("chmg_content")String chmg_content);
 
 	ChattingVo selectNewChatMessage(@Param("chro_num")int chro_num, @Param("chmg_num")Integer chmg_num);
+
+	ArrayList<ChattingVo> selectChatRoom(@Param("mb_id")String mb_id);
+
+	String selectChatContent(@Param("chro_num")int chro_num);
+
+	Date selectChatFirstSendDate(@Param("chro_num")int chro_num);
 
 }

@@ -143,7 +143,6 @@ public class HomeController {
 	public ModelAndView loginGet(ModelAndView mv, HttpSession session) {
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
         String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);        
-        System.out.println("네이버:" + naverAuthUrl);        
         mv.addObject("url", naverAuthUrl);
 		mv.setViewName("/main/login");
 		return mv;

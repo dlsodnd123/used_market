@@ -34,9 +34,18 @@
 	<select id="selectNewChatMessage" resultType="kr.green.usedmarket.vo.ChattingVo">
 		select * from chat_message where chmg_chro_num = #{chro_num} and chmg_num > #{chmg_num}
 	</select>
-
-
-
+<!-- 회원아이디와 일치하는 채팅방목록을 가져오는 쿼리문 -->
+	<select id="selectChatRoom" resultType="kr.green.usedmarket.vo.ChattingVo">
+		select * from chat_room where chro_buyer_mb_id = #{mb_id} or chro_seller_mb_id = #{mb_id}
+	</select>
+<!-- 채팅룸 번호와 일치하는 채팅메시지중에 마지막 메시지 내용 가져오는 쿼리문 -->	
+	<select id="selectChatContent" resultType="String">
+		select chmg_content from chat_message where chmg_chro_num = #{chro_num} order by chmg_sendDate desc limit 0, 1
+	</select>
+<!-- 채팅룸 번호와 일치하는 첫번째 메시지 전송시간을 가져오는 쿼리문 -->	
+	<select id="selectChatFirstSendDate" resultType="Date">
+		select chmg_sendDate from chat_message where chmg_chro_num = #{chro_num} order by chmg_sendDate limit 0, 1
+	</select>
 
 
 </mapper>

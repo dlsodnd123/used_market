@@ -124,8 +124,21 @@ public class ChatControll {
 	public ModelAndView popupChattingListGet(ModelAndView mv, HttpServletRequest request) {
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
-		
+		// 로그인된 회원아이디가 있는 채팅방과 채팅메시지 가져오기
+		ArrayList<ChattingVo> chattingList = chatService.getChatList(member.getMb_id());
+		ArrayList<StandVo> standList = new ArrayList<StandVo>();
+		// 채팅목록에 나타낼 상대방의 가판대 정보 가져오기
+		for(int i = 0; i<chattingList.size(); i++) {
+		// 가져온 채팅목록에서 로그인된 아이디가 buyer와 일치한다면 seller와 일치하는 가판대 정보 가져오기
+			if(chattingList.get(i).getChro_buyer_mb_id().equals(member.getMb_id()))
+				standList.add(standService.getStand(chattingList.get(i).getChro_seller_mb_id()));
+		// 가져온 채팅목록에서 로그인된 아이디가 seller와 일치한다면 buyer랑 일치하는 가판대 정보 가져오기
+			else if(chattingList.get(i).getChro_seller_mb_id().equals(member.getMb_id()))
+				standList.add(standService.getStand(chattingList.get(i).getChro_buyer_mb_id()));
+		}
 		mv.addObject("member", member);
+		mv.addObject("chattingList", chattingList);
+		mv.addObject("standList", standList);
 		mv.setViewName("/popup/chat/chattingList");
 		return mv;
 	}

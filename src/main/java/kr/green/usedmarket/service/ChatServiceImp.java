@@ -54,6 +54,20 @@ public class ChatServiceImp implements ChatService{
 	public ChattingVo getNewChatMessage(int chro_num, Integer chmg_num) {		
 		return chatDao.selectNewChatMessage(chro_num, chmg_num);
 	}
+	// 로그인된 회원아이디가 있는 채팅방과 채팅메시지 가져오기
+	@Override
+	public ArrayList<ChattingVo> getChatList(String mb_id) {
+		// 로그인된 회원아이디와 일치하는 채팅방들 가져오기
+		ArrayList<ChattingVo> chatList = chatDao.selectChatRoom(mb_id);
+		// 마지막메시지와 채팅방 첫번째 메시지 시간 가져오기
+		for(ChattingVo tmp : chatList) {
+			// 마지막메시지 가져오기
+			tmp.setchmg_content(chatDao.selectChatContent(tmp.getChro_num()));
+			// 첫번째 메시지 시간 가져오기
+			tmp.setChmg_sendDate(chatDao.selectChatFirstSendDate(tmp.getChro_num()));
+		}			
+		return chatList;
+	}
 	
 
 }
