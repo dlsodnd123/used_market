@@ -14,6 +14,10 @@
     <definition name="/popup/chat/chatting" template="/WEB-INF/views/layout/disapplyLayout.jsp">
     	 <put-attribute name="body" value="/WEB-INF/views/popup/chat/chatting.jsp" />
     </definition>
+    <definition name="/popup/chat/chattingList" template="/WEB-INF/views/layout/disapplyLayout.jsp">
+    	 <put-attribute name="body" value="/WEB-INF/views/popup/chat/chattingList.jsp" />
+    </definition>
+    
  
     <!-- (2) 레이아웃을 적용하는화면-->
     <definition name=".root" template="/WEB-INF/views/layout/baseLayout.jsp">
