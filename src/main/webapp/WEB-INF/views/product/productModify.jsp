@@ -84,80 +84,106 @@
         	width: 240px;
             height: 240px;
         }
+        .product-modify-error{
+        	margin: 30px 25px;
+        }
+        .modify-error-message{
+        	font-size: 25px;
+        	margin-bottom: 20px;
+        	font-weight: 700;
+        }
+        .modify-move-main,
+        .modify-move-login{
+        	font-size: 18px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-    	<div class="container top">
-    		<h3>내용수정</h3>
-    	</div>
-        <form action="<%=request.getContextPath()%>/product/modify" method="post" enctype="multipart/form-data">
-          <div class="form-group pd-line">
-            <h4>제목(필수)</h4> <br>
-            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24" value="${product.pd_title}">
-          </div>
-          <div class="form-group pd-line">
-            <h4>카테고리(필수)</h4> <br>
-            <label for="pd_category" class="error" id="pd_category-error"></label>
-            <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
-                <option value="여성의류" <c:if test="${product.pd_category == '여성의류'}">selected</c:if>>여성의류</option>
-                <option value="남성의류" <c:if test="${product.pd_category == '남성의류'}">selected</c:if>>남성의류</option>
-                <option value="패션잡화" <c:if test="${product.pd_category == '패션잡화'}">selected</c:if>>패션잡화</option>
-                <option value="뷰티/미용" <c:if test="${product.pd_category == '뷰티/미용'}">selected</c:if>>뷰티/미용</option>
-                <option value="키즈" <c:if test="${product.pd_category == '키즈'}">selected</c:if>>키즈</option>
-                <option value="가전" <c:if test="${product.pd_category == '가전'}">selected</c:if>>가전</option>
-                <option value="가구/인테리어" <c:if test="${product.pd_category == '가구/인테리어'}">selected</c:if>>가구/인테리어</option>
-                <option value="생활용품" <c:if test="${product.pd_category == '생활용품'}">selected</c:if>>생활용품</option>
-                <option value="스포츠" <c:if test="${product.pd_category == '스포츠'}">selected</c:if>>스포츠</option>
-                <option value="문화" <c:if test="${product.pd_category == '문화'}">selected</c:if>>문화</option>
-                <option value="차량/오토바이" <c:if test="${product.pd_category == '차량/오토바이'}">selected</c:if>>차량/오토바이</option>
-                <option value="무료나눔" <c:if test="${product.pd_category == '무료나눔'}">selected</c:if>>무료나눔</option>
-            </select>
-          </div>
-          <div class="form-group pd-line">
-            <h4>상품이미지(필수)</h4> <br>
-            <label for="pdimg_name" class="error" id="pdimg_name-error"></label>
-              <ul class="pd-img-box">
-                  <li class="pd-img-content">
-                    <i class="far fa-images uploadpdimg"></i>이미지등록
-                  </li>
-                  <c:forEach items="${productImgList}" var="index">
+	<c:if test="${member.mb_id != null && member.mb_id == product.pd_mb_id }">
+	    <div class="container">
+	    	<div class="container top">
+	    		<h3>내용수정</h3>
+	    	</div>
+	        <form action="<%=request.getContextPath()%>/product/modify" method="post" enctype="multipart/form-data">
+	          <div class="form-group pd-line">
+	            <h4>제목(필수)</h4> <br>
+	            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24" value="${product.pd_title}">
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>카테고리(필수)</h4> <br>
+	            <label for="pd_category" class="error" id="pd_category-error"></label>
+	            <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
+	                <option value="여성의류" <c:if test="${product.pd_category == '여성의류'}">selected</c:if>>여성의류</option>
+	                <option value="남성의류" <c:if test="${product.pd_category == '남성의류'}">selected</c:if>>남성의류</option>
+	                <option value="패션잡화" <c:if test="${product.pd_category == '패션잡화'}">selected</c:if>>패션잡화</option>
+	                <option value="뷰티/미용" <c:if test="${product.pd_category == '뷰티/미용'}">selected</c:if>>뷰티/미용</option>
+	                <option value="키즈" <c:if test="${product.pd_category == '키즈'}">selected</c:if>>키즈</option>
+	                <option value="가전" <c:if test="${product.pd_category == '가전'}">selected</c:if>>가전</option>
+	                <option value="가구/인테리어" <c:if test="${product.pd_category == '가구/인테리어'}">selected</c:if>>가구/인테리어</option>
+	                <option value="생활용품" <c:if test="${product.pd_category == '생활용품'}">selected</c:if>>생활용품</option>
+	                <option value="스포츠" <c:if test="${product.pd_category == '스포츠'}">selected</c:if>>스포츠</option>
+	                <option value="문화" <c:if test="${product.pd_category == '문화'}">selected</c:if>>문화</option>
+	                <option value="차량/오토바이" <c:if test="${product.pd_category == '차량/오토바이'}">selected</c:if>>차량/오토바이</option>
+	                <option value="무료나눔" <c:if test="${product.pd_category == '무료나눔'}">selected</c:if>>무료나눔</option>
+	            </select>
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>상품이미지(필수)</h4> <br>
+	            <label for="pdimg_name" class="error" id="pdimg_name-error"></label>
+	              <ul class="pd-img-box">
 	                  <li class="pd-img-content">
-	                  	<i class="fas fa-times deleteImg"></i>
-	                  	<img alt="" src="<%=request.getContextPath()%>/resources/product_img/${index}">
-	                  	<input type="hidden" value="${index}">
+	                    <i class="far fa-images uploadpdimg"></i>이미지등록
 	                  </li>
-                  </c:forEach>
-              </ul>
-          </div>
-          <div class="form-group pd-line">
-            <h4>거래방법(필수)</h4> <br>
-            <label for="pd_deal" class="error" id="pd_deal-error"></label>
-            <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배" <c:if test="${product.pd_deal == '택배'}">checked</c:if>>택배
-                </label>
-              </div>
-              <div class="form-check-inline">
-                <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="pd_deal" value="직거래" <c:if test="${product.pd_deal == '직거래'}">checked</c:if>>직거래
-                </label>
-              </div>
-          </div>
-          <div class="form-group pd-line">
-            <h4>상품내용</h4> <br>
-            <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content">${product.pd_content}</textarea>
-          </div>
-          <div class="form-group pd-line">
-              <h4>상품가격(필수)</h4> <br>
-              <label for="pd_price" class="error" id="pd_price-error"></label> <br>
-            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price" value="${product.pd_price}">원 
-          </div>
-          <button type="submit" class="btn btn-primary register-btn col-2">수정하기</button>
-          <a href="<%=request.getContextPath()%>/stand"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
-          <input type="hidden" name="pd_num" value="${product.pd_num}">
-        </form>
-    </div>
+	                  <c:forEach items="${productImgList}" var="index">
+		                  <li class="pd-img-content">
+		                  	<i class="fas fa-times deleteImg"></i>
+		                  	<img alt="" src="<%=request.getContextPath()%>/resources/product_img/${index}">
+		                  	<input type="hidden" value="${index}">
+		                  </li>
+	                  </c:forEach>
+	              </ul>
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>거래방법(필수)</h4> <br>
+	            <label for="pd_deal" class="error" id="pd_deal-error"></label>
+	            <div class="form-check-inline">
+	                <label class="form-check-label" for="radio1">
+	                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배" <c:if test="${product.pd_deal == '택배'}">checked</c:if>>택배
+	                </label>
+	              </div>
+	              <div class="form-check-inline">
+	                <label class="form-check-label" for="radio2">
+	                  <input type="radio" class="form-check-input" id="radio2" name="pd_deal" value="직거래" <c:if test="${product.pd_deal == '직거래'}">checked</c:if>>직거래
+	                </label>
+	              </div>
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>상품내용</h4> <br>
+	            <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content">${product.pd_content}</textarea>
+	          </div>
+	          <div class="form-group pd-line">
+	              <h4>상품가격(필수)</h4> <br>
+	              <label for="pd_price" class="error" id="pd_price-error"></label> <br>
+	            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price" value="${product.pd_price}">원 
+	          </div>
+	          <button type="submit" class="btn btn-primary register-btn col-2">수정하기</button>
+	          <a href="<%=request.getContextPath()%>/stand"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
+	          <input type="hidden" name="pd_num" value="${product.pd_num}">
+	        </form>
+	    </div>
+    </c:if>
+    <c:if test="${member.mb_id != prodcut.pd_mb_id}">
+    	<div class="container product-modify-error">
+	    	<div class="modify-error-message"><i class="fas fa-exclamation-triangle"></i> 잘못된 접근 방식입니다.</div>
+	    	<a href="<%=request.getContextPath()%>/"><button type="button" class="btn btn-primary modify-move-main">메인페이지로</button></a>
+    	</div>		    
+    </c:if>
+    <c:if test="${member == null}">
+    	<div class="container product-modify-error">
+	    	<div class="modify-error-message"><i class="fas fa-exclamation-triangle"></i> 로그인이 필요합니다.</div>
+	    	<a href="<%=request.getContextPath()%>/login"><button type="button" class="btn btn-primary modify-move-login">로그인</button></a>
+    	</div>		    
+    </c:if>
 <script>
     $('form').validate({
         rules : {

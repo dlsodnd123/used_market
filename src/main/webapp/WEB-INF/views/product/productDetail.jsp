@@ -500,7 +500,7 @@
                     </c:forEach>
                 </ul>
                 <c:if test="${previewList.size() > 4}">
-                	<div class="more-btn"><a href="#">상품 더 보기></a></div>
+                	<div class="more-btn"><a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}#home">상품 더 보기></a></div>
                 </c:if>
             </div>
           </div>
@@ -945,6 +945,13 @@
         // 상품가격에 숫자 3자리마다 콤마넣기
         var comma = numberWithCommas($('.price').text());
 		$('.price').text(comma);	
+		
+		// 상품가격에 숫자 3자리마다 콤마넣기(가판대정보)
+		for(var i = 0; i<4; i++){
+			var comma = numberWithCommas($('.product-price').eq(i).text());
+			$('.product-price').eq(i).text(comma);
+		}
+		
 		
        	// 숫자 3자리 마다 콤마를 넣는 정규식 함수
 		function numberWithCommas(obj) {

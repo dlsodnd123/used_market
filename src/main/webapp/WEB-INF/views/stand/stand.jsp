@@ -11,6 +11,11 @@
 			text-decoration: none;
 			color: black;
 		}
+		.stQuestion-writer>a,
+		.dibs-title>a{
+			text-decoration: none;
+			color: black;
+		}		
 		.nav-link{
 			font-size: 12px;
 		}
@@ -167,6 +172,7 @@
         	font-size: 14px;
         	font-weight: 700;
         	margin: 10px 0 15px 0;
+        	width: 160px;        	
         }
         .dibs-info-box .dibs-content-box .dibs-price{
         	font-weight: 700;
@@ -316,7 +322,7 @@
 		                    <button type="button" class="btn btn-light img-modify">가판대이미지수정</button>	                    
 		                    <input type="file" class="stand-img-upload" style="display: none;" name="file">
 		                    <button type="submit" class="send-img-btn" style="display: none;">전송</button>
-		                    <a href="<%=request.getContextPath()%>/product/register?name=${stand.st_name}"><button type="button" class="btn btn-primary">상품등록</button></a>
+		                    <a href="<%=request.getContextPath()%>/product/register"><button type="button" class="btn btn-primary">상품등록</button></a>
 		                </div>
 	                </c:if>
 	            </div>
@@ -350,7 +356,7 @@
            		<a class="nav-link menu3" data-toggle="tab" href="#menu3">거래후기</a>
          	</li>
          	<li class="select nav-item">
-           		<a class=" nav-link menu4" data-toggle="tab" href="#menu4">문의사항(${stQuestionsCount})</a>
+           		<a class=" nav-link menu4" data-toggle="tab" href="#menu4">문의사항(<span class="stQuestionsCount">${stQuestionsCount}</span>)</a>
          	</li>
        	</ul>
      	
@@ -457,6 +463,7 @@
 	           		<h3>찜한상품</h3>
 	           		<div class="dibs-selectBtn-box">
 		           		<button type="button" class="btn btn-light all-select-btn">전체선택</button>
+		           		<button type="button" class="btn btn-light all-deselction-btn">전체선택해제</button>
 		           		<button type="button" class="btn btn-light all-selectDel-btn">선택상품삭제</button>           				
 	           		</div>
 	           		<c:forEach items="${dibsList}" var="dibs">
@@ -635,8 +642,14 @@
    	    })
    	    // 전체선택 버튼 클릭시 모든 체크박스 체크
    	    $('.all-select-btn').click(function(){
-   	    	$('.dibs-check-box').children().toggleClass('dibs-select');
+   	    	$('.dibs-check-box').children().removeClass('dibs-select');
+   	    	$('.dibs-check-box').children().addClass('dibs-select');
    	    })
+   	    // 전체선택해제 버튼 클릭시 모든 체크박스 선택해제
+   	    $('.all-deselction-btn').click(function(){
+   	    	$('.dibs-check-box').children().removeClass('dibs-select');
+   	    })
+   	    
    	    // 선택상품 삭제 클릭시
    	    $('.all-selectDel-btn').click(function(){
    	    	pd_num = [];
@@ -671,10 +684,10 @@
 	           			str += '<i class="fas fa-check-circle"></i>'
 	           			str += '</div>'
 	           			str += '<div class="dibs-img-box">'
-	           			str += '<a href="#"><img alt="" src="/usedmarket/resources/product_img/'+ data.dibsList[i].st_img+'"></a>'
+	           			str += '<a href="<%=request.getContextPath()%>/product/detail?pd_num=' + data.dibsList[i].pd_num + '"><img alt="" src="/usedmarket/resources/product_img/'+ data.dibsList[i].st_img+'"></a>'
 	           			str += '</div>'
 	           			str += '<div class="dibs-content-box">'
-	           			str += '<div class="dibs-title"><a href="#">' + data.dibsList[i].pd_title + '</a></div>'
+	           			str += '<div class="dibs-title"><a href="<%=request.getContextPath()%>/product/detail?pd_num=' + data.dibsList[i].pd_num + '">' + data.dibsList[i].pd_title + '</a></div>'
 	           			str += '<div class="dibs-price">' + data.dibsList[i].pd_price + '원</div>'
 	           			str += '<div class="dibs-regTime">' + data.dibsList[i].pd_registerDate + '</div>'
 	           			str += '<div class="dibs-deal">거래방법 ' + data.dibsList[i].pd_deal + '</div>'
@@ -683,6 +696,10 @@
 		           		str += '</div>'
 	           			$('#menu2').append(str);
     	        	}
+    	        	for(var i = 0; i<${dibsPdCnt}; i++){
+    	    			var comma = numberWithCommas($('.dibs-price').eq(i).text());
+    	    			$('.dibs-price').eq(i).text(comma);
+    	    		}
 				},
 	   	     	error: function(error) {
 	   	        	console.log('에러발생');
@@ -741,7 +758,11 @@
 	           			str += '</div>'
 	           			$('.stQuestion-register-box').before(str);
 						eventStQuestionsModifyBtn($('.stQuestion-modify-btn'));
+						$('.stQuestion-del-btn').off('click');
 						eventStQuestionsDelBtn($('.stQuestion-del-btn'));
+						// 문의사항 탭의 갯수 수정하기
+						var cnt = parseInt($('.stQuestionsCount').text()) + 1;						
+						$('.stQuestionsCount').text(cnt);
 					}						
 				},
 	   	     	error: function(error) {
@@ -753,6 +774,7 @@
    	    // 문의사항 탭의 문의글 수정기능
    	 	eventStQuestionsModifyBtn($('.stQuestion-modify-btn'));
    	    
+   	  	 $('.stQuestion-del-btn').off('click');
    	    // 문의사항 글 삭제하는 기능
    	    eventStQuestionsDelBtn($('.stQuestion-del-btn'));
    	    
@@ -974,6 +996,10 @@
 							else{							
 								alert('삭제 처리 되었습니다.');
 								clickPoint.parents('.stQuestion-box').remove();
+								// 문의사항 탭의 갯수 수정하기								
+								var cnt = parseInt($('.stQuestionsCount').text()) - 1;						
+								$('.stQuestionsCount').text(cnt);
+								
 							}
 		   				},
 		   	   	     	error: function(error) {
@@ -1358,7 +1384,20 @@
 	   	   	    	}
 	      	    })
 	   		})
- 		} 		
+ 		}
+ 		// 가격에 숫자 3자리마다 콤마 찍기
+		for(var i = 0; i<${dibsPdCnt}; i++){
+			var comma = numberWithCommas($('.dibs-price').eq(i).text());
+			$('.dibs-price').eq(i).text(comma);
+		}
+ 		
+ 	   	// 숫자 3자리 마다 콤마를 넣는 정규식 함수
+ 		function numberWithCommas(obj) {
+ 	    	return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+ 		}
+ 	   	// 로그인이 안된상태에서 가판대이미지 변경할려고 하면 알림창 띄우고 로그인 페이지로 이동시키기
+ 	   	var responseMessage = ${responseMessage}
+ 	   	console.log(responseMessage);
   	</script>
 </body>
 </html>

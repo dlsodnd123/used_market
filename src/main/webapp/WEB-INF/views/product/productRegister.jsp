@@ -76,75 +76,96 @@
         	width: 240px;
             height: 240px;
         }
+        .product-register-error{
+        	margin: 30px 25px;
+        }
+        .register-error-message{
+        	font-size: 25px;
+        	margin-bottom: 20px;
+        	font-weight: 700;
+        }
+        .register-move-main,
+        .register-move-login{
+        	font-size: 18px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data">
-          <div class="form-group pd-line">
-            <h4>제목(필수)</h4>
-            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24">
-          </div>
-          <div class="form-group pd-line">
-            <h4>카테고리(필수)</h4>
-            <label for="pd_category" class="error" id="pd_category-error"></label>
-            <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
-                <option value="여성의류">여성의류</option>
-                <option value="남성의류">남성의류</option>
-                <option value="패션잡화">패션잡화</option>
-                <option value="뷰티/미용">뷰티/미용</option>
-                <option value="키즈">키즈</option>
-                <option value="가전">가전</option>
-                <option value="가구/인테리어">가구/인테리어</option>
-                <option value="생활용품">생활용품</option>
-                <option value="스포츠">스포츠</option>
-                <option value="문화">문화</option>
-                <option value="차량/오토바이">차량/오토바이</option>
-                <option value="기타">기타</option>
-                <option value="무료나눔">무료나눔</option>
-            </select>
-          </div>
-          <div class="form-group pd-line">
-            <h4>상품이미지(필수)</h4>
-            <label for="pdimg_name" class="error" id="pdimg_name-error"></label>
-              <ul class="pd-img-box">
-                  <li class="pd-img-content">
-                    <i class="far fa-images uploadpdimg"></i>이미지등록
-                  </li>
-              </ul>
-          </div>
-          <div class="form-group pd-line">
-            <h4>거래방법(필수)</h4>
-            <label for="pd_deal" class="error" id="pd_deal-error"></label>
-            <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배">택배
-                </label>
-              </div>
-              <div class="form-check-inline">
-                <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="pd_deal" value="직거래">직거래
-                </label>
-              </div>
-          </div>
-          <div class="form-group pd-line">
-          	<h4>거래지역(필수)</h4>
-          	<label for="pd_area" class="error" id="pd_area-error"></label>
-          	<input type="text" class="form-control col-8" id="pd_area" placeholder="상세주소는 빼고 입력해주세요.(ex. 충북 청주시 상당구)" name="pd_area" maxlength="24">          	
-          </div>
-          <div class="form-group pd-line">
-            <h4>상품내용</h4>
-            <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content"></textarea>
-          </div>
-          <div class="form-group pd-line">
-              <h4>상품가격(필수)</h4>
-              <label for="pd_price" class="error" id="pd_price-error"></label> <br>
-            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price">원 
-          </div>
-          <button type="submit" class="btn btn-primary register-btn col-2">등록하기</button>
-          <input type="hidden" name="pd_mb_id" value="${member.mb_id}">
-        </form>
-    </div>
+	<c:if test="${member != null}">
+	    <div class="container">
+	        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data">
+	          <div class="form-group pd-line">
+	            <h4>제목(필수)</h4>
+	            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24">
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>카테고리(필수)</h4>
+	            <label for="pd_category" class="error" id="pd_category-error"></label>
+	            <select multiple class="form-control col-8 category" id="pd_category" name="pd_category">
+	                <option value="여성의류">여성의류</option>
+	                <option value="남성의류">남성의류</option>
+	                <option value="패션잡화">패션잡화</option>
+	                <option value="뷰티/미용">뷰티/미용</option>
+	                <option value="키즈">키즈</option>
+	                <option value="가전">가전</option>
+	                <option value="가구/인테리어">가구/인테리어</option>
+	                <option value="생활용품">생활용품</option>
+	                <option value="스포츠">스포츠</option>
+	                <option value="문화">문화</option>
+	                <option value="차량/오토바이">차량/오토바이</option>
+	                <option value="기타">기타</option>
+	                <option value="무료나눔">무료나눔</option>
+	            </select>
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>상품이미지(필수)</h4>
+	            <label for="pdimg_name" class="error" id="pdimg_name-error"></label>
+	              <ul class="pd-img-box">
+	                  <li class="pd-img-content">
+	                    <i class="far fa-images uploadpdimg"></i>이미지등록
+	                  </li>
+	              </ul>
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>거래방법(필수)</h4>
+	            <label for="pd_deal" class="error" id="pd_deal-error"></label>
+	            <div class="form-check-inline">
+	                <label class="form-check-label" for="radio1">
+	                  <input type="radio" class="form-check-input" id="radio1" name="pd_deal" value="택배">택배
+	                </label>
+	              </div>
+	              <div class="form-check-inline">
+	                <label class="form-check-label" for="radio2">
+	                  <input type="radio" class="form-check-input" id="radio2" name="pd_deal" value="직거래">직거래
+	                </label>
+	              </div>
+	          </div>
+	          <div class="form-group pd-line">
+	          	<h4>거래지역(필수)</h4>
+	          	<label for="pd_area" class="error" id="pd_area-error"></label>
+	          	<input type="text" class="form-control col-8" id="pd_area" placeholder="상세주소는 빼고 입력해주세요.(ex. 충북 청주시 상당구)" name="pd_area" maxlength="24">          	
+	          </div>
+	          <div class="form-group pd-line">
+	            <h4>상품내용</h4>
+	            <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content"></textarea>
+	          </div>
+	          <div class="form-group pd-line">
+	              <h4>상품가격(필수)</h4>
+	              <label for="pd_price" class="error" id="pd_price-error"></label> <br>
+	            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price">원 
+	          </div>
+	          <button type="submit" class="btn btn-primary register-btn col-2">등록하기</button>
+	          <input type="hidden" name="pd_mb_id" value="${member.mb_id}">
+	        </form>
+	    </div>
+    </c:if>
+    <c:if test="${member == null}">
+    	<div class="container product-register-error">
+	    	<div class="register-error-message"><i class="fas fa-exclamation-triangle"></i> 잘못된 접근 방식입니다.</div>
+	    	<a href="<%=request.getContextPath()%>/"><button type="button" class="btn btn-primary register-move-main">메인페이지로</button></a>
+	    	<a href="<%=request.getContextPath()%>/login"><button type="button" class="btn btn-primary register-move-login">로그인</button></a>
+    	</div>
+    </c:if>
 <script>
     $('form').validate({
         rules : {

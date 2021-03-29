@@ -17,8 +17,8 @@
 <!-- 회원가입시 기본 가판대를 생성하는 쿼리문 -->
 	<insert id="insertStand">
 		insert into
-			stand(st_name, st_mb_id)
-			values(#{stand.st_name}, #{stand.st_mb_id})
+			stand(st_name, st_mb_id, st_img)
+			values(#{stand.st_name}, #{stand.st_mb_id}, #{stand.st_img})
 	</insert>
 <!-- 회원정보를 수정하는 쿼리문 -->
 	<update id="updateInfoIncludePw" parameterType="kr.green.usedmarket.vo.MemberVo">

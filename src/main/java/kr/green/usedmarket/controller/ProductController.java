@@ -52,7 +52,7 @@ public class ProductController {
 		return mv;
 	}
 	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
-	public ModelAndView productRegisterPost(ModelAndView mv, HttpServletRequest request,ProductVo product, MultipartFile [] imgFileList) throws IOException, Exception {
+	public ModelAndView productRegisterPost(ModelAndView mv, HttpServletRequest request, ProductVo product, MultipartFile [] imgFileList) throws IOException, Exception {
 		productService.setProduct(product);
 		if(imgFileList != null && imgFileList.length != 0) {
 			for(MultipartFile file : imgFileList) {
@@ -68,19 +68,24 @@ public class ProductController {
 	}
 	// 내용수정 화면 담당
 	@RequestMapping(value = "/product/modify", method = RequestMethod.GET)
-	public ModelAndView productModifyGet(ModelAndView mv, int pd_num) {
+	public ModelAndView productModifyGet(ModelAndView mv, int pd_num, HttpServletRequest request) {
 		ProductVo product = standService.getProduct(pd_num);
 		
 		String [] productImgList = productService.getProductImg(pd_num);
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
 		
-		mv.addObject("productImgList",productImgList);
+		mv.addObject("member", member);
+		mv.addObject("productImgList", productImgList);
 		mv.addObject("product", product);
 		mv.setViewName("/product/productModify");
 		return mv;
 	}
 	// 등록된 상품 내용수정 담당
 	@RequestMapping(value = "/product/modify", method = RequestMethod.POST)
-	public ModelAndView productModifyPost(ModelAndView mv, ProductVo product, String [] deleteImgList, MultipartFile [] imgFileList) throws IOException, Exception {		
+	public ModelAndView productModifyPost(ModelAndView mv, ProductVo product, String [] deleteImgList, MultipartFile [] imgFileList, HttpServletRequest request) throws IOException, Exception {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
 		// 상품 내용 수정
 		productService.productModfiy(product);
 		// 기존 이미지을 삭제했을 경우
@@ -98,7 +103,7 @@ public class ProductController {
 				}
 			}
 		}
-		mv.setViewName("redirect:/stand");
+		mv.setViewName("redirect:/stand?mb_id=" + member.getMb_id() + "#home");
 		return mv;
 	}
 	// 상품상세 페이지

@@ -113,12 +113,16 @@ public class StandController {
 	// 가판대 대표 이미지 수정하는 기능
 	@RequestMapping(value = "/stand", method = RequestMethod.POST)
 	public ModelAndView standPost(ModelAndView mv, HttpServletRequest request, MultipartFile file) throws IOException, Exception {
-		if(file != null && file.getOriginalFilename().length() != 0) {
+		// 로그인된 회원정보 가져오기
+		MemberVo member = standService.getMemberId(request);
+		if(member == null) {
+			mv.setViewName("redirect:/login");
+			return mv;
+		}else if(file != null && file.getOriginalFilename().length() != 0) {
 			String fileName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(),file.getBytes());
-			MemberVo member = standService.getMemberId(request);
 			standService.updateStandImg(fileName, member.getMb_id());
-		}
-		mv.setViewName("redirect:/stand");
+		}		
+		mv.setViewName("redirect:/stand?mb_id=" + member.getMb_id() + "#home"); 
 		return mv;
 	}
 	// 상품목록/관리에서 판매여부를 변경하는 기능

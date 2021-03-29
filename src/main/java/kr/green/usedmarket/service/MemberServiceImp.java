@@ -37,7 +37,8 @@ public class MemberServiceImp implements MemberService {
 		memberDao.insertMember(member);
 		// 회원가입시 기본적인 가판대 생성
 		StandVo stand = new StandVo(member.getMb_id());
-		
+		stand.setSt_img("기본이미지.jpg");
+		System.out.println(stand);
 		memberDao.insertStand(stand);
 	}	
 	// 아이디/패스워드 일치여부 확인하는 기능
