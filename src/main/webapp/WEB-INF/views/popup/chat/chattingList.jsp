@@ -26,7 +26,7 @@
 	}
 	.chatList .chatList-lower-box{
 		background-color: rgb(243,243,243);
-		height: 480px;
+		height: 600px;
 		overflow: auto;
 	}
 	.chatList .chatList-info-box{
@@ -64,6 +64,32 @@
 		font-size: 12px;
 		margin-bottom: 10px;
 	}
+	.chatList-info-box .chatList-more-box{
+		float: right;
+		padding-top: 12px;
+		position: relative;
+	}
+	.chatList-info-box .chatList-more-box>i{
+		color: #909090;
+		cursor: pointer;
+	}
+	.chatList-more-box .chatList-exit{
+		background-color: white;
+		border: 1px solid #dae0e5;
+		position: absolute;
+		display: inline-block;
+		left: -90px;
+		bottom: -35px;
+		font-size: 13px;	
+		display: none;	
+	}
+	.chatList-more-box .chatList-exit-btn{
+		width: 90px;
+		height: 30px;
+		text-align: center;
+    	line-height: 2;
+    	cursor: pointer;    	
+	}
 </style>
 </head>
 <body>
@@ -87,21 +113,32 @@
 						<div class="chatList-sendDate">${chattingList.chmg_sendDate}</div>
 						<div class="chatList-last-message">${chattingList.chmg_content}</div>
 					</div>
-					<div class="chatList-more-box"><i class="fas fa-ellipsis-v"></i></div>
+					<!-- <div class="chatList-more-box">
+						<i class="fas fa-ellipsis-v"></i>
+						<div class="chatList-exit">
+							<div class="chatList-exit-btn">채팅방나가기</div>
+						</div>
+					</div> -->
 					<input type="hidden" name="chro_pd_num" value="${chattingList.chro_pd_num}">
 				</div>
-			</c:forEach>
-									
+			</c:forEach>									
 		</div>
 	</div>
 </body>
-<script>
+<script type="text/javascript">
 	$('.chatList-content-box').click(function(){
 		var chro_pd_num = $(this).siblings('input[name=chro_pd_num]').val();
 		var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=' + chro_pd_num;
-        var name = 'chattingPopup';
-        var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
-        window.open(url, name, option);
+	    var name = 'chattingPopup';
+	    var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
+	    window.open(url, name, option);
 	})
+/* 	$('.fa-ellipsis-v').click(function(){
+		 $(this).parents('.chatList-more-box').find('.chatList-exit').toggle();
+	})
+	// 채팅방 나가기 클릭시 채팅방 목록 지우기
+		$('.chatList-exit-btn').click(function(){
+			console.log(123);
+		}) */
 </script>
 </html>

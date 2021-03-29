@@ -25,7 +25,7 @@
 		margin-bottom: 10px;
 		border-bottom: 2px solid #5a93fa;		
 	}
-	.chat-top-box .chat-info-box>a>img{
+	.chat-top-box .chat-info-box>img{
 		width: 60px;
 		height: 60px;
 		margin-right: 12px;
@@ -116,7 +116,7 @@
 		<div class="chat-top-box">
 			<div class="chat-standName-box">${stand.st_name}</div>
 			<div class="chat-info-box">
-				<a href=""><img src="<%=request.getContextPath()%>/resources/product_img${chatProduct.st_img}"></a>
+				<img src="<%=request.getContextPath()%>/resources/product_img${chatProduct.st_img}">
 				<div class="chat-content-box">
 					<div class="chat-product-price">${chatProduct.pd_price} 원</div>
 					<div class="chat-product-title">${chatProduct.pd_title}</div>
@@ -162,7 +162,6 @@
 		var pd_num = '${pd_num}';
 		var pd_mb_id = '${pd_mb_id}';		
 		var chmg_num = $('input[id=chmg_num]').last().val();
-		console.log(chmg_num);
 		var sendData = {"pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
 		$.ajax({
      		url : '<%=request.getContextPath()%>/reload/message',
@@ -223,7 +222,7 @@
 	var lastOpponentLoc = $('.opponent-content-box').last().offset();
 	var lastMySelfLoc = $('.mySelf-message-box').last().offset();
 	// 상대방이 메시지가 마지막이라면
-	if(lastOpponentLoc.top>lastMySelfLoc.top){
+	if(lastOpponentLoc != null && lastMySelfLoc != null && lastOpponentLoc.top>lastMySelfLoc.top){
 		$('.message-box').animate({scrollTop: lastOpponentLoc.top}, 0);
 	}else{
 		$('.message-box').animate({scrollTop: lastMySelfLoc.top}, 0);
@@ -249,6 +248,14 @@
 	  	        	console.log('에러발생');
 	  	    	}
 	   	})		
+	}
+	// 상품가격에 숫자 3자리마다 콤마넣기
+    var comma = numberWithCommas($('.chat-product-price').text());
+	$('.chat-product-price').text(comma);	
+	
+   	// 숫자 3자리 마다 콤마를 넣는 정규식 함수
+	function numberWithCommas(obj) {
+    	return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 </script>
 </html>
