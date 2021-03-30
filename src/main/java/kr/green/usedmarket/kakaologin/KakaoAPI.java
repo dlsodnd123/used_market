@@ -89,7 +89,7 @@ public class KakaoAPI {
 	        conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 	        
 	        int responseCode = conn.getResponseCode();
-	        
+	        System.out.println(responseCode);
 	        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        
 	        String line = "";

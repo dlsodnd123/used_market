@@ -92,19 +92,19 @@
 			<div class="swiper-container">	
 			  	<div class="swiper-wrapper">
 				    <div class="swiper-slide">				    	
-			            <img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플이미지1.jpg" alt="">
+			            <img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플1.jpg" alt="">
 			        </div>
 		          	<div class="swiper-slide">
-		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플이미지2.jpg" alt="">
+		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플2.jpg" alt="">
 		          	</div>
 		          	<div class="swiper-slide">
-		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플이미지3.jpg" alt="">
+		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플3.jpg" alt="">
 		          	</div>
 		          	<div class="swiper-slide">
-		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플이미지4.jpg" alt="">
+		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플4.jpg" alt="">
 		          	</div>
 		          	<div class="swiper-slide">
-		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플이미지5.jpg" alt="">
+		              	<img width="100%" height="100%" src="<%=request.getContextPath()%>/resources/img/배너샘플5.jpg" alt="">
 		          	</div>
 			  	</div>
 			  <div class="swiper-button-prev"></div>

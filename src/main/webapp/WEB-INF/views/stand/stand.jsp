@@ -116,7 +116,7 @@
         .product-modify-btn,
         .product-delete-btn,
         .product-SaleCancel-btn{
-        	font-size : 12px
+        	font-size : 11px
         }
         .move-detail-btn{
         	font-size : 10px
@@ -392,7 +392,7 @@
 		                        <td>
 		                        	<c:if test="${stand.st_mb_id == member.mb_id}">
 				                        <button type="button" class="btn btn-light product-Sale-btn">판매처리</button>
-				                        <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>
+				                        <a href="<%=request.getContextPath()%>/product/modify?pd_num=${product.pd_num}"><button type="button" class="btn btn-light product-modify-btn">수정</button></a>
 				                        <button type="button" class="btn btn-light product-delete-btn">삭제</button>
 			                        </c:if>
 			                        <a href="<%=request.getContextPath()%>/product/detail?pd_num=${product.pd_num}"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>
@@ -862,7 +862,7 @@
 		                        str += '<td>' + data.productList[i].pd_registerDate + '</td>'
 		                        str += '<td>'
 			                    str += '<button type="button" class="btn btn-light product-Sale-btn">판매처리</button>'
-			                    str += '<a href="/usedmarket/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">내용수정</button></a>'
+			                    str += '<a href="/usedmarket/product/modify?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light product-modify-btn">수정</button></a>'
 			                    str += '<button type="button" class="btn btn-light product-delete-btn">삭제</button>'
 			                    str += '<a href="/usedmarket/product/detail?pd_num=' + data.productList[i].pd_num + '"><button type="button" class="btn btn-light move-detail-btn">상품페이지로</button></a>'
 		                        str += '</td>'
@@ -1179,7 +1179,7 @@
    		}
    		// 가격에 숫자 3자리마다 콤마 찍어주는 함수
    		function eventComma(cnt, obj){
-   			for(var i = 0; i<cnt; i++){
+   			for(var i = 0; i<=cnt; i++){
    				var comma = numberWithCommas(obj.eq(i).text());
    				obj.eq(i).text(comma);
    			}
@@ -1395,9 +1395,6 @@
  		function numberWithCommas(obj) {
  	    	return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
  		}
- 	   	// 로그인이 안된상태에서 가판대이미지 변경할려고 하면 알림창 띄우고 로그인 페이지로 이동시키기
- 	   	var responseMessage = ${responseMessage}
- 	   	console.log(responseMessage);
   	</script>
 </body>
 </html>
