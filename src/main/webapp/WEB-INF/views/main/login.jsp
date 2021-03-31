@@ -58,7 +58,7 @@
 	        </div>
 	        <button type="submit" class="btn btn-primary login-btn col-4">로그인</button>
 	        <div class="more-login">
-	        	<a href="https://kauth.kakao.com/oauth/authorize?client_id=19dc637ddfd6828dcbe4ec333e6ebc94&redirect_uri=http://218.236.203.105:8080/usedmarket/&response_type=code"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
+	        	<a href="https://kauth.kakao.com/oauth/authorize?client_id=fa9fcd0c380520317e416702a422a80d&redirect_uri=http://218.236.203.129:8080/usedmarket/&response_type=code"><img src="<%=request.getContextPath()%>/resources/img/kakao_login_medium_narrow.png"></a>
 		        <a href="${url}"><img height="45px" src="<%=request.getContextPath()%>/resources/img/네이버 아이디로 로그인_완성형_Green.PNG"></a>
 	        </div>
 	        <div class="find-box">

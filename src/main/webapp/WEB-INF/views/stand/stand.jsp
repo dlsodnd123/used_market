@@ -334,22 +334,22 @@
        	<ul class="nav nav-tabs" role="tablist">
        		<c:if test="${stand.st_mb_id == member.mb_id}">
 	         	<li class="select nav-item mgtPd">
-	           		<a class="nav-link mgtPd-tab home" data-toggle="tab" href="#home">상품목록/관리(${productCount})</a>
+	           		<a class="nav-link mgtPd-tab home" data-toggle="tab" href="#home">상품목록/관리(<span class="productCount">${productCount}</span>)</a>
 	         	</li>
          	</c:if>
          	<c:if test="${stand.st_mb_id != member.mb_id}">         	
 	         	<li class="select nav-item mgtPd">
-	           		<a class="nav-link mgtPd-tab home active" data-toggle="tab" href="#home">상품목록(${productCount})</a>
+	           		<a class="nav-link mgtPd-tab home active" data-toggle="tab" href="#home">상품목록(<span class="productCount">${productCount}</span>)</a>
 	         	</li>
          	</c:if>
          	<c:if test="${stand.st_mb_id == member.mb_id}">
 	         	<li class="select nav-item sale">
-	           		<a class="nav-link salePd-tab menu1" data-toggle="tab" href="#menu1">판매한상품(${saleProductCount})</a>
+	           		<a class="nav-link salePd-tab menu1" data-toggle="tab" href="#menu1">판매한상품(<span class="saleProductCount">${saleProductCount}</span>)</a>
 	         	</li>
 	        </c:if>
 	        <c:if test="${stand.st_mb_id == member.mb_id}">
 	         	<li class="select nav-item dibs">
-	           		<a class="nav-link dibsPd-tab active menu2" data-toggle="tab" href="#menu2">찜한상품(${dibsPdCnt})</a>
+	           		<a class="nav-link dibsPd-tab active menu2" data-toggle="tab" href="#menu2">찜한상품(<span class="dibsPdCnt">${dibsPdCnt}</span>)</a>
 	         	</li>
          	</c:if>
          	<li class="select nav-item">

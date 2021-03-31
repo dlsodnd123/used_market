@@ -38,6 +38,9 @@ public class ChatControll {
 		// 화면에서 넘겨준 pd_num과 일치하는 상품정보, 이미지 가져오기
 		DibsVo chatProduct = chatService.getChatProduct(pd_num);
 		
+		System.out.println(member.getMb_id());
+		System.out.println(chatProduct.getPd_mb_id());
+		
 		// pd_mb_id와 현재 로그인 된 mb_id가 일치한다면
 		if(chatProduct.getPd_mb_id().equals(member.getMb_id())) {
 			

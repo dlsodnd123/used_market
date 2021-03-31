@@ -249,7 +249,7 @@
 			$('.category-Product-price').eq(i).text(comma);
 		}
 	}
-	// 숫자숫자 3자리 마다 콤마를 넣는 정규식 함수
+	// 숫자 3자리 마다 콤마를 넣는 정규식 함수
 	function numberWithCommas(obj) {
 	    return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}

@@ -160,6 +160,7 @@
  	// 1초마다 새로고침
  	setInterval(() => {
 		var pd_num = '${pd_num}';
+		console.log('${pd_num}')
 		var pd_mb_id = '${pd_mb_id}';		
 		var chmg_num = $('input[id=chmg_num]').last().val();
 		var sendData = {"pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
@@ -172,7 +173,7 @@
 			success : function(data){
 				if(data.result == "notChatRoom"){
 					alert('로그아웃 되었거나 문제가 발생하였습니다. 채팅창을 종료 합니다.')
-					var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=${product.pd_num}';
+					var url = '<%=request.getContextPath()%>/popup/chatting?pd_num=${product.pd_num}';
 		            var name = 'chattingPopup';
 		            var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
 		            window.close(url, name, option);					

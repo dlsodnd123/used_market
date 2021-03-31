@@ -164,7 +164,7 @@
 	})
 	// 채팅 클릭시 채팅목록창 팝업으로 띄어주기
 	$('.chattingList-link').click(function(){
-		var url = 'http://localhost:8080/usedmarket/popup/chattingList';
+		var url = '<%=request.getContextPath()%>/popup/chattingList';
         var name = 'chattingListPopup';
         var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
         window.open(url, name, option);

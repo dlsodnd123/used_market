@@ -498,6 +498,9 @@
                          </div>
                      </li>
                     </c:forEach>
+                    <c:if test="${previewList == '[]' }">  
+                    	<div>다른 판매 상품은 없습니다.</div>  
+                    </c:if>  
                 </ul>
                 <c:if test="${previewList.size() > 4}">
                 	<div class="more-btn"><a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}#home">상품 더 보기></a></div>
@@ -937,7 +940,7 @@
    	    })
    	    // 연락하기 버튼 클릭시 채팅팝업 띄우기
         $('.chatting-btn').click(function(){
-            var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=${product.pd_num}';
+            var url = '<%=request.getContextPath()%>/popup/chatting?pd_num=${product.pd_num}';
             var name = 'chattingPopup';
             var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
             window.open(url, name, option);

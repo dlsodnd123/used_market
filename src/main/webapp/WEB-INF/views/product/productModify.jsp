@@ -66,7 +66,7 @@
             display: inline-block;
             margin-right: 15px;
         }
-        .register-btn,
+        .modify-btn,
         .cancel-btn{
             margin: 30px 0 70px 0;
             padding: 20px;
@@ -104,7 +104,7 @@
 	    	<div class="container top">
 	    		<h3>내용수정</h3>
 	    	</div>
-	        <form action="<%=request.getContextPath()%>/product/modify" method="post" enctype="multipart/form-data">
+	        <form action="<%=request.getContextPath()%>/product/modify" method="post" enctype="multipart/form-data" id="form">
 	          <div class="form-group pd-line">
 	            <h4>제목(필수)</h4> <br>
 	            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24" value="${product.pd_title}">
@@ -158,6 +158,11 @@
 	              </div>
 	          </div>
 	          <div class="form-group pd-line">
+	          	<h4>거래지역(필수)</h4> 
+	          	<label for="pd_area" class="error" id="pd_area-error"></label> 
+	          	<input type="text" class="form-control col-8" id="pd_area" placeholder="상세주소는 빼고 입력해주세요.(ex. 충북 청주시 상당구)" name="pd_area" maxlength="24">          	 
+	          </div> 
+	          <div class="form-group pd-line"> 
 	            <h4>상품내용</h4> <br>
 	            <textarea class="form-control col-8" rows="8" id="pd_content" name="pd_content">${product.pd_content}</textarea>
 	          </div>
@@ -166,26 +171,26 @@
 	              <label for="pd_price" class="error" id="pd_price-error"></label> <br>
 	            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price" value="${product.pd_price}">원 
 	          </div>
-	          <button type="submit" class="btn btn-primary register-btn col-2">수정하기</button>
+	          <button type="submit" class="btn btn-primary modify-btn col-2">수정하기</button>
 	          <a href="<%=request.getContextPath()%>/stand"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
 	          <input type="hidden" name="pd_num" value="${product.pd_num}">
 	        </form>
 	    </div>
     </c:if>
-    <c:if test="${member.mb_id != prodcut.pd_mb_id}">
+    <c:if test="${member.mb_id != null && member.mb_id != product.pd_mb_id }">
     	<div class="container product-modify-error">
 	    	<div class="modify-error-message"><i class="fas fa-exclamation-triangle"></i> 잘못된 접근 방식입니다.</div>
 	    	<a href="<%=request.getContextPath()%>/"><button type="button" class="btn btn-primary modify-move-main">메인페이지로</button></a>
     	</div>		    
     </c:if>
-    <c:if test="${member == null}">
+    <c:if test="${member == null }">
     	<div class="container product-modify-error">
 	    	<div class="modify-error-message"><i class="fas fa-exclamation-triangle"></i> 로그인이 필요합니다.</div>
 	    	<a href="<%=request.getContextPath()%>/login"><button type="button" class="btn btn-primary modify-move-login">로그인</button></a>
     	</div>		    
     </c:if>
 <script>
-    $('form').validate({
+    $('#form').validate({
         rules : {
             pd_category : {
                 required : true
@@ -219,6 +224,12 @@
         var re = new RegExp(regexp);
         return this.optional(elemnt) || re.test(value);
     })
+    // 서버로 수정할 내용을 전송하기 전에 정규식을 이용하여 콤마 지워서 전송하기  
+    $('#form').submit(function(){  
+    	var price = $('input[name=pd_price]').val().toString().replace(/,/g, "");  
+    	$('input[name=pd_price]').val(price);  
+    }) 
+    
     $('.uploadpdimg').click(function(){
     	// 숨겨져 있는 이미지 파일 첨부박스 있는 확인
     	var fileCheck = $('.pd-img-file').last().val()
@@ -247,8 +258,36 @@
     	$('form').append('<input type="hidden" name="deleteImgList" value="">');
     	$('input[name=deleteImgList]').last().val(deleteImg);
     })
-    
-       
+    // 수정화면에 들어왔을 때 판매중인 상품의 거래방법이 '택배'이면 거래지역을 '전국'으로 넣어주고, readonly 적용하기     
+   	var checkDeal = $('input[name=pd_deal]').val();    	    
+   	if(checkDeal == '택배'){  
+   		$('input[name=pd_area]').val('전국');  
+   		$('input[name=pd_area]').attr('readonly', 'true');  
+   	}  
+    // 택배를 선택했을때 거래지역에 택배로 입력되고 readonly 적용시키키  
+    $('.form-check-label').click(function(){  
+    	var checkDeal = $(this).find('input[name=pd_deal]').val();    	    
+    	if(checkDeal == '택배'){  
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').val('전국');  
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').attr('readonly', 'true');  
+    	}else{  
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').val('');  
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').removeAttr('readonly');  
+   		}  
+    })  
+    // 불러온 가격에 숫자 3자리 마다 콤마 넣어주기  
+    var comma = numberWithCommas($('input[name=pd_price]').val());  
+    $('input[name=pd_price]').val(comma);
+ 	// 가격입력 후 숫자 3마리 마다 콤마 넣어주기  
+    $('input[name=pd_price]').change(function(){  
+    	var comma = numberWithCommas($('input[name=pd_price]').val());  
+        $('input[name=pd_price]').val(comma);  
+    })  
+      
+    // 숫자 3자리 마다 콤마를 넣는 정규식 함수  
+	function numberWithCommas(obj) {  
+	    return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+	}   
     function previewImg(event) { 
     	var reader = new FileReader(); 
     	

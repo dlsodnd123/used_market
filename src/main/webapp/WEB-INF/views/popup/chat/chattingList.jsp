@@ -128,7 +128,7 @@
 <script type="text/javascript">
 	$('.chatList-content-box').click(function(){
 		var chro_pd_num = $(this).siblings('input[name=chro_pd_num]').val();
-		var url = 'http://localhost:8080/usedmarket/popup/chatting?pd_num=' + chro_pd_num;
+		var url = '<%=request.getContextPath()%>/popup/chatting?pd_num=' + chro_pd_num;
 	    var name = 'chattingPopup';
 	    var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
 	    window.open(url, name, option);

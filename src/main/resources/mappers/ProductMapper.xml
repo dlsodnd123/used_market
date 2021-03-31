@@ -34,7 +34,7 @@
 	</delete>
 <!-- 상품페이지의 가판대정보에 사용될 상품정보와 상품가격 가져오는 쿼리문 -->
 	<select id="selectProductNum" resultType="kr.green.usedmarket.vo.PreviewVo">
-		select * from product where pd_num != #{pd_num} and pd_mb_id = #{pd_mb_id}
+		select * from product where pd_num != #{pd_num} and pd_mb_id = #{pd_mb_id} and pd_isDel = 'N' and pd_isSale = 'N'
 	</select>
 <!-- 상품페이지의 가판대정보에 보여질 상품이미지 1개 가져오는 쿼리문 -->
 	<select id="selectPreviewImg" resultType="String">

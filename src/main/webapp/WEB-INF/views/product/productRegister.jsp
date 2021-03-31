@@ -93,7 +93,7 @@
 <body>
 	<c:if test="${member != null}">
 	    <div class="container">
-	        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data">
+	        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data" id="form">
 	          <div class="form-group pd-line">
 	            <h4>제목(필수)</h4>
 	            <input type="text" class="form-control col-8" id="pd_title" name="pd_title" placeholder="최대 25자까지 가능합니다." maxlength="24">
@@ -167,7 +167,7 @@
     	</div>
     </c:if>
 <script>
-    $('form').validate({
+    $('#form').validate({
         rules : {
             pd_category : {
                 required : true
@@ -207,6 +207,11 @@
         var re = new RegExp(regexp);
         return this.optional(elemnt) || re.test(value);
     })
+    // 서버로 수정할 내용을 전송하기 전에 정규식을 이용하여 콤마 지워서 전송하기  
+    $('#form').submit(function(){  
+    	var price = $('input[name=pd_price]').val().toString().replace(/,/g, "");  
+    	$('input[name=pd_price]').val(price);  
+    }) 
     $('.uploadpdimg').click(function(){
     	// 숨겨져 있는 이미지 파일 첨부박스 있는 확인
     	var fileCheck = $('.pd-img-file').last().val()
@@ -229,16 +234,26 @@
 	    })
     })
     // 택배를 선택했을때 거래지역에 택배로 입력되고 readonly 적용시키키
-       $('.form-check-label').click(function(){
-    	   var checkDeal = $(this).find('input[name=pd_deal]').val();    	  
-    	   if(checkDeal == '택배'){
-    		   $(this).parents('.form-group').next().find('input[name=pd_area]').val('전국');
-    		   $(this).parents('.form-group').next().find('input[name=pd_area]').attr('readonly', 'true');
-    	   }else{
-    		   $(this).parents('.form-group').next().find('input[name=pd_area]').val('');
-    		   $(this).parents('.form-group').next().find('input[name=pd_area]').removeAttr('readonly');
-    	   }
-       })
+    $('.form-check-label').click(function(){
+    	var checkDeal = $(this).find('input[name=pd_deal]').val();    	  
+    	if(checkDeal == '택배'){
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').val('전국');
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').attr('readonly', 'true');
+    	}else{
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').val('');
+    		$(this).parents('.form-group').next().find('input[name=pd_area]').removeAttr('readonly');
+    	}
+    })
+    // 가격입력 후 숫자 3마리 마다 콤마 넣어주기  
+    $('input[name=pd_price]').change(function(){  
+    	var comma = numberWithCommas($('input[name=pd_price]').val());  
+        $('input[name=pd_price]').val(comma);  
+    })  
+      
+    // 숫자 3자리 마다 콤마를 넣는 정규식 함수  
+	function numberWithCommas(obj) {  
+	    return obj.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+	} 
     function previewImg(event) { 
     	var reader = new FileReader(); 
     	

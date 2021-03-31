@@ -208,6 +208,7 @@ public class MemberServiceImp implements MemberService {
     	if(member != null) {
 	    	// 기본 가판대 생성
 	    	StandVo stand = new StandVo(member.getMb_id());
+	    	stand.setSt_img("기본이미지.jpg");
     		memberDao.insertStand(stand);
     	}
 	}
@@ -264,6 +265,7 @@ public class MemberServiceImp implements MemberService {
     	if(member != null) {
 	    	// 기본 가판대 생성
 	    	StandVo stand = new StandVo(member.getMb_id());
+	    	stand.setSt_img("기본이미지.jpg");
     		memberDao.insertStand(stand);
     	}			
 	}	
