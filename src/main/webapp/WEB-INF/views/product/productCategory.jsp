@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>카테리고</title>
 <style>
+	.category-box{
+		padding-top: 125px;
+	}
 	.after:after{
 		content: '';
 		clear: both;
@@ -99,7 +102,7 @@
 </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container category-box">
 		<div class="category-top-box after">
 			<div class="title-box">
 				<div class="category-Title"><b>${pd_category}</b>의 전체상품</div>
@@ -148,12 +151,10 @@
 	</div>
 <script>
 	// 상품상자 클릭시 해당 상세페이지로 이동
-	$('.category-Product-box').click(function(){
-		var pd_num = $(this).find('.category-Product-num').val()
-		location.href = '<%=request.getContextPath()%>/product/detail?pd_num=' + pd_num
-	})
+	eventMoveProductDetail($('.category-Product-box'));
+	
 	// 가격에 숫자 3자리마다 콤마 찍어주기
-	eventComma($('.category-Product-num'))	
+	eventComma($('.category-Product-num'));
 	
 	// '최신순', '저가순', '고가순'을 클릭했을 때
 		$('.category-new, .category-low, .category-high').click(function(){
@@ -274,6 +275,8 @@
 			str += '</div>'
 			$('.category-ProductList').html(str);
 		}
+		// 상품상자 클릭시 해당 상세페이지로 이동
+		eventMoveProductDetail($('.category-Product-box'));
 	}
 	
 	// 페이지네이션에 번호를 클릭했을 때 함수
@@ -373,6 +376,13 @@
 	   	    	}
 	  	    })
 		})	
+	}
+	// 상품상자 클릭시 해당 상세페이지로 이동하는 함수
+	function eventMoveProductDetail(obj){
+		obj.click(function(){
+			var pd_num = $(this).find('.category-Product-num').val()
+			location.href = '<%=request.getContextPath()%>/product/detail?pd_num=' + pd_num
+		})
 	}
 </script>
 </body>

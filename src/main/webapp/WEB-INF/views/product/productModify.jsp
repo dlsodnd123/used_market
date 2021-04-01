@@ -13,8 +13,16 @@
             font-size: 17px;
         }
         .top{
-        	padding: 35px 0 10px 0;
-        	border-bottom: 1px solid black;
+        	padding: 155px 0 10px 0;
+        }
+        .productModify-box{
+        	background-color: honeydew;
+        }
+        .productModify-title{
+        	font-size: 25px;
+			font-weight: 700;
+			border-bottom: 2px solid #5a93fa;
+			padding-bottom: 10px;
         }
         .pd-line::after{
             content: '';
@@ -39,6 +47,7 @@
             display: inline-block;
             text-align: center;
             border: 1px solid  #dae0e5;
+            background-color: white;
         }
         .pd-img-box>li{
             float: left;
@@ -85,7 +94,7 @@
             height: 240px;
         }
         .product-modify-error{
-        	margin: 30px 25px;
+        	padding: 155px 25px 35px 25px;
         }
         .modify-error-message{
         	font-size: 25px;
@@ -100,9 +109,9 @@
 </head>
 <body>
 	<c:if test="${member.mb_id != null && member.mb_id == product.pd_mb_id }">
-	    <div class="container">
+	    <div class="container productModify-box">
 	    	<div class="container top">
-	    		<h3>내용수정</h3>
+	    		<div class="productModify-title col-6">내용수정</div>
 	    	</div>
 	        <form action="<%=request.getContextPath()%>/product/modify" method="post" enctype="multipart/form-data" id="form">
 	          <div class="form-group pd-line">

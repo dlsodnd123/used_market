@@ -19,16 +19,14 @@
             text-decoration: none;
             color: black;
         }
-        .top-line{
-            padding-top: 20px;
-            margin-top: 20px;
-            border-top: 1px solid black;
+        .productDetail-box{
+        	padding-top: 145px;
         }
         .after::after{
         	content: '';
             clear: both;
             display: block;
-        }
+        }        
         .mySlides {
             display:none;
             width: 480px;
@@ -310,7 +308,7 @@
 </style>
 <body>
 	<c:if test="${product != null}">
-    <div class="container top-line after">
+    <div class="container top-line after productDetail-box">
         <div class="left-box">
             <div class="w3-content w3-display-container">
             	<c:forEach items="${productImgList}" var="imgList">
@@ -476,11 +474,11 @@
             <h3>가판대정보</h3>
             <div class="container stand-info after">
                 <div class="stand-info-box">
-                	<a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}">
+                	<a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}#home">
                     	<img src="<%=request.getContextPath()%>/resources/stand_img/${stand.st_img}" alt="" class="stand-img">
                     </a>
                     <div class="info-box">                    	
-                        <div class="stand_name"><a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}">${stand.st_name}</a></div>
+                        <div class="stand_name"><a href="<%=request.getContextPath()%>/stand?mb_id=${product.pd_mb_id}#home">${stand.st_name}</a></div>
                         <div class="product-count">판매중상품 ${productCount}</div>
                         <div class="product-sale-count">판매완료상품 ${productSaleCount}</div>
                     </div>
@@ -845,6 +843,12 @@
 	    // 찜하기 버튼 클릭시
 	    var interest = ${interestPd.itpd_selected}
 	    $('.middle-box .btn-box .selected-btn').click(function(){
+	    	var tmp = '${member.mb_id}';
+	    	if('${member.mb_id}' == ''){
+	    		var login = confirm('로그인 후 이용가능 합니다. 로그인 하시겠습니까?')
+	    		if(login)
+        			location.href = '<%=request.getContextPath()%>/login'
+	    	}	    	
 	    	if(interest == 1){
 				var interestTmp = confirm('상품 찜을 취소하겠습니까?');
 				if(!interestTmp)

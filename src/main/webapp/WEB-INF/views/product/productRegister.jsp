@@ -7,12 +7,20 @@
 <meta charset="UTF-8">
 <title>상품등록</title>
 <style>
+		.productRegister-box{
+			padding-top: 125px;
+			background-color: honeydew;
+		}
+		.productRegister-title{
+			font-size: 25px;
+			font-weight: 700;
+			border-bottom: 2px solid #5a93fa;
+			padding-bottom: 10px;
+		}
         .pd-line{
             border-bottom: 1px solid #dae0e5;
             padding: 25px 0;
             font-size: 17px;
-        }
-        .pd-line{
         }
         .pd-line::after{
             content: '';
@@ -37,6 +45,7 @@
             display: inline-block;
             text-align: center;
             border: 1px solid  #dae0e5;
+            background-color: white;
         }
         .pd-img-box>li{
             float: left;
@@ -77,7 +86,7 @@
             height: 240px;
         }
         .product-register-error{
-        	margin: 30px 25px;
+        	padding: 155px 25px 35px 25px;
         }
         .register-error-message{
         	font-size: 25px;
@@ -92,7 +101,8 @@
 </head>
 <body>
 	<c:if test="${member != null}">
-	    <div class="container">
+	    <div class="container productRegister-box"><br>
+	    	<div class="productRegister-title col-6">상품등록</div>
 	        <form action="<%=request.getContextPath()%>/product/register" method="post" enctype="multipart/form-data" id="form">
 	          <div class="form-group pd-line">
 	            <h4>제목(필수)</h4>
