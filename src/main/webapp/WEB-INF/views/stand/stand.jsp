@@ -28,6 +28,9 @@
         .stand-middle{
             padding: 40px 100px 20px 100px;
         }
+        .stand-top{
+        	padding-top: 180px;
+        }
         .stand-top::after{
             content: '';
             clear: both;
@@ -62,6 +65,7 @@
         .stand-introduce-box .stand-btn-box>a>.btn-primary{
             float: right;
             font-size: 15px;
+            margin-top: 10px;
         }
         .stand-title{
         	width: 250px;        	
@@ -322,7 +326,7 @@
 		                    <button type="button" class="btn btn-light img-modify">가판대이미지수정</button>	                    
 		                    <input type="file" class="stand-img-upload" style="display: none;" name="file">
 		                    <button type="submit" class="send-img-btn" style="display: none;">전송</button>
-		                    <a href="<%=request.getContextPath()%>/product/register"><button type="button" class="btn btn-primary">상품등록</button></a>
+		                    <a href="<%=request.getContextPath()%>/product/register"><button type="button" class="btn btn-primary pd-register">상품등록</button></a>
 		                </div>
 	                </c:if>
 	            </div>
@@ -337,7 +341,7 @@
 	           		<a class="nav-link mgtPd-tab home" data-toggle="tab" href="#home">상품목록/관리(<span class="productCount">${productCount}</span>)</a>
 	         	</li>
          	</c:if>
-         	<c:if test="${stand.st_mb_id != member.mb_id}">         	
+         	<c:if test="${stand.st_mb_id != member.mb_id}">          	
 	         	<li class="select nav-item mgtPd">
 	           		<a class="nav-link mgtPd-tab home active" data-toggle="tab" href="#home">상품목록(<span class="productCount">${productCount}</span>)</a>
 	         	</li>
@@ -612,6 +616,7 @@
    	    $('.stand-introduce-box .stand-btn-box .introduce-btn').click(function(){
    	    	$('.stand-introduce-box .modify-box').show();
    	    	$('.stand-introduce-box .show-box').hide();
+   	    	$('.pd-register').hide();
    	    })
    	    $('.stand-introduce-box .modify-box .confirm').click(function(){
    	    	var standIntroduce = $(this).prev().val();
@@ -624,8 +629,9 @@
 	  	        	$('.stand-introduce-box .modify-box').hide();
 	  	   	    	$('.stand-introduce-box .show-box').show();
 	        		$('.stand-introduce').val(standIntroduce);
+	        		$('.pd-register').show();
 	   	        },
-	   	     	error: function(error) {
+	   	     	error: function(error) { 
 	   	        	console.log('에러발생');
 	   	    	}
    	    	})
@@ -908,7 +914,9 @@
    			  	        data:data,
    			  	        url:'<%=request.getContextPath()%>/modify/isDel',
    			  	        success : function(data){
-   			  	        	 clickPoint.parents('.productList-tr').remove();
+   			  	        	 clickPoint.parents('.productList-tr').remove(); 
+   			  	        	 var productCount = $('.productCount').text() - 1;
+   			  	        	 $('.productCount').text(productCount);
    			   	        },
    			   	     	error: function(error) {
    			   	        	console.log('에러발생');
