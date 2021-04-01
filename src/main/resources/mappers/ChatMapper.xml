@@ -46,6 +46,8 @@
 	<select id="selectChatFirstSendDate" resultType="Date">
 		select chmg_sendDate from chat_message where chmg_chro_num = #{chro_num} order by chmg_sendDate limit 0, 1
 	</select>
-
-
+<!-- 상품번호, 현재로그인 아이디, 구매자가 일치하는 채팅룸 정보 가져오기 -->
+	<select id="selectSellerChatRoom" resultType="kr.green.usedmarket.vo.ChattingVo">
+		select * from chat_room where chro_pd_num = #{pd_num} and chro_seller_mb_id = #{mb_id} and chro_buyer_mb_id = #{buyer}
+	</select>
 </mapper>

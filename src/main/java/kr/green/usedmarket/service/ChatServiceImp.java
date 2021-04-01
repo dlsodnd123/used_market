@@ -68,6 +68,11 @@ public class ChatServiceImp implements ChatService{
 		}			
 		return chatList;
 	}
+	// pd_num, mb_id, buyer와 일치하는 채팅룸 가져오기
+	@Override
+	public ChattingVo getSellerChatRoom(int pd_num, String mb_id, String buyer) {		
+		return chatDao.selectSellerChatRoom(pd_num, mb_id, buyer);
+	}
 	
 
 }

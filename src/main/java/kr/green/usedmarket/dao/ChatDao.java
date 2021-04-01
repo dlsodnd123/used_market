@@ -28,4 +28,6 @@ public interface ChatDao {
 
 	Date selectChatFirstSendDate(@Param("chro_num")int chro_num);
 
+	ChattingVo selectSellerChatRoom(@Param("pd_num")int pd_num, @Param("mb_id")String mb_id, @Param("buyer")String buyer);
+
 }

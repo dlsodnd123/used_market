@@ -21,5 +21,7 @@ public interface ChatService {
 
 	ArrayList<ChattingVo> getChatList(String mb_id);
 
+	ChattingVo getSellerChatRoom(int pd_num, String mb_id, String buyer);
+
 
 }
