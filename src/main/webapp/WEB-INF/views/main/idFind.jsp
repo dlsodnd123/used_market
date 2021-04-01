@@ -9,7 +9,7 @@
 <style>
 	.idFind-box{
 		text-align: center;
-		margin: 65px 0;		
+		padding: 185px 0 65px 0;		
 	}
 	.pwFind>a{
 		text-decoration: underline;
@@ -46,7 +46,7 @@
 		<div class="form-group col-4 idFind-title"><i class="fas fa-user-check idFind-title-ico"></i> 아이디 찾기</div>
 		<div class="idFind-explain">이름과 회원가입시 입력한 이메일을 입력해주세요</div>
 		<div class="form-group">
-          <input type="text" class="form-control idFind-name col-4" name="idFind-name" placeholder="이름">
+          <input type="text" class="form-control idFind-name col-4" name="idFind-name" placeholder="이름" autofocus>
         </div>
         <div class="form-group">
           <input type="email" class="form-control idFind-email col-4" name="idFind-email" placeholder="이메일">
@@ -57,6 +57,15 @@
 <script>
 	// 찾기 버튼 클릭시 ajax로 처리하기
 	$('.idFind-btn').click(function(){
+		eventIdFind();
+	})
+	$('.idFind-email').keydown(function(){
+		if(event.keyCode == 13){
+			eventIdFind();
+		}
+	})	
+	// id찾기 함수
+	function eventIdFind(){
 		var mb_name = $('input[name=idFind-name]').val();
 		var mb_email = $('input[name=idFind-email]').val();
 		var sendData = {'mb_name' : mb_name, 'mb_email' : mb_email};
@@ -82,8 +91,7 @@
    	        	console.log('에러발생');
    	    	}
 		})
-	})
-	
+	}
 </script>
 </body>
 </html>
