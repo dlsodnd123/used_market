@@ -9,11 +9,10 @@
 <style>
 	.pwFind-box{
 		text-align: center;
-		margin: 65px 0;		
+		padding: 185px 0 65px 0;		
 	}
 	.pwFind>a{
-		text-decoration: underline;
-		
+		text-decoration: underline;		
 	}
 	.pwFind>a:hover {
 		color: black;
@@ -47,7 +46,7 @@
 		<div class="form-group col-4 pwFind-title"><i class="fas fa-lock"></i> 비밀번호 찾기</div>
 		<div class="pwFind-explain">아이디, 이름, 회원가입시 입력한 이메일을 입력해주세요</div>
 		<div class="form-group">
-          <input type="text" class="form-control pwFind-id col-4" name="pwFind-id" placeholder="아이디">
+          <input type="text" class="form-control pwFind-id col-4" name="pwFind-id" placeholder="아이디" autofocus>
         </div>
 		<div class="form-group">
           <input type="text" class="form-control pwFind-name col-4" name="pwFind-name" placeholder="이름">

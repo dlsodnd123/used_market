@@ -9,7 +9,7 @@
 <style>
         .login-top{
             text-align: center;
-            margin: 65px 0 100px 0;
+            padding: 185px 0 100px 0;        
         }
         .login{
             display: inline-block;
@@ -33,7 +33,7 @@
         	margin-top: 10px;
         }
         .login-error{
-        	margin: 30px 25px;        	
+        	padding: 155px 25px 35px 25px;        	
         }
         .login-complete{
         	font-size: 25px;
@@ -51,7 +51,7 @@
 	      <h3>로그인</h3>
 	      <form action="<%=request.getContextPath()%>/login" method="post" id="login-check">
 	        <div class="form-group">
-	          <input type="text" class="form-control login col-4" id="id" name="id" placeholder="아이디">
+	          <input type="text" class="form-control login col-4" id="id" name="id" placeholder="아이디" autofocus>
 	        </div>
 	        <div class="form-group">
 	          <input type="password" class="form-control login col-4" id="pw" name="pw" placeholder="비밀번호">
