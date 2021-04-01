@@ -5,6 +5,9 @@
 <head>
 	<title>Home</title>
 <style>
+	.mainHome{
+		padding-top: 125px;
+	}
 	.banner-box{
 		width: 1024px;
 		height: 300px;
