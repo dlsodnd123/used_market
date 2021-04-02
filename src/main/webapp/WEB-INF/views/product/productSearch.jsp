@@ -95,11 +95,14 @@
 		font-size: 30px;
 		font-weight: 700;
 	}
+	.productSearch-box{
+		padding-top: 125px;
+	}
 }
 </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container productSearch-box">
 		<div class="category-top-box after">
 			<div class="title-box">
 				<div class="category-Title"><b>${cri.search}</b>의 검색결과</div>
@@ -259,6 +262,11 @@
 			str += '</div>'
 			$('.category-ProductList').html(str);
 		}
+		//상품상자 클릭시 해당 상세페이지로 이동
+		$('.category-Product-box').click(function(){
+			var pd_num = $(this).find('.category-Product-num').val()
+			location.href = '<%=request.getContextPath()%>/product/detail?pd_num=' + pd_num
+		})
 	}
 	// 기존에 있던 페이지네이션 지우고 새로운 페이지네이션 넣는 함수
 	function eventRenewalPagenation(pm, page){		
