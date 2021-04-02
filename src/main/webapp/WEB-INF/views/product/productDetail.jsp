@@ -848,6 +848,7 @@
 	    		var login = confirm('로그인 후 이용가능 합니다. 로그인 하시겠습니까?')
 	    		if(login)
         			location.href = '<%=request.getContextPath()%>/login'
+        			return false;
 	    	}	    	
 	    	if(interest == 1){
 				var interestTmp = confirm('상품 찜을 취소하겠습니까?');
@@ -944,10 +945,16 @@
    	    })
    	    // 연락하기 버튼 클릭시 채팅팝업 띄우기
         $('.chatting-btn').click(function(){
-            var url = '<%=request.getContextPath()%>/popup/chatting?pd_num=${product.pd_num}';
-            var name = 'chattingPopup';
-            var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
-            window.open(url, name, option);
+        	if('${member}' == ''){
+        		var login = confirm('로그인 후 이용가능 합니다. 로그인 하시겠습니까?')
+        		if(login)
+        			location.href = '<%=request.getContextPath()%>/login'
+        	}else{
+	            var url = '<%=request.getContextPath()%>/popup/chatting?pd_num=${product.pd_num}';
+	            var name = 'chattingPopup';
+	            var option = 'width = 350, height = 680, top = 100, left = 200, location = no'
+	            window.open(url, name, option);
+        	}
         })
         // 상품가격에 숫자 3자리마다 콤마넣기
         var comma = numberWithCommas($('.price').text());
