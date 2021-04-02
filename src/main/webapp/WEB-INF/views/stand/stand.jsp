@@ -357,7 +357,7 @@
 	         	</li>
          	</c:if>
          	<li class="select nav-item">
-           		<a class="nav-link menu3" data-toggle="tab" href="#menu3">거래후기</a>
+           		<a class=" nav-link menu4" data-toggle="tab" href="#menu3">거래후기</a>
          	</li>
          	<li class="select nav-item">
            		<a class=" nav-link menu4" data-toggle="tab" href="#menu4">문의사항(<span class="stQuestionsCount">${stQuestionsCount}</span>)</a>
@@ -487,12 +487,11 @@
 			           		<input type="hidden" name="dibspd-num" value="${dibs.pd_num}">
 		           		</div>
 	           		</c:forEach>
-	         	</div>	         	
+	         	</div>	        	
          	</c:if>
          	<div id="menu3" class="container tab-pane fade"><br>
-         		<h3>거래후기</h3>
-           		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-         	</div>
+           		<h3>거래후기</h3>
+           	</div>
          	<div id="menu4" class="container tab-pane fade"><br>
            		<h3>문의사항</h3>
            		<c:forEach items="${stQuestionsList}" var="stQuestions">
