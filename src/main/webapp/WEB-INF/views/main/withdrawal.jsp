@@ -8,7 +8,7 @@
 <title>회원탈퇴</title>
 <style>
 	.withdrawal-box{
-		padding: 75px 40px;
+		padding: 200px 40px 75px 40px;
 		text-align: center;
 	}
 	.withdrawal-title{
