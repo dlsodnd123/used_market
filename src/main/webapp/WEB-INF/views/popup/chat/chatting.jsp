@@ -116,7 +116,16 @@
     	font-size: 25px;
     	margin-bottom: 20px;
     	font-weight: 700;
-    }	
+    }
+    .alert-info{
+    	font-size: 13px;
+    	display: none;
+    }
+    .fa-times{
+    	float: right;
+    	margin-top: 4px;
+    	cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -159,6 +168,9 @@
 					</c:forEach>
 				</div>
 				<div class="message-send-box">
+					<div class="alert alert-info">
+				    	<strong>최소 1글자 이상 입력해야 합니다.</strong><i class="fas fa-times"></i>
+				  	</div>
 					<input type="text" class="form-control message" id="message" autofocus>
 					<button class="btn btn-primary message-send-btn" id="" type="button">전송</button>
 				</div>
@@ -178,7 +190,8 @@
 			var pd_num = '${pd_num}';
 			var pd_mb_id = '${pd_mb_id}';		
 			var chmg_num = $('input[id=chmg_num]').last().val();
-			var sendData = {"pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num}
+			var opponent = $('.opponent-id').first().text();
+			var sendData = {"pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "chmg_num" : chmg_num, "opponent" : opponent}
 			$.ajax({
 	     		url : '<%=request.getContextPath()%>/reload/message',
 				async:false,
@@ -245,28 +258,38 @@
 			$('.message-box').animate({scrollTop: lastMySelfLoc.top}, 0);
 		}
 	}
+	
+	// 경고창에 X버튼 클릭시 경고창 숨기기
+	$('.fa-times').click(function(){
+		$('.alert-info').hide();
+	})	
+	
 	// 입력한 메시지 ajax로 전송하는 함수
 	function eventMessageSend(){
 		var chmg_content = $('.message').val();
-		var pd_num = '${pd_num}';
-		var pd_mb_id = '${pd_mb_id}';
-		var opponent = $('.opponent-id').first().text();
-		var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "opponent" : opponent}
-		$.ajax({
-	    		url : '<%=request.getContextPath()%>/send/message',
-			async:false,
-			type : 'post',
-			data : sendData,
-			dataType:"json",
-			success : function(data){
-				if(data.result == 'success'){						
-					location.reload();
-				}
-	  	        },
-	  	     	error: function(error) {
-	  	        	console.log('에러발생');
-	  	    	}
-	   	})		
+		if(chmg_content == ''){
+			$('.alert-info').show();
+		}else{
+			var pd_num = '${pd_num}';
+			var pd_mb_id = '${pd_mb_id}';
+			var opponent = $('.opponent-id').first().text();
+			var sendData = {"chmg_content" : chmg_content, "pd_num" : pd_num, "pd_mb_id" : pd_mb_id, "opponent" : opponent}
+			$.ajax({
+		    		url : '<%=request.getContextPath()%>/send/message',
+				async:false,
+				type : 'post',
+				data : sendData,
+				dataType:"json",
+				success : function(data){
+					if(data.result == 'success'){						
+						location.reload();
+					}
+		  	        },
+		  	     	error: function(error) {
+		  	        	console.log('에러발생');
+		  	    	}
+		   	})
+		}
 	}
 	// 상품가격에 숫자 3자리마다 콤마넣기
     var comma = numberWithCommas($('.chat-product-price').text());

@@ -109,13 +109,20 @@ public class ChatControll {
 	@RequestMapping(value = "/reload/message", method = RequestMethod.POST)
 	@ResponseBody
 	public Object reloadMessagePost(@RequestBody @RequestParam Integer pd_num,  @RequestParam String pd_mb_id, 
-			@RequestParam Integer chmg_num, HttpServletRequest request) {		
+			@RequestParam Integer chmg_num, @RequestParam String opponent, HttpServletRequest request) {		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		// 로그인된 회원정보 가져오기
 		MemberVo member = standService.getMemberId(request);
 		String result = "";
-		// pd_num, pd_mb_id, mb_id와 일치하는 채팅룸이 있는지 확인해서 채팅방 정보 가져오기
-		ChattingVo checkChatRoom = chatService.getCheckChattingRoom(pd_num, pd_mb_id, member.getMb_id());
+		
+		ChattingVo checkChatRoom = new ChattingVo();
+		// pd_mb_id와 현재 로그인 된 mb_id가 일치한다면
+		if(member.getMb_id().equals(pd_mb_id)) {
+			checkChatRoom = chatService.getSellerChatRoom(pd_num, member.getMb_id(), opponent);
+		}else {
+			// pd_num, pd_mb_id, mb_id와 일치하는 채팅룸이 있는지 확인해서 채팅방 정보 가져오기
+			checkChatRoom = chatService.getCheckChattingRoom(pd_num, pd_mb_id, member.getMb_id());
+		}	
 		ChattingVo newChatMessage = new ChattingVo();
 		// 채팅룸 정보가 있으면
 		if(checkChatRoom != null) {
