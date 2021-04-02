@@ -87,6 +87,9 @@
 		color: #999999;
 		float: left;
 	}
+	.swiper-slide{
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
