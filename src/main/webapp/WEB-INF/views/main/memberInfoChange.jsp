@@ -15,12 +15,27 @@
         color: red;
         display: none;
     }
+    .memberInfoChange-box{
+    	padding-top: 125px;
+    }
+    .memberInfoChange-title{
+    	font-size: 25px;
+		font-weight: 700;
+		border-bottom: 2px solid #5a93fa;
+		padding: 10px 0;
+		margin-bottom: 10px;
+    }
+    .mb-infoChange-btn,
+    .mb-infoChangeCancel-btn{
+    	font-size: 18px;
+    	padding: 10px 25px;
+    }
 </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container memberInfoChange-box">
         <form action="<%=request.getContextPath()%>/memberInfoChange" class="container" method="post" id="form">
-        	<h3>회원정보수정</h3>
+        	<div class="memberInfoChange-title">회원정보수정</div>
             <div class="form-group">         
                 <h6>아이디</h6>
                 <div>
