@@ -42,12 +42,19 @@
 	
 	<beans:bean id="loginInterceptor" 
 	class="kr.green.usedmarket.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" 
+	class="kr.green.usedmarket.interceptor.AuthInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
 	        <mapping path="/login"/>
 	        <mapping path="/"/>
 	        <beans:ref bean="loginInterceptor"/>
 	   	</interceptor>
+	    <interceptor>
+	        <mapping path="/termsOfService"/>
+	        <mapping path="/signup"/>
+	        <beans:ref bean="authInterceptor"/>
+	    </interceptor>
 	</interceptors>
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
