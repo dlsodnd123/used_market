@@ -181,7 +181,7 @@
 	            <input type="text" class="form-control col-6 pd_price" id="pd_price" name="pd_price" value="${product.pd_price}">원 
 	          </div>
 	          <button type="submit" class="btn btn-primary modify-btn col-2">수정하기</button>
-	          <a href="<%=request.getContextPath()%>/stand"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
+	          <a href="<%=request.getContextPath()%>/stand?mb_id=${member.mb_id}#home"><button type="button" class="btn btn-secondary cancel-btn col-2">취소</button></a>
 	          <input type="hidden" name="pd_num" value="${product.pd_num}">
 	        </form>
 	    </div>
