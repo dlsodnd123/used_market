@@ -356,9 +356,9 @@
 	           		<a class="nav-link dibsPd-tab active menu2" data-toggle="tab" href="#menu2">찜한상품(<span class="dibsPdCnt">${dibsPdCnt}</span>)</a>
 	         	</li>
          	</c:if>
-         	<li class="select nav-item">
+         	<!-- <li class="select nav-item">
            		<a class=" nav-link menu4" data-toggle="tab" href="#menu3">거래후기</a>
-         	</li>
+         	</li> -->
          	<li class="select nav-item">
            		<a class=" nav-link menu4" data-toggle="tab" href="#menu4">문의사항(<span class="stQuestionsCount">${stQuestionsCount}</span>)</a>
          	</li>

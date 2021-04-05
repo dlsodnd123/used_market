@@ -122,18 +122,12 @@
 							<div class="chatList-sendDate">${chattingList.chmg_sendDate}</div>
 							<div class="chatList-last-message">${chattingList.chmg_content}</div>
 						</div>
-						<div class="chatList-more-box">
+						<!-- <div class="chatList-more-box">
 							<i class="fas fa-ellipsis-v"></i>
 							<div class="chatList-exit">
 								<div class="chatList-exit-btn">채팅방나가기</div>
 							</div>
-						</div>
-						<div class="chatList-more-box">
-							<i class="fas fa-ellipsis-v"></i>
-							<div class="chatList-exit">
-								<div class="chatList-exit-btn">채팅방나가기</div>
-							</div>
-						</div>
+						</div> -->
 						<input type="hidden" name="chro_pd_num" value="${chattingList.chro_pd_num}">
 					</div>
 				</c:forEach>									
